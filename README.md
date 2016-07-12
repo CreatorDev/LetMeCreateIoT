@@ -7,7 +7,7 @@ A collection of wrappers for the Contiki interfaces made to ease the development
 Supported interfaces:
 
 I2C
-
+SPI
 
 ## Installation
 
