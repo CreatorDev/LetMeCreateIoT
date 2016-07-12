@@ -7,6 +7,7 @@ A collection of wrappers for the Contiki interfaces made to ease the development
 Supported interfaces:
 
 I2C
+
 SPI
 
 ## Installation
@@ -15,6 +16,6 @@ The library is currently installed via a Bash script which modifies Contiki make
 
 ## Links
 
-For the CI40 version of the library see [here](https://github.com/francois-berder)
+For the CI40 version of the library see [here](https://github.com/francois-berder/LetMeCreate)
 
-You can find various Contiki and CI projects [here](https://github.com/francois-berder)
+You can find various Contiki and CI projects [here](https://github.com/mtusnio/ci40projects)
