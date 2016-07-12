@@ -5,15 +5,15 @@ if [[ $# -ne 1 ]]; then
     exit 1
 fi
 
-echo $1
+BASE_DIR=$(dirname $(readlink -f $0))
 CONTIKI=$(readlink -f $1)
 
 echo "Installing the library files to $CONTIKI"
 
 LIBRARY_DIR="core"
 LMC_DIR="$CONTIKI/$LIBRARY_DIR/lmc"
-SRC_DIR="src"
-INCLUDE_DIR="include"
+SRC_DIR="$BASE_DIR/src"
+INCLUDE_DIR="$BASE_DIR/include"
 
 if [[ ! -d "$CONTIKI/$LIBRARY_DIR" ]]; then
     echo "Could not find directory $LIBRARY_DIR. Check your contiki path"
@@ -26,8 +26,8 @@ fi
 
 mkdir -p $LMC_DIR
 
-cp -r ./$SRC_DIR/* $LMC_DIR/
-cp -r ./$INCLUDE_DIR/* $LMC_DIR/
+cp -r $SRC_DIR/* $LMC_DIR/
+cp -r $INCLUDE_DIR/* $LMC_DIR/
 
 echo "Modifying Contiki makefile..."
 
