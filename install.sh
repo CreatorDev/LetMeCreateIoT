@@ -29,9 +29,14 @@ mkdir -p $LMC_DIR
 cp -r $SRC_DIR/* $LMC_DIR/
 cp -r $INCLUDE_DIR/* $LMC_DIR/
 
-echo "Modifying Contiki makefile..."
 
-sed -i '0,/MODULES +=/s//MODULES += core\/lmc\/core/' $CONTIKI/Makefile.include
+MAKEFILE=$CONTIKI/Makefile.include
+
+grep --quiet -P "MODULES(.*?)core/lmc/core" $MAKEFILE
+if [[ $? -ne 0 ]]; then
+    echo "Modifying Contiki makefile..."
+    sed -i '0,/MODULES +=/s//MODULES += core\/lmc\/core/' $MAKEFILE
+fi
 
 if [[ $? -ne 0 ]]; then
     echo "Failed to modify the makefile"
