@@ -1,7 +1,8 @@
+#include <stdio.h>
 #include <contiki.h>
 #include <pic32_i2c.h>
 #include <p32xxxx.h>
-#incldue "core/i2c.h"
+#include "i2c.h"
 
 #define I2C_DEFAULT_FREQUENCY 100000
 
