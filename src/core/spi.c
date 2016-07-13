@@ -4,7 +4,6 @@
 #include "spi.h"
 
 #include <stdio.h>
-#include <unistd.h>
 
 #include <pic32_clock.h>
 #include <pic32_spi.h>
