@@ -42,7 +42,7 @@ PROCESS_THREAD(main_process, ev, data)
             sprintf(buffer, "Hello number %i from client", i);
             // We need this timeout timer for the event wait. We need to
             // wait between each packet for UDP to work.
-            etimer_set(&et, CLOCK_SECOND/20);
+            etimer_set(&et, CLOCK_SECOND/5);
 
             printf("Sending data: %s\n", buffer);
             uip_udp_packet_send(conn, buffer, strlen(buffer));
