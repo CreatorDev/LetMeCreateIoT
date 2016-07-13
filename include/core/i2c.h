@@ -1,7 +1,7 @@
 #ifndef H_CORE_I2C
 #define H_CORE_I2C
 
-#include <unistd.h>
+#include <stdint.h>
 
 uint8_t i2c_init();
 uint8_t i2c_release();

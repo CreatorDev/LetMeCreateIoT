@@ -1,7 +1,7 @@
 #ifndef H_CORE_I2C
 #define H_CORE_I2C
 
-#include <unistd.h>
+#include <stdint.h>
 
 
 uint8_t spi_init();
