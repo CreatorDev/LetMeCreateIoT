@@ -1,5 +1,5 @@
-#ifndef H_CORE_I2C
-#define H_CORE_I2C
+#ifndef H_CORE_SPI
+#define H_CORE_SPI
 
 #include <stdint.h>
 
