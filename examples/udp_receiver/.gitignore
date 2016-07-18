@@ -1,0 +1,7 @@
+contiki-mikro-e.a
+contiki-mikro-e.map
+*.hex
+*.mikro-e
+obj_mikro-e/
+symbols.c
+symbols.h
