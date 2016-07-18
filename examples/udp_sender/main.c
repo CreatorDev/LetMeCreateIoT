@@ -4,7 +4,7 @@
 #include <contiki-net.h>
 
 
-#define SERVER_IP_ADDR "fe80::e01a:69ff:fe6c:4a97"
+#define SERVER_IP_ADDR "fe80::e05c:7eff:fe96:f012"
 
 #define SERVER_PORT 5000
 
