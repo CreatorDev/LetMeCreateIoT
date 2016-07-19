@@ -11,7 +11,8 @@
 // buffer to restore eg. sender's IP address
 #define UIP_IP_BUF ((struct uip_ip_hdr *)&uip_buf[UIP_LLH_LEN])
 
-#define PORT 5000
+#define SERVER_PORT 3000
+#define CLIENT_PORT 3001
 
 PROCESS(main_process, "Main process");
 AUTOSTART_PROCESSES(&main_process);
@@ -29,9 +30,10 @@ PROCESS_THREAD(main_process, ev, data)
         printf("===START===\n");
 
         // Create a new udp connection
-        conn = udp_new(NULL, UIP_HTONS(PORT + 1), NULL);
+        conn = udp_new(NULL, UIP_HTONS(CLIENT_PORT), NULL);
 
-        // Bind the connection locally to a port
+        // Bind the connection locally to a port. For the connection to work both server & client
+        // need to call their respective ports in udp_new & udp_bind
         udp_bind(conn, UIP_HTONS(PORT));
 
         while(1)
