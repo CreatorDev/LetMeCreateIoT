@@ -3,6 +3,8 @@
 #include <contiki.h>
 #include <contiki-net.h>
 
+#include "lmc/core/network.h"
+
 // Used for PRINT6ADDR function
 #define DEBUG DEBUG_PRINT
 #include "net/ip/uip-debug.h"
@@ -13,6 +15,8 @@
 
 #define SERVER_PORT 3000
 #define CLIENT_PORT 3001
+
+#define SERVER_IP_ADDR "fe80:0000:0000:0000:28e9:3285:421c:bc82"
 
 PROCESS(main_process, "Main process");
 AUTOSTART_PROCESSES(&main_process);
@@ -25,9 +29,15 @@ PROCESS_THREAD(main_process, ev, data)
         // Due to the way Contiki protothreads work this needs to be static,
         // otherwise the data will be lost when switching to a different thread
         static struct uip_udp_conn * conn;
-
-        char * network_data;
+        static char * network_data;
         printf("===START===\n");
+
+        // Making our IP address constant to match the other example
+        if(network_set_ipv6_address(SERVER_IP_ADDR, NULL))
+        {
+            printf("Failed to set IPV6 address\n");
+            return 1;
+        }
 
         // Create a new udp connection
         conn = udp_new(NULL, UIP_HTONS(CLIENT_PORT), NULL);
@@ -49,8 +59,9 @@ PROCESS_THREAD(main_process, ev, data)
                     // Get the data as null-character terminated text
                     network_data = (char*)uip_appdata;
                     network_data[uip_datalen()] = "\0";
-                    printf("Received %s from:\n");
+                    printf("Received %s from:\n", network_data);
                     PRINT6ADDR(&UIP_IP_BUF->srcipaddr);
+                    printf("\n=====================\n");
                 }
             }
         }
