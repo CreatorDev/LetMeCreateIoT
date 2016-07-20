@@ -34,7 +34,7 @@ PROCESS_THREAD(main_process, ev, data)
 
         // Bind the connection locally to a port. For the connection to work both server & client
         // need to call their respective ports in udp_new & udp_bind
-        udp_bind(conn, UIP_HTONS(PORT));
+        udp_bind(conn, UIP_HTONS(SERVER_PORT));
 
         while(1)
         {
