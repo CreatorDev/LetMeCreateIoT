@@ -7,16 +7,38 @@
 
 #include <pic32_clock.h>
 #include <pic32_spi.h>
+#include <pic32_gpio.h>
 
-#define DEFAULT_BAUD_RATE (100000)
+#define DEFAULT_BAUD_RATE       (100000)
 
 #define SPI_READ_BIT            (0x80)
 #define SPI_MULTIPLE_BYTE_BIT   (0x40)
 
-uint8_t spi_init()
+uint8_t spi_init(uint8_t mode)
 {
-    if(pic32_spi1_init(DEFAULT_BAUD_RATE, SPI_DEFAULT))
+    uint32_t flags = SPI_DEFAULT;
+    switch(mode)
+    {
+        case 0:
+        break;
+        case 1:
+        flags |= SPI_SDI_ON_CLOCK_END;
+        case 2:
+        flags |= SPI_CLOCK_IDLE_HIGH;
+        break;
+        case 3:
+        flags |= SPI_SDI_ON_CLOCK_END | SPI_CLOCK_IDLE_HIGH;
+        break;
+        default:
+        printf("SPI: Invalid mode\n");
         return 1;
+    }
+    if(pic32_spi1_init(DEFAULT_BAUD_RATE, flags))
+        return 1;
+
+    GPIO_CONFIGURE_AS_DIGITAL(E, 5);
+    GPIO_CONFIGURE_AS_OUTPUT(E, 5);
+    GPIO_SET(E, 5);
 
     return 0;
 }
@@ -36,8 +58,21 @@ uint8_t spi_set_speed(uint32_t speed)
     return 0;
 }
 
+uint8_t spi_start_transfer()
+{
+    GPIO_CLR(E, 5);
 
-uint8_t spi_write(uint8_t reg_address, const uint8_t * buffer, uint8_t len)
+    return 0;
+}
+
+uint8_t spi_end_transfer()
+{
+    GPIO_SET(E, 5);
+
+    return 0;
+}
+
+uint8_t spi_write_bytes(uint8_t reg_address, const uint8_t * buffer, uint8_t len)
 {
     if(!buffer || len == 0)
     {
@@ -64,7 +99,7 @@ uint8_t spi_write(uint8_t reg_address, const uint8_t * buffer, uint8_t len)
 }
 
 
-uint8_t spi_read(uint8_t reg_address, uint8_t * buffer, uint8_t len)
+uint8_t spi_read_bytes(uint8_t reg_address, uint8_t * buffer, uint8_t len)
 {
     if(!buffer || len == 0)
     {
@@ -91,5 +126,16 @@ uint8_t spi_read(uint8_t reg_address, uint8_t * buffer, uint8_t len)
 
     return 0;
 }
+
+uint8_t spi_write_byte(uint8_t reg_address, uint8_t byte)
+{
+    return spi_write_bytes(reg_address, &byte, 1);
+}
+
+uint8_t spi_read_byte(uint8_t reg_address, uint8_t byte)
+{
+    return spi_read_bytes(reg_address, &byte, 1);
+}
+
 
 #endif
