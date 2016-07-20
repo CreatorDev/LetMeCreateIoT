@@ -45,7 +45,7 @@ uint8_t spi_write(uint8_t reg_address, const uint8_t * buffer, uint8_t len)
         return 1;
     }
 
-    if(len > 0)
+    if(len > 1)
         reg_address |= SPI_MULTIPLE_BYTE_BIT;
 
     if(pic32_spi1_write(&reg_address, 1))
@@ -72,8 +72,9 @@ uint8_t spi_read(uint8_t reg_address, uint8_t * buffer, uint8_t len)
         return 1;
     }
 
-    if(len > 0)
-        reg_address |= SPI_MULTIPLE_BYTE_BIT | SPI_READ_BIT;
+    reg_address |= SPI_READ_BIT;
+    if(len > 1)
+        reg_address |= SPI_MULTIPLE_BYTE_BIT;
 
     if(pic32_spi1_write(&reg_address, 1))
     {
