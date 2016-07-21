@@ -23,6 +23,7 @@ uint8_t spi_init(uint8_t mode)
         break;
         case 1:
         flags |= SPI_SDI_ON_CLOCK_END;
+        break;
         case 2:
         flags |= SPI_CLOCK_IDLE_HIGH;
         break;
@@ -33,6 +34,7 @@ uint8_t spi_init(uint8_t mode)
         printf("SPI: Invalid mode\n");
         return 1;
     }
+
     if(pic32_spi1_init(DEFAULT_BAUD_RATE, flags))
         return 1;
 
