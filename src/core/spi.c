@@ -174,5 +174,24 @@ uint8_t spi_read_register(uint8_t reg_address, uint8_t byte)
     return spi_read_registers(reg_address, &byte, 1);
 }
 
+uint8_t spi_transfer(const uint8_t * tx_buffer, uint8_t * rx_buffer, uint8_t len)
+{
+    if(!tx_buffer || !rx_buffer || len == 0)
+    {
+        printf("SPI: No data to write\n");
+        return 1;
+    }
+
+    if(tx_buffer && !rx_buffer)
+        return spi_write(tx_buffer, len);
+    else if(tx_buffer && rx_buffer)
+        return spi_read_registers(tx_buffer[0], &rx_buffer[1], len - 1);
+
+    printf("SPI: Unsupported transfer case\n");
+    return 1;
+}
+
+
+
 
 #endif
