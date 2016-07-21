@@ -16,19 +16,19 @@
 
 uint8_t spi_init(uint8_t mode)
 {
-    uint32_t flags = SPI_DEFAULT;
+    uint32_t flags = SPI_MASTER;
     switch(mode)
     {
         case 0:
+        flags |= SPI_SDO_ON_CLOCK_TO_IDLE;
         break;
         case 1:
-        flags |= SPI_SDI_ON_CLOCK_END;
         break;
         case 2:
-        flags |= SPI_CLOCK_IDLE_HIGH;
+        flags |= SPI_CLOCK_IDLE_HIGH | SPI_SDO_ON_CLOCK_TO_IDLE;
         break;
         case 3:
-        flags |= SPI_SDI_ON_CLOCK_END | SPI_CLOCK_IDLE_HIGH;
+        flags |= SPI_CLOCK_IDLE_HIGH;
         break;
         default:
         printf("SPI: Invalid mode\n");
