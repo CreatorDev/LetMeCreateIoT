@@ -74,7 +74,42 @@ uint8_t spi_end_transfer()
     return 0;
 }
 
-uint8_t spi_write_bytes(uint8_t reg_address, const uint8_t * buffer, uint8_t len)
+uint8_t spi_write(const uint8_t * buffer, uint8_t len)
+{
+    if(!buffer || len == 0)
+    {
+        printf("SPI: No data to write\n");
+        return 1;
+    }
+
+    if(pic32_spi1_write(buffer, len))
+    {
+        printf("SPI: Failed to write\n");
+        return 1;
+    }
+
+    return 0;
+}
+
+
+uint8_t spi_read(uint8_t * buffer, uint8_t len)
+{
+    if(!buffer || len == 0)
+    {
+        printf("SPI: No data to read\n");
+        return 1;
+    }
+
+    if(pic32_spi1_read(buffer, len))
+    {
+        printf("SPI: Failed to read data\n");
+        return 1;
+    }
+
+    return 0;
+}
+
+uint8_t spi_write_registers(uint8_t reg_address, const uint8_t * buffer, uint8_t len)
 {
     if(!buffer || len == 0)
     {
@@ -101,7 +136,7 @@ uint8_t spi_write_bytes(uint8_t reg_address, const uint8_t * buffer, uint8_t len
 }
 
 
-uint8_t spi_read_bytes(uint8_t reg_address, uint8_t * buffer, uint8_t len)
+uint8_t spi_read_registers(uint8_t reg_address, uint8_t * buffer, uint8_t len)
 {
     if(!buffer || len == 0)
     {
@@ -129,14 +164,14 @@ uint8_t spi_read_bytes(uint8_t reg_address, uint8_t * buffer, uint8_t len)
     return 0;
 }
 
-uint8_t spi_write_byte(uint8_t reg_address, uint8_t byte)
+uint8_t spi_write_register(uint8_t reg_address, uint8_t byte)
 {
-    return spi_write_bytes(reg_address, &byte, 1);
+    return spi_write_registers(reg_address, &byte, 1);
 }
 
-uint8_t spi_read_byte(uint8_t reg_address, uint8_t byte)
+uint8_t spi_read_register(uint8_t reg_address, uint8_t byte)
 {
-    return spi_read_bytes(reg_address, &byte, 1);
+    return spi_read_registers(reg_address, &byte, 1);
 }
 
 
