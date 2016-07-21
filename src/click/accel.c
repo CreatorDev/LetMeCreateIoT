@@ -88,7 +88,6 @@ uint8_t accel_click_get_measure(float * accelX, float * accelY, float * accelZ)
     memcpy(&y, &buffer[2], 2);
     memcpy(&z, &buffer[4], 2);
 
-    printf("Data from buffer: %i %i %i\n", x, y, z);
     *accelX = (float)x * G_PER_LSB;
     *accelY = (float)y * G_PER_LSB;
     *accelZ = (float)z * G_PER_LSB;
