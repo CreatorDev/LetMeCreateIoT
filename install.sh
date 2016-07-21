@@ -34,9 +34,16 @@ MAKEFILE=$CONTIKI/Makefile.include
 
 grep --quiet -P "MODULES(.*?)core/lmc/core" $MAKEFILE
 if [[ $? -ne 0 ]]; then
-    echo "Modifying Contiki makefile..."
+    echo "Adding LMC core module to Contiki makefile..."
     sed -i '0,/MODULES +=/s//MODULES += core\/lmc\/core/' $MAKEFILE
 fi
+
+grep --quiet -P "MODULES(.*?)core/lmc/click" $MAKEFILE
+if [[ $? -ne 0 ]]; then
+    echo "Adding LMC core module to Contiki makefile..."
+    sed -i '0,/MODULES +=/s//MODULES += core\/lmc\/click/' $MAKEFILE
+fi
+
 
 if [[ $? -ne 0 ]]; then
     echo "Failed to modify the makefile"
