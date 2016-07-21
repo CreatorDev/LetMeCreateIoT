@@ -40,7 +40,7 @@ fi
 
 grep --quiet -P "MODULES(.*?)core/lmc/click" $MAKEFILE
 if [[ $? -ne 0 ]]; then
-    echo "Adding LMC core module to Contiki makefile..."
+    echo "Adding LMC click module to Contiki makefile..."
     sed -i '0,/MODULES +=/s//MODULES += core\/lmc\/click/' $MAKEFILE
 fi
 
