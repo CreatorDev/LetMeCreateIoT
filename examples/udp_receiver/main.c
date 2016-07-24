@@ -33,7 +33,7 @@ PROCESS_THREAD(main_process, ev, data)
         printf("===START===\n");
 
         // Making our IP address constant to match the other example
-        if(network_set_ipv6_address(SERVER_IP_ADDR, NULL))
+        if(set_ipv6_address(SERVER_IP_ADDR, NULL))
         {
             printf("Failed to set IPV6 address\n");
             return 1;
