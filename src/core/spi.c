@@ -74,7 +74,7 @@ uint8_t spi_end_transfer()
     return 0;
 }
 
-uint8_t spi_write(const uint8_t * buffer, uint8_t len)
+uint8_t spi_write(const uint8_t * buffer, uint32_t len)
 {
     if(!buffer || len == 0)
     {
@@ -92,7 +92,7 @@ uint8_t spi_write(const uint8_t * buffer, uint8_t len)
 }
 
 
-uint8_t spi_read(uint8_t * buffer, uint8_t len)
+uint8_t spi_read(uint8_t * buffer, uint32_t len)
 {
     if(!buffer || len == 0)
     {
@@ -109,7 +109,7 @@ uint8_t spi_read(uint8_t * buffer, uint8_t len)
     return 0;
 }
 
-uint8_t spi_write_registers(uint8_t reg_address, const uint8_t * buffer, uint8_t len)
+uint8_t spi_write_registers(uint8_t reg_address, const uint8_t * buffer, uint32_t len)
 {
     if(!buffer || len == 0)
     {
@@ -136,7 +136,7 @@ uint8_t spi_write_registers(uint8_t reg_address, const uint8_t * buffer, uint8_t
 }
 
 
-uint8_t spi_read_registers(uint8_t reg_address, uint8_t * buffer, uint8_t len)
+uint8_t spi_read_registers(uint8_t reg_address, uint8_t * buffer, uint32_t len)
 {
     if(!buffer || len == 0)
     {
@@ -174,7 +174,7 @@ uint8_t spi_read_register(uint8_t reg_address, uint8_t byte)
     return spi_read_registers(reg_address, &byte, 1);
 }
 
-uint8_t spi_transfer(const uint8_t * tx_buffer, uint8_t * rx_buffer, uint8_t len)
+uint8_t spi_transfer(const uint8_t * tx_buffer, uint8_t * rx_buffer, uint32_t len)
 {
     if(!tx_buffer || !rx_buffer || len == 0)
     {

@@ -32,7 +32,7 @@ uint8_t i2c_set_frequency(uint32_t frequency)
     return i2c1_set_frequency(frequency);
 }
 
-uint8_t i2c_write(uint8_t address, uint8_t reg_address, uint8_t * bytes, uint8_t length)
+uint8_t i2c_write(uint8_t address, uint8_t reg_address, uint8_t * bytes, uint32_t length)
 {
     if(!bytes)
     {
@@ -66,7 +66,7 @@ uint8_t i2c_write(uint8_t address, uint8_t reg_address, uint8_t * bytes, uint8_t
     return 0;
 }
 
-uint8_t i2c_read(uint8_t address, uint8_t reg_address, uint8_t * bytes, uint8_t length)
+uint8_t i2c_read(uint8_t address, uint8_t reg_address, uint8_t * bytes, uint32_t length)
 {
     if(!bytes)
     {
