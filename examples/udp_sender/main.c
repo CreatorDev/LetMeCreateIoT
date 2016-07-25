@@ -27,6 +27,7 @@ PROCESS_THREAD(main_process, ev, data)
         static int i = 0;
         printf("===START===\n");
 
+        // Below steps can be avoided by using the udp_new_connection function from core/network.h
         // First convert the IP address into a structure
         uip_ipaddr_t addr;
         uiplib_ipaddrconv(SERVER_IP_ADDR, &addr);
@@ -42,15 +43,13 @@ PROCESS_THREAD(main_process, ev, data)
         {
             i++;
             sprintf(buffer, "Hello number %i from client", i);
-            // We need this timeout timer for the event wait. We need to
-            // wait between each packet for UDP to work.
-            etimer_set(&et, CLOCK_SECOND/5);
 
             printf("Sending data: %s\n", buffer);
             uip_udp_packet_send(conn, buffer, strlen(buffer));
 
-            // Halt the process until the timer event finishes
-            PROCESS_WAIT_EVENT();
+            // We need to poll tcpip and let it fire an event once data has been sent.
+            tcpip_poll_udp(conn);
+            PROCESS_WAIT_EVENT_UNTIL(ev == tcpip_event);
         }
 
     }

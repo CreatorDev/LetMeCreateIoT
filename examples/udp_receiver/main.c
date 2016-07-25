@@ -39,6 +39,7 @@ PROCESS_THREAD(main_process, ev, data)
             return 1;
         }
 
+        // Below steps can be avoided by using the udp_new_connection function from core/network.h
         // Create a new udp connection
         conn = udp_new(NULL, UIP_HTONS(CLIENT_PORT), NULL);
 
