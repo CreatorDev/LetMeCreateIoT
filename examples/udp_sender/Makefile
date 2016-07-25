@@ -1,9 +1,10 @@
 CONTIKI=../../../contiki/
 
 TARGET = mikro-e
+CONTIKI_WITH_IPV6 = 1
+USE_CA8210 = 1
 VERSION? = $(shell git describe --abbrev=4 --dirty --always --tags)
 
-CONTIKI_WITH_IPV6 = 1
 
 CFLAGS += -DVERSION=$(VERSION)
 CFLAGS += -Wall -Wno-pointer-sign
