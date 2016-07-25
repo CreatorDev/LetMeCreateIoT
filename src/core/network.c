@@ -29,7 +29,7 @@ uint8_t set_ipv6_address(const char * address, uip_ipaddr_t * addr)
 
 struct uip_udp_conn * udp_new_connection(uint16_t local_port, uint16_t remote_port, const char * address)
 {
-    struct uip_udp_conn * conn;
+    struct uip_udp_conn * conn = NULL;
 
     if(address)
     {
