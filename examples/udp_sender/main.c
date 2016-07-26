@@ -21,7 +21,6 @@ PROCESS_THREAD(main_process, ev, data)
     {
         // Due to the way Contiki protothreads work this needs to be static,
         // otherwise the data will be lost when switching to a different thread
-        static struct etimer et;
         static struct uip_udp_conn * conn;
         static char buffer[BUFFER_SIZE];
         static int i = 0;
