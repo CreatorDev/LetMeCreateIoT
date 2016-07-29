@@ -16,9 +16,9 @@ static int i2c_send_address(uint16_t address, uint8_t read_byte)
 
     if(!(0xff00 & address))
     {
-        address = (address << 1) | read_byte;
+        uint8_t small_address = ((0xff & address) << 1) | read_byte;
 
-        if(i2c1_send_byte(address))
+        if(i2c1_send_byte(small_address))
             return -1;
 
         return 0;
