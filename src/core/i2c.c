@@ -7,8 +7,6 @@
 
 #define I2C_DEFAULT_FREQUENCY (100000)
 
-#define I2C_16BIT_ADDRESSING  (0xF000)
-
 #define I2C_READ_MODE         (0x01)
 #define I2C_WRITE_MODE        (0x00)
 
@@ -26,7 +24,7 @@ static int i2c_send_address(uint16_t address, uint8_t read_byte)
         return 0;
     }
 
-    uint8_t upper_byte = (I2C_16BIT_ADDRESSING) | (address & 0xff00) | read_byte;
+    uint8_t upper_byte = (0xF0) | ((address & 0xff00) << 1) | read_byte;
     uint8_t lower_byte = address & 0x00ff;
 
     if(i2c1_send_byte(upper_byte) || i2c1_send_byte(lower_byte))
@@ -108,8 +106,6 @@ int i2c_read(uint16_t address, uint8_t * bytes, uint32_t length)
         printf("I2C: Length cannot be 0\n");
         return -1;
     }
-
-
 
     if(i2c1_send_start())
         return -1;
