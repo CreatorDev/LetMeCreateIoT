@@ -1,8 +1,9 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-
+#include <letmecreate/click/accel.h>
 #include <letmecreate/core/spi.h>
-
+#include <letmecreate/click/common.h>
 
 /* Control registers */
 #define BW_RATE_REG         (0x2C)
@@ -26,86 +27,89 @@
 #define DATAZ0_REG          (0x36)
 #define DATAZ1_REG          (0x37)
 
-#define G_PER_LSB           (0.004f) /* 4mg/LSB */
 
-#define SPI_MODE            (0x03)
+/* SPI specific */
+#define SPI_READ_BIT            (0x80)
+#define SPI_MULTIPLE_BYTE_BIT   (0x40)
 
-uint8_t accel_click_enable()
+#define G_PER_LSB           (0.004f)   /* 4mg/LSB */
+
+static bool enabled = false;
+
+int accel_click_enable(void)
 {
-    spi_init(SPI_MODE);
+    if (enabled)
+        return 0;
 
-    spi_start_transfer();
-
-    if (spi_write_register(POWER_CTRL_REG, MEASURE_EN | WAKEUP_DATA_RATE))
-    {
-        printf("accel: Failed to enable device.\n");
-        return 1;
+    if (spi_write_register(POWER_CTRL_REG, MEASURE_EN | WAKEUP_DATA_RATE) < 0) {
+        fprintf(stderr, "accel: Failed to enable device.\n");
+        return -1;
     }
 
-    if (spi_write_register(FIFO_CTRL_REG, 0))
-    {
-        printf("accel: Failed to set fifo settings.\n");
-        return 1;
+    if (spi_write_register(FIFO_CTRL_REG, 0) < 0) {     /* bypass FIFO */
+        fprintf(stderr, "accel: Failed to set fifo settings.\n");
+        return -1;
     }
 
-    if (spi_write_register(BW_RATE_REG, DATA_RATE))
-    {
-        printf("accel: Failed to set data rate.\n");
-        return 1;
+    if (spi_write_register(BW_RATE_REG, DATA_RATE) < 0) {
+        fprintf(stderr, "accel: Failed to set data rate.\n");
+        return -1;
     }
 
-    if (spi_write_register(DATA_FORMAT_REG, FULL_RES_EN | RANGE))
-    {
-        printf("accel: Failed to set data format.\n");
-        return 1;
+    if (spi_write_register(DATA_FORMAT_REG, FULL_RES_EN | RANGE) < 0) {
+        fprintf(stderr, "accel: Failed to set data format.\n");
+        return -1;
     }
 
-    spi_end_transfer();
+    enabled = true;
 
     return 0;
 }
 
-
-uint8_t accel_click_get_measure(float * accelX, float * accelY, float * accelZ)
+int accel_click_get_measure(float *accelX, float *accelY, float *accelZ)
 {
+    uint8_t tx_buffer[7], rx_buffer[7];
     int16_t x, y, z;
-    uint8_t buffer[6];
 
-    if(!accelX || !accelY || !accelZ)
-    {
-        printf("accel: Passed a null pointer for data\n");
-        return 1;
+    if (enabled == false) {
+        fprintf(stderr, "accel: Cannot get measure while device is shutdown.\n");
+        return -1;
     }
 
-    spi_start_transfer();
-    if(spi_read_registers(DATAX0_REG, buffer, 6))
-    {
-        printf("accel: Failed to read\n");
-        return 1;
+    if (accelX == NULL || accelY == NULL || accelZ == NULL) {
+        fprintf(stderr, "accel: Cannot store acceleration using null pointers.\n");
+        return -1;
     }
 
-    memcpy(&x, &buffer[0], 2);
-    memcpy(&y, &buffer[2], 2);
-    memcpy(&z, &buffer[4], 2);
+    memset(tx_buffer, 0, sizeof(tx_buffer));
+    tx_buffer[0] = SPI_READ_BIT | SPI_MULTIPLE_BYTE_BIT | DATAX0_REG;
+    if (spi_transfer(tx_buffer, rx_buffer, sizeof(tx_buffer)) < 0) {
+        fprintf(stderr, "accel: Failed to get measure from device.\n");
+        return -1;
+    }
 
-    *accelX = (float)x * G_PER_LSB;
-    *accelY = (float)y * G_PER_LSB;
-    *accelZ = (float)z * G_PER_LSB;
+    memcpy(&x, &rx_buffer[1], 2);
+    memcpy(&y, &rx_buffer[3], 2);
+    memcpy(&z, &rx_buffer[5], 2);
 
-    spi_end_transfer();
+    *accelX = ((float)x) * G_PER_LSB;
+    *accelY = ((float)y) * G_PER_LSB;
+    *accelZ = ((float)z) * G_PER_LSB;
+
     return 0;
 }
 
-
-uint8_t accel_click_disable()
+int accel_click_disable(void)
 {
-    spi_start_transfer();
-    if (spi_write_register(POWER_CTRL_REG, SLEEP_EN) < 0)
-    {
-        printf("accel: Failed to shutdown device.\n");
-        return 1;
+    if (enabled == false)
+        return 0;
+
+    if (spi_write_register(POWER_CTRL_REG, SLEEP_EN) < 0) {
+        fprintf(stderr, "accel: Failed to shutdown device.\n");
+        return -1;
     }
-    spi_end_transfer();
+
+    enabled = false;
 
     return 0;
 }
