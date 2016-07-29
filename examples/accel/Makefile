@@ -4,6 +4,7 @@ TARGET = mikro-e
 VERSION? = $(shell git describe --abbrev=4 --dirty --always --tags)
 
 CONTIKI_WITH_IPV6 = 1
+USE_SERIAL_PADS = 1
 
 CFLAGS += -DVERSION=$(VERSION)
 CFLAGS += -Wall -Wno-pointer-sign
