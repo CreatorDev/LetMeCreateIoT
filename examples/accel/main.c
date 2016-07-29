@@ -7,7 +7,7 @@
 
 #include <string.h>
 
-#include <lmc/click/accel.h>
+#include <letmecreate/click/accel.h>
 
 PROCESS(main_process, "Main process");
 AUTOSTART_PROCESSES(&main_process);

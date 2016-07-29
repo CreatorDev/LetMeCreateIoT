@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <lmc/core/spi.h>
+#include <letmecreate/core/spi.h>
 
 
 /* Control registers */

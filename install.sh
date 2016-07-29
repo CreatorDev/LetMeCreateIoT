@@ -10,13 +10,14 @@ CONTIKI=$(readlink -f $1)
 
 echo "Installing the library files to $CONTIKI"
 
-LIBRARY_DIR="core"
-LMC_DIR="$CONTIKI/$LIBRARY_DIR/lmc"
+LIBRARY_DIR_NAME="core"
+LMC_DIR_NAME="letmecreate"
+LMC_DIR="$CONTIKI/$LIBRARY_DIR_NAME/$LMC_DIR_NAME"
 SRC_DIR="$BASE_DIR/src"
 INCLUDE_DIR="$BASE_DIR/include"
 
-if [[ ! -d "$CONTIKI/$LIBRARY_DIR" ]]; then
-    echo "Could not find directory $LIBRARY_DIR. Check your contiki path"
+if [[ ! -d "$CONTIKI/$LIBRARY_DIR_NAME" ]]; then
+    echo "Could not find directory $LIBRARY_DIR_NAME. Check your contiki path"
     exit 1
 fi
 
@@ -32,16 +33,16 @@ cp -r $INCLUDE_DIR/* $LMC_DIR/
 
 MAKEFILE=$CONTIKI/Makefile.include
 
-grep --quiet -P "MODULES(.*?)core/lmc/core" $MAKEFILE
+grep --quiet -P "MODULES(.*?)$LIBRARY_DIR_NAME/$LMC_DIR_NAME/core" $MAKEFILE
 if [[ $? -ne 0 ]]; then
     echo "Adding LMC core module to Contiki makefile..."
-    sed -i '0,/MODULES +=/s//MODULES += core\/lmc\/core/' $MAKEFILE
+    sed -i "0,/MODULES +=/s//MODULES += ${LIBRARY_DIR_NAME}\/${LMC_DIR_NAME}\/core/" $MAKEFILE
 fi
 
-grep --quiet -P "MODULES(.*?)core/lmc/click" $MAKEFILE
+grep --quiet -P "MODULES(.*?)$LIBRARY_DIR_NAME/$LMC_DIR_NAME/click" $MAKEFILE
 if [[ $? -ne 0 ]]; then
     echo "Adding LMC click module to Contiki makefile..."
-    sed -i '0,/MODULES +=/s//MODULES += core\/lmc\/click/' $MAKEFILE
+    sed -i "0,/MODULES +=/s//MODULES += ${LIBRARY_DIR_NAME}\/${LMC_DIR_NAME}\/click/" $MAKEFILE
 fi
 
 
