@@ -8,7 +8,7 @@ Supported interfaces:
   - Network
   - I2C
   - SPI
-  - GPIO
+  - GPIO (no support for interrupts yet)
 
 Supported clicks:
   - Thermo3
@@ -20,11 +20,29 @@ Supported clicks:
 
 ## Installation
 
-The library is currently installed via a Bash script which modifies Contiki makefile and inserts the files into its directory. Run ./install.sh contiki/directory to install. To use include "lmc/core/\<interface\>.h" or "lmc/click/\<click\>.h" headers.
+```sh
+$ ./install.sh /path/to/contiki
+```
 
-## Links
+This will modify the Contiki files to add LMC on top of them.
 
-For the CI40 version of the library see [here](https://github.com/francois-berder/LetMeCreate)
+To use simply include the appropriate header files, eg.:
 
-You can find various Contiki and CI projects [here](https://github.com/mtusnio/ci40projects)
+```C
+#include <letmecreate/core/spi.h>
+#include <letmecreate/click/accel.h>
+```
 
+Check for examples in the examples directory.
+
+## Comptability with CI40 LMC
+
+The interfaces are made to be as compatible with the [CI40 LMC](https://github.com/francois-berder/LetMeCreate) version as possible to ensure the code is portable. Use following defines to write multi-platform Clicker drivers:
+
+```C
+#ifdef CONTIKI
+/** Code for Contiki here */
+#else
+/** Code for CI40 here */
+endif
+```
