@@ -8,6 +8,7 @@ Supported interfaces:
   - Network
   - I2C
   - SPI
+  - GPIO
 
 Supported clicks:
   - Thermo3
