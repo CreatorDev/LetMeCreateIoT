@@ -10,7 +10,12 @@ Supported interfaces:
   - SPI
 
 Supported clicks:
-  - Accel
+  - Thermo3
+  - Accel (SPI only)
+  - Joystick
+  - Proximity
+  - LED Matrix
+  - Color
 
 ## Installation
 
