@@ -14,7 +14,7 @@
 #define SPI_READ_BIT            (0x80)
 #define SPI_MULTIPLE_BYTE_BIT   (0x40)
 
-uint8_t spi_init(uint8_t mode)
+int spi_init(uint8_t mode)
 {
     uint32_t flags = SPI_MASTER;
     switch(mode)
@@ -45,7 +45,7 @@ uint8_t spi_init(uint8_t mode)
     return 0;
 }
 
-uint8_t spi_release()
+int spi_release()
 {
     if(pic32_spi1_close())
         return -1;
@@ -53,45 +53,45 @@ uint8_t spi_release()
     return 0;
 }
 
-uint8_t spi_set_speed(uint32_t speed)
+int spi_set_speed(uint32_t speed)
 {
     SPI1BRG = pic32_clock_calculate_brg(2, speed);
 
     return 0;
 }
 
-static uint8_t spi_start_transfer()
+static int spi_start_transfer()
 {
     GPIO_CLR(E, 5);
 
     return 0;
 }
 
-static uint8_t spi_end_transfer()
+static int spi_end_transfer()
 {
     GPIO_SET(E, 5);
 
     return 0;
 }
 
-static uint8_t spi_write(const uint8_t * buffer, uint32_t len)
+static int spi_write(const uint8_t * buffer, uint32_t len)
 {
     if(!buffer || len == 0)
     {
         printf("SPI: No data to write\n");
-        return 1;
+        return -1;
     }
 
     if(pic32_spi1_write(buffer, len))
     {
         printf("SPI: Failed to write\n");
-        return 1;
+        return -1;
     }
 
     return 0;
 }
 
-static uint8_t spi_read_registers(uint8_t reg_address, uint8_t * buffer, uint32_t len)
+static int spi_read_registers(uint8_t reg_address, uint8_t * buffer, uint32_t len)
 {
     if(!buffer || len == 0)
     {
@@ -120,7 +120,7 @@ static uint8_t spi_read_registers(uint8_t reg_address, uint8_t * buffer, uint32_
 }
 
 
-uint8_t spi_transfer(const uint8_t * tx_buffer, uint8_t * rx_buffer, uint32_t len)
+int spi_transfer(const uint8_t * tx_buffer, uint8_t * rx_buffer, uint32_t len)
 {
     if((!tx_buffer && !rx_buffer) || len == 0)
     {
@@ -147,8 +147,11 @@ uint8_t spi_transfer(const uint8_t * tx_buffer, uint8_t * rx_buffer, uint32_t le
     }
     else
     {
+        spi_end_transfer();
         printf("SPI: Unsupported transfer case\n");
+        return -1;
     }
+    spi_end_transfer();
     return 0;
 }
 
