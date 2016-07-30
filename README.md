@@ -12,11 +12,11 @@ Supported interfaces:
 
 Supported clicks:
   - Thermo3
-  - Accel (SPI only)
-  - Joystick
   - Proximity
-  - LED Matrix
-  - Color
+  - Relay2
+  - Joystick
+  - Accel (SPI only)
+  - 8x8R (Led Matrix)
 
 ## Installation
 
