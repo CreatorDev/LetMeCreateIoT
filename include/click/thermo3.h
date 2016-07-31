@@ -27,6 +27,21 @@ int thermo3_click_enable(uint8_t add_bit);
  */
 int thermo3_click_get_temperature(float *temperature);
 
+#ifndef CONTIKI
+/**
+ * @brief Configure Thermo3 click to trigger an interrupt if temperature is too high.
+ *
+ * Notice that once the temperature is higher than threshold, callback will be called up to four
+ * times a second. Use #gpio_monitor_remove_callback to remove callback.
+ *
+ * @param[in] mikrobus_index Index of the mikrobus used by the click (see #MIKROBUS_INDEX)
+ * @param[in] threshold in degrees Celsius
+ * @param[in] callback Function to call if temperature is higher than threshold (must not be null)
+ * @return callback ID (positive integer if successful, -1 otherwise.
+ */
+int thermo3_click_set_alarm(uint8_t mikrobus_index, float threshold, void(*callback)(uint8_t));
+#endif
+
 /**
  * @brief Disable Thermo3 click.
  *

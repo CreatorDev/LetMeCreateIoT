@@ -65,6 +65,54 @@ int thermo3_click_get_temperature(float *temperature)
     return 0;
 }
 
+#ifndef CONTIKI
+int thermo3_click_set_alarm(const uint8_t mikrobus_index, const float threshold, void(*callback)(uint8_t))
+{
+    uint8_t alarm_pin = 0;
+    uint8_t buffer[3];
+    int alarm_callback_ID = -1;
+
+    if (callback == NULL) {
+        fprintf(stderr, "thermo3: Cannot set alarm using null callback.\n");
+        return -1;
+    }
+
+    switch (mikrobus_index) {
+    case MIKROBUS_1:
+        alarm_pin = MIKROBUS_1_INT;
+        break;
+    case MIKROBUS_2:
+        alarm_pin = MIKROBUS_2_INT;
+        break;
+    default:
+        fprintf(stderr, "thermo3: Invalid mikrobus index.\n");
+        return -1;
+    }
+
+    if (gpio_init(alarm_pin) < 0
+    ||  gpio_set_direction(alarm_pin, GPIO_INPUT) < 0) {
+        fprintf(stderr, "thermo3: Failed to configure alert pin as an input.\n");
+        return -1;
+    }
+
+    buffer[0] = TEMPERATURE_HIGH_REG_ADDRESS;
+    buffer[1] = (uint8_t)(threshold);
+    buffer[2] = (threshold - (float)(buffer[1])) / DEGREES_CELCIUS_PER_LSB;
+    buffer[2] <<= 4;
+    if (i2c_write(TMP102_ADDRESS, buffer, sizeof(buffer)) < 0) {
+        fprintf(stderr, "thermo3: Failed to set threshold on sensor.\n");
+        return -1;
+    }
+
+    if (gpio_monitor_init() < 0)
+        return -1;
+
+    if ((alarm_callback_ID = gpio_monitor_add_callback(alarm_pin, GPIO_FALLING, callback)) < 0)
+        fprintf(stderr, "thermo3: Failed to attach callback to alarm pin.\n");
+
+    return alarm_callback_ID;
+}
+#endif
 
 int thermo3_click_disable(void)
 {
