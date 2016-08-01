@@ -1,5 +1,11 @@
 #include <stdio.h>
+
+#ifndef CONTIKI
 #include <time.h>
+#else
+#include "sys/clock.h"
+#endif
+
 #include <letmecreate/click/common.h>
 #include <letmecreate/click/color.h>
 #include <letmecreate/core/i2c.h>
@@ -18,6 +24,7 @@
 
 void sleep_5ms(void)
 {
+#ifndef CONTIKI
     struct timespec req = {}, rem = {
         .tv_sec = 0,
         .tv_nsec = 5000000
@@ -25,6 +32,9 @@ void sleep_5ms(void)
 
     while (nanosleep(&req, &rem))
         req = rem;
+#else
+    clock_delay_usec(5000);
+#endif
 }
 
 int color_click_enable(void)
