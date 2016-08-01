@@ -7,6 +7,7 @@
 
 #include <string.h>
 
+#include <letmecreate/core/spi.h>
 #include <letmecreate/click/accel.h>
 
 PROCESS(main_process, "Main process");
@@ -20,6 +21,7 @@ PROCESS_THREAD(main_process, ev, data)
         int i;
         printf("=====Start=====\n");
 
+        spi_init(3);
         accel_click_enable();
 
         while(1)
@@ -35,6 +37,7 @@ PROCESS_THREAD(main_process, ev, data)
         }
 
         accel_click_disable();
+        spi_release();
     }
 
     PROCESS_END();

@@ -38,6 +38,7 @@ PROCESS_THREAD(main_process, ev, data)
         }
 
         thermo3_click_disable();
+        i2c_release();
     }
 
     PROCESS_END();
