@@ -3,7 +3,7 @@
 #include <contiki.h>
 #include <contiki-net.h>
 
-#include "lmc/core/network.h"
+#include "letmecreate/core/network.h"
 
 // Used for PRINT6ADDR function
 #define DEBUG DEBUG_PRINT
