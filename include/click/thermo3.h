@@ -27,7 +27,6 @@ int thermo3_click_enable(uint8_t add_bit);
  */
 int thermo3_click_get_temperature(float *temperature);
 
-#ifndef CONTIKI
 /**
  * @brief Configure Thermo3 click to trigger an interrupt if temperature is too high.
  *
@@ -40,7 +39,6 @@ int thermo3_click_get_temperature(float *temperature);
  * @return callback ID (positive integer if successful, -1 otherwise.
  */
 int thermo3_click_set_alarm(uint8_t mikrobus_index, float threshold, void(*callback)(uint8_t));
-#endif
 
 /**
  * @brief Disable Thermo3 click.

@@ -1,8 +1,15 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <letmecreate/core/common.h>
 #include <letmecreate/click/thermo3.h>
 #include <letmecreate/core/i2c.h>
+#include <letmecreate/core/gpio.h>
+#ifdef CONTIKI
+#include <letmecreate/core/interrupts.h>
+#else
+#include <letmecreate/core/gpio_monitor.h>
+#endif
 
 #define TMP102_ADDRESS                  (0x48 | (last_address_bit & 0x01))
 #define TEMPERATURE_REG_ADDRESS         (0x00)
@@ -65,13 +72,13 @@ int thermo3_click_get_temperature(float *temperature)
     return 0;
 }
 
-#ifndef CONTIKI
 int thermo3_click_set_alarm(const uint8_t mikrobus_index, const float threshold, void(*callback)(uint8_t))
 {
-    uint8_t alarm_pin = 0;
     uint8_t buffer[3];
+    uint8_t alarm_pin = 0;
+#ifndef CONTIKI
     int alarm_callback_ID = -1;
-
+#endif
     if (callback == NULL) {
         fprintf(stderr, "thermo3: Cannot set alarm using null callback.\n");
         return -1;
@@ -81,9 +88,11 @@ int thermo3_click_set_alarm(const uint8_t mikrobus_index, const float threshold,
     case MIKROBUS_1:
         alarm_pin = MIKROBUS_1_INT;
         break;
+#ifndef CONTIKI
     case MIKROBUS_2:
         alarm_pin = MIKROBUS_2_INT;
         break;
+#endif
     default:
         fprintf(stderr, "thermo3: Invalid mikrobus index.\n");
         return -1;
@@ -104,6 +113,7 @@ int thermo3_click_set_alarm(const uint8_t mikrobus_index, const float threshold,
         return -1;
     }
 
+#ifndef CONTIKI
     if (gpio_monitor_init() < 0)
         return -1;
 
@@ -111,8 +121,16 @@ int thermo3_click_set_alarm(const uint8_t mikrobus_index, const float threshold,
         fprintf(stderr, "thermo3: Failed to attach callback to alarm pin.\n");
 
     return alarm_callback_ID;
-}
+#else
+    if(interrupt_configure(callback) < 0)
+    {
+        fprintf(stderr, "thermo3: Failed to configure an interrupt\n");
+        return -1;
+    }
+
+    return 0;
 #endif
+}
 
 int thermo3_click_disable(void)
 {
