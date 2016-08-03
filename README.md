@@ -17,6 +17,7 @@ Supported clicks:
   - Motion
   - Relay2
   - Joystick
+  - Air Quality
   - Accel (SPI only)
   - 8x8R (Led Matrix)
 
