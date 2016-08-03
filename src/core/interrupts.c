@@ -44,6 +44,7 @@ int interrupt_configure(void (*callback)(uint8_t))
 
     INTERRUPT_IRQ_INIT();
     INTERRUPT_IRQ_ENABLE();
+    INTERRUPT_CLEAR_IRQ();
     interrupt_callback = callback;
     interrupt_isr = interrupt_handler;
 
