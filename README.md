@@ -8,11 +8,13 @@ Supported interfaces:
   - Network
   - I2C
   - SPI
-  - GPIO (no support for interrupts yet)
+  - GPIO & interrupts
 
 Supported clicks:
+  - Color
   - Thermo3
   - Proximity
+  - Motion
   - Relay2
   - Joystick
   - Accel (SPI only)
