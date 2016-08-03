@@ -22,7 +22,11 @@ static void interrupt_handler()
         return;
     }
 
-    interrupt_callback(value);
+    if(value == 0)
+        interrupt_callback(GPIO_FALLING);
+    else
+        interrupt_callback(GPIO_RAISING);
+    INTERRUPT_CLEAR_IRQ();
 }
 
 int interrupt_configure(void (*callback)(uint8_t))
