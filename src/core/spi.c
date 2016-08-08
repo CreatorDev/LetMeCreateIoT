@@ -45,14 +45,6 @@ int spi_init(uint8_t mode)
     return 0;
 }
 
-int spi_release()
-{
-    if(pic32_spi1_close())
-        return -1;
-
-    return 0;
-}
-
 int spi_set_speed(uint32_t speed)
 {
     SPI1BRG = pic32_clock_calculate_brg(2, speed);
@@ -155,7 +147,12 @@ int spi_transfer(const uint8_t * tx_buffer, uint8_t * rx_buffer, uint32_t len)
     return 0;
 }
 
+int spi_release()
+{
+    if(pic32_spi1_close())
+        return -1;
 
-
+    return 0;
+}
 
 #endif
