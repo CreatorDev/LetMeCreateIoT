@@ -13,7 +13,7 @@
 /**
  * @brief Initialises the SPI bus of the clicker
  *
- * Configure all SPI bus:
+ * Configure the SPI bus:
  *   - 8 bits per word
  *   - 1MHz
  *
