@@ -9,7 +9,7 @@
 #include <pic32_spi.h>
 #include <pic32_gpio.h>
 
-#define DEFAULT_BAUD_RATE       (100000)
+#define DEFAULT_BAUD_RATE       (1000000)
 
 #define SPI_READ_BIT            (0x80)
 #define SPI_MULTIPLE_BYTE_BIT   (0x40)
