@@ -1,3 +1,12 @@
+
+/**
+ * @file i2c.h
+ * @author Michal Tusnio
+ * @date 2016
+ * @copyright 3-clause BSD
+ */
+
+
 #ifndef H_CORE_I2C
 #define H_CORE_I2C
 

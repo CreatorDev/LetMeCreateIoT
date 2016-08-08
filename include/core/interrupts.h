@@ -1,3 +1,12 @@
+/**
+ * @file interrupts.h
+ * @author Michal Tusnio
+ * @date 2016
+ * @copyright 3-clause BSD
+ */
+
+
+
 #ifndef H_CORE_INTERRUPTS
 #define H_CORE_INTERRUPTS
 
