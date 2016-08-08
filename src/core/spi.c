@@ -144,7 +144,7 @@ int spi_transfer(const uint8_t * tx_buffer, uint8_t * rx_buffer, uint32_t len)
         return -1;
     }
     spi_end_transfer();
-    return 0;
+    return len;
 }
 
 int spi_release()
