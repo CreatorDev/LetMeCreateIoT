@@ -10,6 +10,12 @@ enum GPIO_EVENT {
     GPIO_EDGE      = 0x03
 };
 
+/**
+ * @brief Configure an interrupt on the D0 Mikrobus pin
+ *
+ * @param[in] callback Callback function to be triggered on interrupt
+ * @return 0 if successful, otherwise -1.
+ */
 int interrupt_configure(void (*callback)(uint8_t));
 
 #endif
