@@ -5,8 +5,6 @@
  * @copyright 3-clause BSD
  */
 
-
-
 #ifndef H_CORE_COMMON
 #define H_CORE_COMMON
 

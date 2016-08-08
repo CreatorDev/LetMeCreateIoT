@@ -5,8 +5,6 @@
  * @copyright 3-clause BSD
  */
 
-
-
 #ifndef H_CORE_INTERRUPTS
 #define H_CORE_INTERRUPTS
 
