@@ -15,7 +15,6 @@ PROCESS_THREAD(main_process, ev, data)
     PROCESS_BEGIN();
 
     {
-        static struct etimer et;
         static int8_t x, y;
 
         printf("=====Start=====\n");
