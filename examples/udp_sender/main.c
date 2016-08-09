@@ -5,7 +5,7 @@
 
 #include "letmecreate/core/network.h"
 
-#define SERVER_IP_ADDR "fe80::e01a:69ff:fe6c:4a97"
+#define SERVER_IP_ADDR "fe80:0000:0000:0000:28e9:3285:421c:bc82"
 
 #define SERVER_PORT 3000
 #define CLIENT_PORT 3001
