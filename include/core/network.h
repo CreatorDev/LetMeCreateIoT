@@ -19,7 +19,7 @@ struct uip_udp_conn;
  * @param[out] addr Pointer to an IP addr structure to be filled with parsed data. Optional
  * @return 0 if successful, otherwise -1.
  */
-uint8_t set_ipv6_address(const char * address, uip_ipaddr_t * addr);
+int set_ipv6_address(const char * address, uip_ipaddr_t * addr);
 
 /**
  * @brief Creates a new UDP connection between two endpoints.
@@ -32,4 +32,8 @@ uint8_t set_ipv6_address(const char * address, uip_ipaddr_t * addr);
  * @return Pointer to a new connection if successful, otherwise NULL
  */
 struct uip_udp_conn * udp_new_connection(uint16_t local_port, uint16_t remote_port, const char * remote_address);
+
+
+
+
 #endif

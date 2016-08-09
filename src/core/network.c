@@ -5,7 +5,7 @@
 
 #include "network.h"
 
-uint8_t set_ipv6_address(const char * address, uip_ipaddr_t * addr)
+int set_ipv6_address(const char * address, uip_ipaddr_t * addr)
 {
     uip_ipaddr_t tmp_addr;
 
