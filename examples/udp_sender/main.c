@@ -3,8 +3,9 @@
 #include <contiki.h>
 #include <contiki-net.h>
 
+#include "letmecreate/core/network.h"
 
-#define SERVER_IP_ADDR "fe80:0000:0000:0000:28e9:3285:421c:bc82"
+#define SERVER_IP_ADDR "fe80::e01a:69ff:fe6c:4a97"
 
 #define SERVER_PORT 3000
 #define CLIENT_PORT 3001
@@ -26,17 +27,7 @@ PROCESS_THREAD(main_process, ev, data)
         static int i = 0;
         printf("===START===\n");
 
-        // Below steps can be avoided by using the udp_new_connection function from core/network.h
-        // First convert the IP address into a structure
-        uip_ipaddr_t addr;
-        uiplib_ipaddrconv(SERVER_IP_ADDR, &addr);
-
-        // Create a new udp connection
-        conn = udp_new(&addr, UIP_HTONS(SERVER_PORT), NULL);
-
-        // Bind the connection locally to a port. For the connection to work both server & client
-        // need to call their respective ports in udp_new & udp_bind
-        udp_bind(conn, UIP_HTONS(CLIENT_PORT));
+        conn = udp_new_connection(CLIENT_PORT, SERVER_PORT, SERVER_IP_ADDR);
 
         while(1)
         {

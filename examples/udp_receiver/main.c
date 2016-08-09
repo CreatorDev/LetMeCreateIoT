@@ -39,13 +39,8 @@ PROCESS_THREAD(main_process, ev, data)
             return 1;
         }
 
-        // Below steps can be avoided by using the udp_new_connection function from core/network.h
-        // Create a new udp connection
-        conn = udp_new(NULL, UIP_HTONS(CLIENT_PORT), NULL);
-
-        // Bind the connection locally to a port. For the connection to work both server & client
-        // need to call their respective ports in udp_new & udp_bind
-        udp_bind(conn, UIP_HTONS(SERVER_PORT));
+        // Bind a new connection, needs to be called on both sides
+        conn = udp_new_connection(SERVER_PORT, CLIENT_PORT, NULL);
 
         while(1)
         {
