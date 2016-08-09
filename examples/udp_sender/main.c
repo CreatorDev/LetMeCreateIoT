@@ -35,11 +35,9 @@ PROCESS_THREAD(main_process, ev, data)
             sprintf(buffer, "Hello number %i from client", i);
 
             printf("Sending data: %s\n", buffer);
-            uip_udp_packet_send(conn, buffer, strlen(buffer));
 
-            // We need to poll tcpip and let it fire an event once data has been sent.
-            tcpip_poll_udp(conn);
-            PROCESS_WAIT_EVENT_UNTIL(ev == tcpip_event);
+            udp_packet_send(conn, buffer, strlen(buffer));
+            PROCESS_WAIT_UDP_SENT();
         }
 
     }
