@@ -41,7 +41,8 @@ struct uip_udp_conn * udp_new_connection(uint16_t local_port, uint16_t remote_po
 /**
  * @brief Sends data over a UDP connection.
  *
- * Uses the IP provided in the connection structure to send a buffer of data
+ * Uses the IP provided in the connection structure to send a buffer of data.
+ * To make this call blocking until data has been sent call #PROCESS_WAIT_UDP_SENT after this function
  *
  * @param[in] connection UDP connection
  * @param[in] data Data buffer
@@ -54,6 +55,7 @@ int udp_packet_send(struct uip_udp_conn * connection, const uint8_t * data, uint
  * @brief Sends data over a UDP connection to one specific client.
  *
  * Sends a packet of data to one client as specified by the address
+ * To make this call blocking until data has been sent call #PROCESS_WAIT_UDP_SENT after this function
  *
  * @param[in] connection UDP connection
  * @param[in] data Data buffer
@@ -69,6 +71,7 @@ int udp_packet_sendto(struct uip_udp_conn * connection, const uint8_t * data, ui
  * @brief Receives a UDP packet.
  *
  * Checks for and receives data available in the UDP buffer
+ * In order to block until there's any data available call #PROCESS_WAIT_UDP_RECEIVED before this function
  *
  * @param[out] data Data buffer to write to
  * @param[in] len Length of the data buffer
