@@ -34,6 +34,7 @@ int set_ipv6_address(const char * address, uip_ipaddr_t * addr);
  *
  * @param[in] local_port Port to bind to locally
  * @param[in] remote_port Remote port to connect to
+ * @param[in] remote_address Optional, remote address to connect to with this connection. NULL if none
  * @return Pointer to a new connection if successful, otherwise NULL
  */
 struct uip_udp_conn * udp_new_connection(uint16_t local_port, uint16_t remote_port, const char * remote_address);

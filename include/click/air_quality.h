@@ -14,7 +14,7 @@
 /**
  * @brief Attach callback triggered if air quality is bad.
  *
- * Multiple callbacks can be attached to the air click output. Use #gpio_monitor_remove_callback
+ * Multiple callbacks can be attached to the air click output. Use #interrupt_configure
  * to remove them.
  *
  * @param mikrobus_index Index of the mikrobus used by the click (see #MIKROBUS_INDEX)

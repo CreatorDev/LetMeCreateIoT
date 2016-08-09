@@ -46,8 +46,8 @@ int spi_set_speed(uint32_t speed);
  *
  * @param[in] tx_buffer Address of the array of bytes to send
  * @param[out] rx_buffer Address of the array of bytes to receive from the bus
- * @param[in] count Number of bytes to read or write from the current bus.
- * @return @p count if successful, otherwise it returns -1.
+ * @param[in] len Number of bytes to read or write from the current bus.
+ * @return @p len if successful, otherwise it returns -1.
  */
 int spi_transfer(const uint8_t * tx_buffer, uint8_t * rx_buffer, uint32_t len);
 
