@@ -15,6 +15,7 @@ Supported clicks:
   - Thermo3
   - Proximity
   - Motion
+  - Relay
   - Relay2
   - Joystick
   - Air Quality
