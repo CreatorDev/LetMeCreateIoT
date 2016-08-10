@@ -18,6 +18,9 @@
         case(INT):                              \
         func(D, 0);                             \
         break;                                  \
+        case(CS):                               \
+        func(E, 5);                             \
+        break;                                  \
         default:                                \
         return -1;                              \
      }                                          \

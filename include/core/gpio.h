@@ -17,12 +17,14 @@ enum GPIO_PIN {
     RST = 23,
     PWM = 73,
     INT = 21,
+    CS  = 24, // Temporary
 
     /** For CI40 LMC compatibility */
     MIKROBUS_1_AN  = AN,
     MIKROBUS_1_RST = RST,
     MIKROBUS_1_PWM = PWM,
     MIKROBUS_1_INT = INT,
+    MIKROBUS_1_CS  = CS,
 };
 
 /** GPIO direction */
