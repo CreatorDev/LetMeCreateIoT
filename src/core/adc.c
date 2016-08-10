@@ -26,5 +26,7 @@ int adc_get_value(uint8_t mikrobus_index, float * value)
 
     tmp_val = GPIO_VALUE(G, 9);
 
-    return 5.0f * ((float)tmp_val/1023.0f);
+    *value = 5.0f * ((float)tmp_val/1023.0f);
+
+    return 0;
 }
