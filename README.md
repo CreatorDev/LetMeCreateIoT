@@ -49,14 +49,14 @@ As long as a symbolic link to contiki directory exists the installation script w
 
 ## Development
 
-To use include the appropriate header files, eg.:
+To use include the appropriate header files in your project, eg.:
 
 ```C
-#include <letmecreate/core/spi.h>
-#include <letmecreate/click/accel.h>
+#include "letmecreate/core/spi.h"
+#include "letmecreate/click/accel.h"
 ```
 
-Check the examples directory for examples on how to use Clicker wrappers & other library functionality.
+For reference how to use the different interfaces or click wrappers refer to a wide selection of examples in the examples directory.
 
 ### Comptability with CI40 LMC
 
