@@ -52,12 +52,6 @@ if [[ $? -ne 0 ]]; then
     sed -i "0,/MODULES +=/s//MODULES += ${LIBRARY_DIR_NAME}\/${LMC_DIR_NAME}\/click/" $MAKEFILE
 fi
 
-
-if [[ $? -ne 0 ]]; then
-    echo "Failed to modify the makefile"
-    exit 1
-fi
-
 if [[ -d "$CONTIKI_SYMLINK" ]]; then
     unlink "$CONTIKI_SYMLINK"
 fi
