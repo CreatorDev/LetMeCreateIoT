@@ -30,6 +30,8 @@ $ ./install.sh /path/to/contiki
 
 This will modify the Contiki files to add LMC on top of them.
 
+## Development
+
 To use simply include the appropriate header files, eg.:
 
 ```C
@@ -39,7 +41,7 @@ To use simply include the appropriate header files, eg.:
 
 Check for examples in the examples directory.
 
-## Comptability with CI40 LMC
+### Comptability with CI40 LMC
 
 The interfaces are made to be as compatible with the [CI40 LMC](https://github.com/francois-berder/LetMeCreate) version as possible to ensure the code is portable. Use following defines to write multi-platform Clicker drivers:
 
