@@ -1,12 +1,19 @@
 #!/bin/bash
 
-if [[ $# -ne 1 ]]; then
-    echo "Usage: $0 contiki_dir"
-    exit 1
-fi
-
 BASE_DIR=$(dirname $(readlink -f $0))
-CONTIKI=$(readlink -f $1)
+CONTIKI_SYMLINK="$BASE_DIR/contiki"
+
+if [[ $# -ne 1 ]]; then
+    if [[ -d "$CONTIKI_SYMLINK" ]]; then
+        echo "Detected contiki directory in the repository at $CONTIKI_SYMLINK"
+        CONTIKI=$(readlink -f "$CONTIKI_SYMLINK")
+    else
+        echo "Usage: $0 contiki_dir"
+        exit 1
+    fi
+else
+    CONTIKI=$(readlink -f $1)
+fi
 
 echo "Installing the library files to $CONTIKI"
 
@@ -49,6 +56,16 @@ fi
 if [[ $? -ne 0 ]]; then
     echo "Failed to modify the makefile"
     exit 1
+fi
+
+if [[ -d "$CONTIKI_SYMLINK" ]]; then
+    unlink "$CONTIKI_SYMLINK"
+fi
+
+echo "Creating symbolic link..."
+ln -s "$CONTIKI" "$CONTIKI_SYMLINK"
+if [[ $? -ne 0 ]]; then
+    echo "Failed to create symlink, continuing..."
 fi
 
 echo "Library installed successfully"
