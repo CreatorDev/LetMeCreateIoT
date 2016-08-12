@@ -25,21 +25,38 @@ Supported clicks:
 ## Installation
 
 ```sh
-$ ./install.sh /path/to/contiki
+$ ./install.sh path/to/contiki
 ```
 
-This will modify the Contiki files to add LMC on top of them.
+This will modify the Contiki files to add LMC on top of them. Additionally, a symbolic link to Contiki directory will be created for the example Makefiles.
+
+To verify whether installation worked navigate to the examples directory, pick an example of your choice and run
+
+```sh
+make
+```
+
+## Update
+
+To update the library run:
+
+```sh
+git pull
+./install.sh
+```
+
+As long as a symbolic link to contiki directory exists the installation script will update all files.
 
 ## Development
 
-To use simply include the appropriate header files, eg.:
+To use include the appropriate header files, eg.:
 
 ```C
 #include <letmecreate/core/spi.h>
 #include <letmecreate/click/accel.h>
 ```
 
-Check for examples in the examples directory.
+Check the examples directory for examples on how to use Clicker wrappers & other library functionality.
 
 ### Comptability with CI40 LMC
 
