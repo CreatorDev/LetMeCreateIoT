@@ -1,4 +1,4 @@
-CONTIKI=../../../contiki/
+CONTIKI=../../contiki/
 
 TARGET = mikro-e
 VERSION? = $(shell git describe --abbrev=4 --dirty --always --tags)

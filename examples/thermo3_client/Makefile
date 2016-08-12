@@ -1,4 +1,4 @@
-CONTIKI=../../../contiki/
+CONTIKI=../../contiki/
 
 TARGET = mikro-e
 CONTIKI_WITH_IPV6 = 1
