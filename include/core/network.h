@@ -17,6 +17,13 @@
 /** Halts the process until UDP data is ready to be received */
 #define PROCESS_WAIT_UDP_RECEIVED() PROCESS_WAIT_EVENT_UNTIL(ev == tcpip_event && uip_newdata())
 
+/** Halts the process until the UDP connection has been made */
+#define PROCESS_WAIT_UDP_CONNECTED() do {                               \
+                   static struct etimer timer;                          \
+                   etimer_set(&timer, CLOCK_SECOND);                    \
+                   PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&timer));    \
+                   } while(0)
+
 /**
  * @brief Sets local IPv6 address
  *

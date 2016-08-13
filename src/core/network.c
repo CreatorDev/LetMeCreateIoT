@@ -32,6 +32,7 @@ int set_ipv6_address(const char * address, uip_ipaddr_t * addr)
 
 struct uip_udp_conn * udp_new_connection(uint16_t local_port, uint16_t remote_port, const char * address)
 {
+    static char * dummy_data = "dummy";
     struct uip_udp_conn * conn = NULL;
 
     if(address)
@@ -56,6 +57,11 @@ struct uip_udp_conn * udp_new_connection(uint16_t local_port, uint16_t remote_po
     }
 
     udp_bind(conn, UIP_HTONS(local_port));
+
+    /* Current workaround for the issue with no data being sent until the
+       first packet is sent. */
+    if(udp_packet_send(conn, dummy_data, strlen(dummy_data)) < 0)
+        return NULL;
 
     return conn;
 }
@@ -103,7 +109,7 @@ int udp_packet_sendto(struct uip_udp_conn * connection, const uint8_t * data, ui
     }
 
 
-    uip_udp_packet_sendto(connection, data, len, &ipaddr, port);
+    uip_udp_packet_sendto(connection, data, len, &ipaddr, UIP_HTONS(port));
     tcpip_poll_udp(connection);
 
     return 0;
