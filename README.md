@@ -9,6 +9,7 @@ Supported interfaces:
   - I2C
   - SPI
   - GPIO & interrupts
+  - ADC
 
 Supported clicks:
   - Color
@@ -58,7 +59,11 @@ To use include the appropriate header files in your project, eg.:
 
 For reference how to use the different interfaces or click wrappers refer to a wide selection of examples in the examples directory.
 
-### Comptability with CI40 LMC
+### Debug
+
+LMCIoT offers debug capabilities over 6lowpan. For specific example of usage check examples/debug and scripts/debug_server.py.
+
+### Compatibility with CI40 LMC
 
 The interfaces are made to be as compatible with the [CI40 LMC](https://github.com/francois-berder/LetMeCreate) version as possible to ensure the code is portable. Use following defines to write multi-platform Clicker drivers:
 
