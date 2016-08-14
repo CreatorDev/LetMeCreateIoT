@@ -11,22 +11,22 @@
 
 #define XSTR(s) #s
 #define STR(s) XSTR(s)
-#define DEBUG_BUFFER_SIZE 1024
-#define DEBUG_PORT 9999
 
-struct uip_udp_conn * debug_connection = NULL;
+struct uip_udp_conn * __debug_connection = NULL;
+#define DEBUG_BUFFER_SIZE 1024
+
 static uint32_t packet_index = 0;
 
-void init_debug_connection()
+void __init_debug_connection()
 {
 #ifdef DEBUG_IP
-    debug_connection = udp_new_connection(6000, DEBUG_PORT, STR(DEBUG_IP));
+    __debug_connection = udp_new_connection(6000, DEBUG_PORT, STR(DEBUG_IP));
 #endif
 }
 
-int network_printf(const char * format, ...)
+int __network_printf(const char * format, ...)
 {
-    if(debug_connection == NULL)
+    if(__debug_connection == NULL)
         return -1;
 
     va_list list;
@@ -38,7 +38,7 @@ int network_printf(const char * format, ...)
     memcpy(message, &packet_index, sizeof(packet_index));
     vprintf(format, list);
 
-    if(udp_packet_send(debug_connection, message,
+    if(udp_packet_send(__debug_connection, message,
         strlen(message + sizeof(packet_index)) + sizeof(packet_index)) < 0)
     {
         return -1;
