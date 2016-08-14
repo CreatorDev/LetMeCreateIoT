@@ -15,13 +15,13 @@ args = parser.parse_args()
 import socket
 import struct
 
-class Color:
+class __Color:
     INFO = "\033[93m"    
     DEFAULT = '\033[0m'
 
 def print_debug(*print_args, **kargs):
     if(not args.terminal):
-        print(Color.INFO + print_args[0] + Color.DEFAULT, **kargs)
+        print(__Color.INFO + print_args[0] + __Color.DEFAULT, **kargs)
 
 # No IP to connect to needed for a server
 IP = "::"
