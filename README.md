@@ -2,26 +2,28 @@
 
 ## Overview
 
-A collection of wrappers for the Contiki interfaces made to ease the development of applications for the Mikro-e PIC32MX clicker.
+A collection of wrappers for the Contiki interfaces made to speed up the development of applications for the Mikro-e PIC32MX clicker.
 
-Supported interfaces:
-  - Network
+Wrappers:
   - I2C
   - SPI
-  - GPIO & interrupts
+  - GPIO
+  - Interrupts
   - ADC
+  - Network
+  - Debug over 6lowpan
 
 Supported clicks:
-  - Color
-  - Thermo3
-  - Proximity
-  - Motion
   - Relay
-  - Relay2
-  - Joystick
-  - Air Quality
+  - Thermo3
+  - Motion
   - Accel (SPI only)
+  - Air Quality
+  - Color
+  - Joystick
   - 8x8R (Led Matrix)
+  - Proximity
+  - Relay2
 
 ## Installation
 
@@ -29,7 +31,7 @@ Supported clicks:
 $ ./install.sh path/to/contiki
 ```
 
-This will modify the Contiki files to add LMC on top of them. Additionally, a symbolic link to Contiki directory will be created for the example Makefiles.
+This will modify the Contiki files to add LMCIoT on top of them. Additionally, a symbolic link to Contiki directory will be created for the example Makefiles.
 
 To verify whether installation worked navigate to the examples directory, pick an example of your choice and run
 
