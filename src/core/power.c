@@ -3,7 +3,8 @@
 #include <stdio.h>
 #include <contiki.h>
 
-#define WDTCON_ON 0x8000
+#define WDTCON_ON               0x8000
+#define DEVCFG1_ENCLKSWITCHING  0x8000
 
 #define SWITCH_PERIPHERAL(enum_value, bits) if(peripherals & (enum_value)) \
                                                   bits = value;
@@ -60,13 +61,35 @@ int power_disable_peripherals(uint64_t peripherals)
 
 int power_select_system_clock(uint8_t clock)
 {
+    int32_t state;
+
     if(clock > SYSCLK_FIRCDIV)
     {
         fprintf(stderr, "Power: Invalid clock type\n");
         return -1;
     }
 
+    if(DEVCFG1bits.FCKSM & DEVCFG1_ENCLKSWITCHING)
+    {
+        fprintf(stderr, "Power: Clock switching is disabled in DEVCFG1\n");
+        return -1;
+    }
+
+    state = __builtin_get_isr_state();
+    __builtin_disable_interrupts();
+
+    SYSKEY = 0x0;
+    SYSKEY = 0xAA996655;
+    SYSKEY = 0x556699AA;
+
     OSCCONbits.NOSC = clock;
+    OSCCONbits.OSWEN = 1;
+
+    while(OSCCONbits.OSWEN);
+
+    SYSKEY = 0x0;
+
+    __builtin_set_isr_state(state);
 
     return 0;
 }
