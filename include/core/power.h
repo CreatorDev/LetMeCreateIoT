@@ -120,12 +120,18 @@ int power_disable_peripherals(uint64_t peripherals);
 
 /** @brief Change system clock source
   *
+  * Requires system clock switching to enabled. The configuration options for that
+  * are set in Contiki's cpu/pic32.h header. FCKSM needs to be set to CSECME or CSECMD
+  *
   * @param[in] clock Clock which will be used
   * @return 0 if succesful, -1 if failed
   */
 int power_select_system_clock(uint8_t clock);
 
 /** @brief Enables/disables the wakeup watchdog
+  *
+  * To modify the Watchdog Timer Postscaler modify the WDTPS pragma config in Contiki's
+  * cpu/pic32.h header.
   *
   * @param[in] enable Pass 1 to enable, 0 to disable
   * @return 0 if successful, -1 if failed
