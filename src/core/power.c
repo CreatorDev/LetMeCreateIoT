@@ -46,14 +46,14 @@ static void set_peripherals(int8_t value, uint64_t peripherals)
 
 int power_enable_peripherals(uint64_t peripherals)
 {
-    set_peripherals(1, peripherals);
+    set_peripherals(0, peripherals);
 
     return 0;
 }
 
 int power_disable_peripherals(uint64_t peripherals)
 {
-    set_peripherals(0, peripherals);
+    set_peripherals(1, peripherals);
 
     return 0;
 }
