@@ -94,22 +94,29 @@ int power_select_system_clock(uint8_t clock)
     return 0;
 }
 
-int power_set_watchdog(int8_t prescaler)
+int power_set_watchdog(uint8_t enable)
 {
-    if(prescaler > WDTTIMEOUT_1045876MS || prescaler < WDTTIMEOUT_DISABLE)
+    if(enable > 1)
     {
-        fprintf(stderr, "Power: Invalid timeout\n");
+        fprintf(stderr, "Power: Invalid watchdog enable option\n");
         return -1;
     }
 
-    if(prescaler == WDTTIMEOUT_DISABLE)
-    {
-        WDTCONCLR = WDTCON_ON;
-        return 0;
-    }
 
-    DEVCFG1bits.WDTPS = prescaler;
-    WDTCONSET = WDTCON_ON;
+    if(enable & 0x01)
+    {
+        WDTCONSET = WDTCON_ON;
+    }
+    else
+    {
+        if(DEVCFG1bits.FWDTEN & 0x01)
+        {
+            fprintf(stderr, "Power: Config does not allow the watchdog to be turned off\n");
+            return -1;
+        }
+
+        WDTCONCLR = WDTCON_ON;
+    }
 
     return 0;
 }
