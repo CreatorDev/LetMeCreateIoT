@@ -1,8 +1,8 @@
-#include "letmecreate/core/power_saving.h"
+#include "letmecreate/core/power.h"
 
+#include <stdio.h>
 #include <contiki.h>
 
-#include <p32xxxx.h>
 #define SWITCH_PERIPHERAL(enum_value, bits) if(peripherals & (enum_value)) \
                                                   bits = value;
 
