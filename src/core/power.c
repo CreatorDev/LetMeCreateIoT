@@ -4,7 +4,7 @@
 #include <contiki.h>
 
 #define WDTCON_ON               0x8000
-#define DEVCFG1_ENCLKSWITCHING  0x8000
+#define DEVCFG1_DCLKSWITCHING   0x02
 
 #define SWITCH_PERIPHERAL(enum_value, bits) if(peripherals & (enum_value)) \
                                                   bits = value;
@@ -69,7 +69,7 @@ int power_select_system_clock(uint8_t clock)
         return -1;
     }
 
-    if(DEVCFG1bits.FCKSM & DEVCFG1_ENCLKSWITCHING)
+    if(DEVCFG1bits.FCKSM & DEVCFG1_DCLKSWITCHING)
     {
         fprintf(stderr, "Power: Clock switching is disabled in DEVCFG1\n");
         return -1;
