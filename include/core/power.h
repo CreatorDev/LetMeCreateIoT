@@ -75,7 +75,6 @@ enum {
     PERIPHERAL_U    = PERIPHERAL_U1 | PERIPHERAL_U2 | PERIPHERAL_U3 |
                       PERIPHERAL_U4,
 
-    /** USB */
     //PERIPHERAL_USB  = 0x20000000,
     /** Parallel master port */
     PERIPHERAL_PMP  = 0x40000000,
