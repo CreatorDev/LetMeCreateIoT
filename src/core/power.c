@@ -2,6 +2,7 @@
 
 #include <contiki.h>
 
+#include <p32xxxx.h>
 #define SWITCH_PERIPHERAL(enum_value, bits) if(peripherals & (enum_value)) \
                                                   bits = value;
 
@@ -41,18 +42,30 @@ static void set_peripherals(int8_t value, uint64_t peripherals)
     SWITCH_PERIPHERAL(PERIPHERAL_RTC, PMD6bits.RTCCMD);
 }
 
-int power_saving_enable_peripherals(uint64_t peripherals)
+int power_enable_peripherals(uint64_t peripherals)
 {
     set_peripherals(1, peripherals);
 
     return 0;
 }
 
-int power_saving_disable_peripherals(uint64_t peripherals)
+int power_disable_peripherals(uint64_t peripherals)
 {
     set_peripherals(0, peripherals);
+
     return 0;
 }
 
+int power_select_system_clock(uint8_t clock)
+{
+    if(clock > SYSCLK_FIRCDIV)
+    {
+        fprintf(stderr, "Power: Invalid clock type\n");
+        return -1;
+    }
 
+    OSCCONbits.NOSC = clock;
+
+    return 0;
+}
 

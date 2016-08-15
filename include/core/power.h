@@ -76,7 +76,7 @@ enum {
                       PERIPHERAL_U4,
 
     /** USB */
-//  PERIPHERAL_USB  = 0x20000000,
+    //PERIPHERAL_USB  = 0x20000000,
     /** Parallel master port */
     PERIPHERAL_PMP  = 0x40000000,
     /** Real time clock */
@@ -85,20 +85,45 @@ enum {
     PERIPHERAL_REFO = 0x100000000,
 };
 
+enum {
+/** Fast Internal RC Oscillator (FRC) */
+    SYSCLK_FRC          = 0x00,
+/** Fast Internal RC Oscillator with PLL module via Postscaler */
+    SYSCLK_FRCPLL       = 0x01,
+/** Primary Oscillator */
+    SYSCLK_PRIMARY      = 0x02,
+/** Primary Oscillator with PLL module */
+    SYSCLK_PRIMARY_PLL  = 0x03,
+/** Secondary Oscillator */
+    SYSCLK_SECONDARY    = 0x04,
+/** Low Power Internal RC Oscillator */
+    SYSCLK_LPRC         = 0x05,
+/** Fast Internal RC Oscillator divided by 16 */
+    SYSCLK_FIRCDIV16    = 0x06,
+/** Fast Internal RC Oscillator divided by OSCCON */
+    SYSCLK_FIRCDIV      = 0x07,
+};
+
 /** @brief Enable selected peripherals
   *
   *
   * @param[in] peripherals Bitmask of peripherals to enable
   * @return 0 if successful, -1 if failed
   */
-int power_saving_enable_peripherals(uint64_t peripherals);
+int power_enable_peripherals(uint64_t peripherals);
 
 /** @brief Disable selected peripherals
   *
   * @param[in] peripherals Bitmask of peripherals to disable
   * @return 0 if successful, -1 if failed
   */
-int power_saving_disable_peripherals(uint64_t peripherals);
+int power_disable_peripherals(uint64_t peripherals);
 
+/** @brief Change system clock source
+  *
+  * @param[in] clock Clock bitmask
+  * @return 0 if succesful, -1 if failed
+  */
+int power_select_system_clock(uint8_t clock);
 
 #endif
