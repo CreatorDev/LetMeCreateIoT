@@ -103,6 +103,31 @@ enum {
     SYSCLK_FIRCDIV      = 0x07,
 };
 
+/** Watchdog sleep/idle timeouts */
+enum {
+    WDTTIMEOUT_1MS          = 0x00,
+    WDTTIMEOUT_2MS          = 0x01,
+    WDTTIMEOUT_4MS          = 0x02,
+    WDTTIMEOUT_16MS         = 0x03,
+    WDTTIMEOUT_32MS         = 0x04,
+    WDTTIMEOUT_64MS         = 0x05,
+    WDTTIMEOUT_128MS        = 0x06,
+    WDTTIMEOUT_256MS        = 0x07,
+    WDTTIMEOUT_512MS        = 0x08,
+    WDTTIMEOUT_1024MS       = 0x09,
+    WDTTIMEOUT_2048MS       = 0x0A,
+    WDTTIMEOUT_4096MS       = 0x0B,
+    WDTTIMEOUT_8192MS       = 0x0C,
+    WDTTIMEOUT_16384MS      = 0x0D,
+    WDTTIMEOUT_32768MS      = 0x0E,
+    WDTTIMEOUT_65536MS      = 0x0F,
+    WDTTIMEOUT_131072MS     = 0x10,
+    WDTTIMEOUT_262144MS     = 0x11,
+    WDTTIMEOUT_524288MS     = 0x12,
+    WDTTIMEOUT_1045876MS    = 0x13,
+
+}
+
 /** @brief Enable selected peripherals
   *
   *
@@ -124,5 +149,32 @@ int power_disable_peripherals(uint64_t peripherals);
   * @return 0 if succesful, -1 if failed
   */
 int power_select_system_clock(uint8_t clock);
+
+/** @brief Sets the wakeup watchdog
+  *
+  * The timeout is set according to the following formula:
+  * Timeout = 1 ms * 2^prescaler
+  *
+  * @param[in] prescaler
+  * @return 0 if successful, -1 if failed
+  */
+int power_set_watchdog(uint8_t prescaler);
+
+/** @brief Puts the device in idle mode
+  *
+  * To wakeup from idle after a delay use #power_set_watchdog
+  *
+  * @return 0 if successful, -1 if failed to enter idle mode
+  */
+int power_start_idle();
+
+/** @brief Puts the device in sleep mode
+  *
+  * To wakeup from sleep after a delay use #power_set_watchdog
+  *
+  * @return 0 if successful, -1 if failed to enter sleep mode
+  */
+int power_start_sleep();
+
 
 #endif

@@ -69,3 +69,18 @@ int power_select_system_clock(uint8_t clock)
     return 0;
 }
 
+int power_start_idle()
+{
+    OSCCONbits.SLPEN = 0;
+    __asm__("WAIT");
+
+    return 0;
+}
+
+int power_start_sleep()
+{
+    OSCCONbits.SLPEN = 1;
+    __asm__("WAIT");
+
+    return 0;
+}
