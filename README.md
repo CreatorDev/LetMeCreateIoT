@@ -12,6 +12,7 @@ Wrappers:
   - ADC
   - Network
   - Debug over 6lowpan
+  - Power saving control
 
 Supported clicks:
   - Relay
