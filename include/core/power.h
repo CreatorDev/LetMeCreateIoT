@@ -105,6 +105,7 @@ enum {
 
 /** Watchdog sleep/idle timeouts */
 enum {
+    WDTTIMEOUT_DISABLE      = -0x01,
     WDTTIMEOUT_1MS          = 0x00,
     WDTTIMEOUT_2MS          = 0x01,
     WDTTIMEOUT_4MS          = 0x02,
@@ -126,7 +127,7 @@ enum {
     WDTTIMEOUT_524288MS     = 0x12,
     WDTTIMEOUT_1045876MS    = 0x13,
 
-}
+};
 
 /** @brief Enable selected peripherals
   *
@@ -155,10 +156,10 @@ int power_select_system_clock(uint8_t clock);
   * The timeout is set according to the following formula:
   * Timeout = 1 ms * 2^prescaler
   *
-  * @param[in] prescaler
+  * @param[in] prescaler Prescaler or -1 to disable
   * @return 0 if successful, -1 if failed
   */
-int power_set_watchdog(uint8_t prescaler);
+int power_set_watchdog(int8_t prescaler);
 
 /** @brief Puts the device in idle mode
   *

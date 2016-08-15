@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <contiki.h>
 
+#define WDTCON_ON 0x8000
+
 #define SWITCH_PERIPHERAL(enum_value, bits) if(peripherals & (enum_value)) \
                                                   bits = value;
 
@@ -65,6 +67,26 @@ int power_select_system_clock(uint8_t clock)
     }
 
     OSCCONbits.NOSC = clock;
+
+    return 0;
+}
+
+int power_set_watchdog(int8_t prescaler)
+{
+    if(prescaler > WDTTIMEOUT_1045876MS || prescaler < WDTTIMEOUT_DISABLE)
+    {
+        fprintf(stderr, "Power: Invalid timeout\n");
+        return -1;
+    }
+
+    if(prescaler == WDTTIMEOUT_DISABLE)
+    {
+        WDTCONCLR = WDTCON_ON;
+        return 0;
+    }
+
+    DEVCFG1bits.WDTPS = prescaler;
+    WDTCONSET = WDTCON_ON;
 
     return 0;
 }
