@@ -1,5 +1,5 @@
 /**
- * @file power_saving.h
+ * @file power.h
  * @author Michal Tusnio
  * @date 2016
  * @copyright 3-clause BSD
@@ -121,7 +121,7 @@ int power_disable_peripherals(uint64_t peripherals);
 
 /** @brief Change system clock source
   *
-  * @param[in] clock Clock bitmask
+  * @param[in] clock Clock which will be used
   * @return 0 if succesful, -1 if failed
   */
 int power_select_system_clock(uint8_t clock);
