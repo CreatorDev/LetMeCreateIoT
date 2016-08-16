@@ -94,7 +94,7 @@ enum {
 /** Primary Oscillator with PLL module */
     SYSCLK_PRIMARY_PLL  = 0x03,
 /** Secondary Oscillator */
-    SYSCLK_SECONDARY    = 0x04,
+    SYSCLK_SOSC         = 0x04,
 /** Low Power Internal RC Oscillator */
     SYSCLK_LPRC         = 0x05,
 /** Fast Internal RC Oscillator divided by 16 */
