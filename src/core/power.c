@@ -61,7 +61,7 @@ int power_disable_peripherals(uint64_t peripherals)
 
 int power_select_system_clock(uint8_t clock)
 {
-    int32_t state;
+    uint32_t state;
 
     if(clock > SYSCLK_FIRCDIV)
     {
