@@ -31,6 +31,9 @@ enum {
     /** Comparator */
     PERIPHERAL_CMP  = PERIPHERAL_CMP1 | PERIPHERAL_CMP2,
 
+    /** CA8210 6LowPAN chip */
+    PERIPHERAL_RADIO = 0x20,
+
     PERIPHERAL_IC1  = 0x40,
     PERIPHERAL_IC2  = 0x80,
     PERIPHERAL_IC3  = 0x100,

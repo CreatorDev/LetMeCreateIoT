@@ -3,6 +3,11 @@
 #include <stdio.h>
 #include <contiki.h>
 
+
+#ifdef  __USE_CA8210__
+  #include <dev/ca8210/ca8210-radio.h>
+#endif
+
 #define WDTCON_ON               0x8000
 #define DEVCFG1_DCLKSWITCHING   0x02
 
@@ -43,6 +48,15 @@ static void set_peripherals(int8_t value, uint64_t peripherals)
     SWITCH_PERIPHERAL(PERIPHERAL_PMP, PMD6bits.PMPMD);
     SWITCH_PERIPHERAL(PERIPHERAL_REFO, PMD6bits.REFOMD);
     SWITCH_PERIPHERAL(PERIPHERAL_RTC, PMD6bits.RTCCMD);
+#ifdef  __USE_CA8210__
+    if(peripherals & PERIPHERAL_RADIO)
+    {
+        if(value & 0x00)
+            ca8210_driver.on();
+        else if(value & 0x01)
+            ca8210_driver.off();
+    }
+#endif
 }
 
 int power_enable_peripherals(uint64_t peripherals)
