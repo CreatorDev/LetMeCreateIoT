@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <contiki.h>
 
+#include <p32xxxx.h>
 
 #ifdef  __USE_CA8210__
   #include <dev/ca8210/ca8210-radio.h>
