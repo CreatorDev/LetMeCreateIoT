@@ -1,4 +1,4 @@
-# LetMeCreate IoT
+# LetMeCreateIoT
 
 ## Overview
 
