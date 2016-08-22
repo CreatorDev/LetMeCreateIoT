@@ -1,6 +1,6 @@
 # LetMeCreateIoT
 
-## Overview
+## Introduction
 
 A collection of wrappers for the Contiki interfaces made to speed up the development of applications for the Mikro-e PIC32MX clicker.
 
@@ -26,7 +26,7 @@ Supported clicks:
   - Proximity
   - Relay2
 
-## Installation
+### Installation
 
 ```sh
 $ ./install.sh path/to/contiki
@@ -40,7 +40,7 @@ To verify whether installation worked navigate to the examples directory, pick a
 make
 ```
 
-## Update
+### Updating
 
 To update the library run:
 
@@ -61,6 +61,15 @@ To use include the appropriate header files in your project, eg.:
 ```
 
 For reference how to use the different interfaces or click wrappers refer to a wide selection of examples in the examples directory.
+
+### UDP server
+
+In addition to wrappers for common networking functionality you can also find a simple UDP server to modify for any of your projects. To use it
+modify server.py to reflect the structure of your data and copy it to the CI40. Make sure Python3 is installed then run the server:
+
+```python
+python3 server.py
+```
 
 ### Debug
 
@@ -95,9 +104,9 @@ python3 debug_server.py
 To disable debugging simply remove DEBUG_IP from CFLAGS. In this case INIT_NETWORK_DEBUG will resolve to no code at all and PRINTF will act as the standard printf function. 
 For a full example program visit examples/debug. Additionally, a few other examples also incorporate this debug functionality.
 
-### Compatibility with CI40 LMC
+### Compatibility with LMC
 
-The interfaces are made to be as compatible with the [CI40 LMC](https://github.com/francois-berder/LetMeCreate) version as possible to ensure the code is portable. Use following defines to write multi-platform Clicker drivers:
+The interfaces are made to be as compatible with [LMC](https://github.com/francois-berder/LetMeCreate) as possible to ensure the code is portable. Use following defines to write multi-platform Clicker drivers:
 
 ```C
 #ifdef CONTIKI
