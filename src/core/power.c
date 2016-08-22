@@ -11,12 +11,19 @@
 
 #define WDTCON_ON               0x8000
 #define DEVCFG1_DCLKSWITCHING   0x02
+#define CFGCON_MDLOCK           0x01
 
 #define SWITCH_PERIPHERAL(enum_value, bits) if(peripherals & (enum_value)) \
                                                   bits = value;
 
-static void set_peripherals(int8_t value, uint64_t peripherals)
+static int set_peripherals(int8_t value, uint64_t peripherals)
 {
+    if(CFGCONbits.PMDLOCK & CFGCON_MDLOCK)
+    {
+        fprintf(stderr, "Power: Peripherals cannot disabled or enabled\n");
+        return -1;
+    }
+
     SWITCH_PERIPHERAL(PERIPHERAL_AD, PMD1bits.AD1MD);
     SWITCH_PERIPHERAL(PERIPHERAL_CTMU, PMD1bits.CTMUMD);
     SWITCH_PERIPHERAL(PERIPHERAL_CVR, PMD1bits.CVRMD);
@@ -49,6 +56,7 @@ static void set_peripherals(int8_t value, uint64_t peripherals)
     SWITCH_PERIPHERAL(PERIPHERAL_PMP, PMD6bits.PMPMD);
     SWITCH_PERIPHERAL(PERIPHERAL_REFO, PMD6bits.REFOMD);
     SWITCH_PERIPHERAL(PERIPHERAL_RTC, PMD6bits.RTCCMD);
+
 #ifdef  __USE_CA8210__
     if(peripherals & PERIPHERAL_RADIO)
     {
@@ -58,20 +66,18 @@ static void set_peripherals(int8_t value, uint64_t peripherals)
             ca8210_driver.off();
     }
 #endif
+
+    return 0;
 }
 
 int power_enable_peripherals(uint64_t peripherals)
 {
-    set_peripherals(0, peripherals);
-
-    return 0;
+    return set_peripherals(0, peripherals);
 }
 
 int power_disable_peripherals(uint64_t peripherals)
 {
-    set_peripherals(1, peripherals);
-
-    return 0;
+    return set_peripherals(1, peripherals);
 }
 
 int power_select_system_clock(uint8_t clock)
