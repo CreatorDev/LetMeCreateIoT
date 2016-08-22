@@ -51,10 +51,8 @@ int relay2_click_disable_relay_1(uint8_t mikrobus_index)
 
 int relay2_click_enable_relay_2(uint8_t mikrobus_index)
 {
-#ifndef CONTIKI
     switch (mikrobus_index) {
     case MIKROBUS_1:
-#endif
         if (!gpio_init(MIKROBUS_1_AN)
         &&  !gpio_set_direction(MIKROBUS_1_AN, GPIO_OUTPUT)
         &&  !gpio_set_value(MIKROBUS_1_AN, 1))
@@ -65,21 +63,19 @@ int relay2_click_enable_relay_2(uint8_t mikrobus_index)
         &&  !gpio_set_direction(MIKROBUS_2_AN, GPIO_OUTPUT)
         &&  !gpio_set_value(MIKROBUS_2_AN, 1))
             return 0;
+#endif
         default:
             fprintf(stderr, "relay2: Invalid mikrobus index.\n");
             return -1;
     }
-#endif
 
     return -1;
 }
 
 int relay2_click_disable_relay_2(uint8_t mikrobus_index)
 {
-#ifndef CONTIKI
     switch (mikrobus_index) {
     case MIKROBUS_1:
-#endif
         if (!gpio_init(MIKROBUS_1_AN)
         &&  !gpio_set_direction(MIKROBUS_1_AN, GPIO_OUTPUT)
         &&  !gpio_set_value(MIKROBUS_1_AN, 0))
@@ -90,10 +86,10 @@ int relay2_click_disable_relay_2(uint8_t mikrobus_index)
         &&  !gpio_set_direction(MIKROBUS_2_AN, GPIO_OUTPUT)
         &&  !gpio_set_value(MIKROBUS_2_AN, 0))
             return 0;
+#endif
         default:
             fprintf(stderr, "relay2: Invalid mikrobus index.\n");
             return -1;
     }
-#endif
     return -1;
 }
