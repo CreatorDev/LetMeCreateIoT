@@ -22,7 +22,7 @@ sock.bind((IP, PORT))
 print("Server initialised, awaiting data. Use Ctrl + C to stop")
 while True:
     data, address = sock.recvfrom(args.buffer)
-    # Print client data as it arrives. For unpacking the data or converting to an UTF-8 see below:
+    # Print client data as it arrives. For unpacking the data or converting to a UTF-8 string see below:
     # https://docs.python.org/3.5/library/struct.html
     # https://docs.python.org/3/howto/unicode.html#the-string-type
     print(data)
