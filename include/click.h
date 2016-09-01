@@ -9,6 +9,8 @@
 #ifndef H_CLICK
 #define H_CLICK
 
+#include "letmecreate/3rd_party/bme280.h"
+
 #include "letmecreate/click/accel.h"
 #include "letmecreate/click/air_quality.h"
 #include "letmecreate/click/color.h"
