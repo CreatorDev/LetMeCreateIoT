@@ -1,0 +1,41 @@
+diff --git a/include/letmecreate/click/color.h b/include/letmecreate/click/color.h
+index e7501d4..e1c1538 100644
+--- a/include/letmecreate/click/color.h
++++ b/include/letmecreate/click/color.h
+@@ -3,8 +3,6 @@
+  * @author Matthew Fennell
+  * @date 2016
+  * @copyright 3-clause BSD
+- *
+- * @example color/main.c
+  */
+ 
+ #ifndef __LETMECREATE_CLICK_COLOR_H__
+diff --git a/src/click/color.c b/src/click/color.c
+index e7b6e53..9e7515b 100644
+--- a/src/click/color.c
++++ b/src/click/color.c
+@@ -1,5 +1,7 @@
+ #include <stdio.h>
+-#include <time.h>
++
++#include "sys/clock.h"
++
+ #include "letmecreate/click/common.h"
+ #include "letmecreate/click/color.h"
+ #include "letmecreate/core/i2c.h"
+@@ -18,13 +20,7 @@
+ 
+ void sleep_5ms(void)
+ {
+-    struct timespec req = {}, rem = {
+-        .tv_sec = 0,
+-        .tv_nsec = 5000000
+-    };
+-
+-    while (nanosleep(&req, &rem))
+-        req = rem;
++    clock_delay_usec(5000);
+ }
+ 
+ int color_click_enable(void)

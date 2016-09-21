@@ -1,0 +1,99 @@
+diff --git a/include/letmecreate/click/relay.h b/include/letmecreate/click/relay.h
+index 35e6677..f2c388a 100644
+--- a/include/letmecreate/click/relay.h
++++ b/include/letmecreate/click/relay.h
+@@ -14,8 +14,6 @@
+ /**
+  * @brief Enable relay 1 on Relay Click.
+  *
+- * This is the only relay that can be switched on the CI40. The second relay
+- * uses a CS pin which is reserved by SPI.
+  * @param[in] mikrobus_index Index of the mikrobus (see #MIKROBUS_INDEX)
+  * @return 0 if successful, -1 otherwise
+  */
+@@ -24,11 +22,25 @@ int relay_click_enable_relay_1(uint8_t mikrobus_index);
+ /**
+  * @brief Disable relay 1 on Relay Click.
+  *
+- * This is the only relay that can be switched on the CI40. The second relay
+- * uses a CS pin which is reserved by SPI.
+  * @param[in] mikrobus_index Index of the mikrobus (see #MIKROBUS_INDEX)
+  * @return 0 if successful, -1 otherwise
+  */
+ int relay_click_disable_relay_1(uint8_t mikrobus_index);
+ 
++/**
++ * @brief Enable relay 2 on Relay Click.
++ *
++ * @param[in] mikrobus_index Index of the mikrobus (see #MIKROBUS_INDEX)
++ * @return 0 if successful, -1 otherwise
++ */
++int relay_click_enable_relay_2(uint8_t mikrobus_index);
++
++/**
++ * @brief Disable relay 2 on Relay Click.
++ *
++ * @param[in] mikrobus_index Index of the mikrobus (see #MIKROBUS_INDEX)
++ * @return 0 if successful, -1 otherwise
++ */
++int relay_click_disable_relay_2(uint8_t mikrobus_index);
++
+ #endif
+diff --git a/src/click/relay.c b/src/click/relay.c
+index 6c4bc2e..3d63ce7 100644
+--- a/src/click/relay.c
++++ b/src/click/relay.c
+@@ -12,11 +12,6 @@ int relay_click_enable_relay_1(uint8_t mikrobus_index)
+         &&  !gpio_set_direction(MIKROBUS_1_PWM, GPIO_OUTPUT)
+         &&  !gpio_set_value(MIKROBUS_1_PWM, 1))
+             return 0;
+-    case MIKROBUS_2:
+-        if (!gpio_init(MIKROBUS_2_PWM)
+-        &&  !gpio_set_direction(MIKROBUS_2_PWM, GPIO_OUTPUT)
+-        &&  !gpio_set_value(MIKROBUS_2_PWM, 1))
+-            return 0;
+         default:
+             fprintf(stderr, "relay: Invalid mikrobus index.\n");
+             return -1;
+@@ -33,10 +28,37 @@ int relay_click_disable_relay_1(uint8_t mikrobus_index)
+         &&  !gpio_set_direction(MIKROBUS_1_PWM, GPIO_OUTPUT)
+         &&  !gpio_set_value(MIKROBUS_1_PWM, 0))
+             return 0;
+-    case MIKROBUS_2:
+-        if (!gpio_init(MIKROBUS_2_PWM)
+-        &&  !gpio_set_direction(MIKROBUS_2_PWM, GPIO_OUTPUT)
+-        &&  !gpio_set_value(MIKROBUS_2_PWM, 0))
++        default:
++            fprintf(stderr, "relay: Invalid mikrobus index.\n");
++            return -1;
++    }
++
++    return -1;
++}
++
++int relay_click_enable_relay_2(uint8_t mikrobus_index)
++{
++    switch (mikrobus_index) {
++    case MIKROBUS_1:
++        if (!gpio_init(MIKROBUS_1_CS)
++        &&  !gpio_set_direction(MIKROBUS_1_CS, GPIO_OUTPUT)
++        &&  !gpio_set_value(MIKROBUS_1_CS, 1))
++            return 0;
++        default:
++            fprintf(stderr, "relay: Invalid mikrobus index.\n");
++            return -1;
++    }
++
++    return -1;
++}
++
++int relay_click_disable_relay_2(uint8_t mikrobus_index)
++{
++    switch (mikrobus_index) {
++    case MIKROBUS_1:
++        if (!gpio_init(MIKROBUS_1_CS)
++        &&  !gpio_set_direction(MIKROBUS_1_CS, GPIO_OUTPUT)
++        &&  !gpio_set_value(MIKROBUS_1_CS, 0))
+             return 0;
+         default:
+             fprintf(stderr, "relay: Invalid mikrobus index.\n");
