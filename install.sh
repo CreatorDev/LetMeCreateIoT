@@ -44,8 +44,17 @@ function install_files {
 }
 
 function download_feeds {
+    local FEEDS_FILE="$BASE_DIR/feed"
     local FEEDS_DIR="$BASE_DIR/feeds_tmp"
     local FEEDS_REPO="https://github.com/francois-berder/LetMeCreate"
+
+    if [[ ! -e $FEEDS_FILE ]]; then
+        echo "Could not find the feed tag file"
+        return 1
+    fi
+
+    local TAG=$(cat $FEEDS_FILE)
+
     git clone $FEEDS_REPO $FEEDS_DIR
     if [[ $? -ne 0 ]]; then
         echo "Failed to clone feeds repo"
@@ -53,11 +62,17 @@ function download_feeds {
     fi
 
     cd $FEEDS_DIR
-    git checkout 9f2a9784fb5542e0dfe1acf4bbc5741abe2acf3e
+    git checkout $TAG
+
+    if [[ $? -ne 0 ]]; then
+        echo "Failed to checkout $TAG"
+        return 1
+    fi
 
     cp $BASE_DIR/feeds/patches/*.patch $FEEDS_DIR/
     for x in *.patch
     do
+        echo "Applying patch $x"
         git apply $x
     done
 
@@ -66,7 +81,9 @@ function download_feeds {
     rm -rf $FEEDS_DIR/src/core
 
     cp -r $FEEDS_DIR/include/letmecreate/* $STAGING_DIR/
-    cp -r $FEEDS_DIR/src/* $STAGING_DIR
+    cp -r $FEEDS_DIR/src/* $STAGING_DIR/
+    cp -r $FEEDS_DIR/include/letmecreate/* $BASE_DIR/include/
+    cp -r $FEEDS_DIR/src/* $BASE_DIR/src/
     rm -rf $FEEDS_DIR
 }
 
