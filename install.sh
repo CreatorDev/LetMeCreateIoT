@@ -62,7 +62,7 @@ function download_feeds {
     fi
 
     cd $FEEDS_DIR
-    git checkout $TAG
+    git checkout $TAG > /dev/null 2>&1
 
     if [[ $? -ne 0 ]]; then
         echo "Failed to checkout $TAG"
