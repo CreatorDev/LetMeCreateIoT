@@ -20,6 +20,7 @@ Supported clicks:
   - Motion
   - Accel (SPI only)
   - Air Quality
+  - Alcohol
   - Color
   - Joystick
   - 8x8R (Led Matrix)
