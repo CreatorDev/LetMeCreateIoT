@@ -1,5 +1,18 @@
 #!/bin/bash
 
+function print_help {
+    echo "Usage: $0 -p contiki_path -e exclude_regex"
+    echo "When installing the driver feeds will be copied into the local repo to allow for" \
+         "documentation generation with doxygen. When excluding/including different drivers" \
+         "remember to clean your repo first"
+    echo "-h: Show help"
+    echo "-p: Path where the library will be installed (required on first install)"
+    echo "-e: Regex to use for the find command when excluding non-core drivers." \
+         "The regex applies to the filename combined with the top level folder it's in," \
+         "i.e. './click/*' will match all files in the click directory, while '*relay.*' will" \
+         "match 'click/relay.c' and 'click/relay.h'"
+}
+
 function install_files {
     if [[ -d $LMC_DIR ]]; then
         rm -rf $LMC_DIR
@@ -76,10 +89,23 @@ function download_feeds {
         git apply $x
     done
 
+    # Clear headers and core files
     rm -rf $FEEDS_DIR/include/letmecreate/core
     rm -rf $FEEDS_DIR/include/letmecreate/*.h
     rm -rf $FEEDS_DIR/src/core
 
+    # Clear files that match the exclude regex
+    for I in "${EXCLUDED[@]}"; do
+        echo "Removing files matching regex '$I'"
+        cd $FEEDS_DIR/include/letmecreate/
+        find ./ -wholename "$I" -type f | xargs rm -f
+
+        cd $FEEDS_DIR/src/
+        find ./ -wholename "$I" -type f | xargs rm -f
+    done
+
+    cd $BASE_DIR
+    # Copy filtered files over
     cp -r $FEEDS_DIR/include/letmecreate/* $STAGING_DIR/
     cp -r $FEEDS_DIR/src/* $STAGING_DIR/
     cp -r $FEEDS_DIR/include/letmecreate/* $BASE_DIR/include/
@@ -87,22 +113,46 @@ function download_feeds {
     rm -rf $FEEDS_DIR
 }
 
+EXCLUDED=()
+
+while getopts ":e:p:" opt; do
+    case $opt in
+        e)
+            EXCLUDED+=("$OPTARG")
+            ;;
+        p)
+            CONTIKI=$(readlink -f "$OPTARG")
+            ;;
+        h)
+            print_help
+            exit 1
+            ;;
+        \?)
+            echo "Unrecognised option: -$OPTARG" >&2
+            print_help
+            exit 1
+            ;;
+    esac
+done
+
 BASE_DIR=$(dirname $(readlink -f $0))
 CONTIKI_SYMLINK="$BASE_DIR/contiki"
 
-if [[ $# -ne 1 ]]; then
+if [[ -z $CONTIKI ]]; then
     if [[ -d "$CONTIKI_SYMLINK" ]]; then
         echo "Detected contiki directory in the repository at $CONTIKI_SYMLINK"
         CONTIKI=$(readlink -f "$CONTIKI_SYMLINK")
     else
-        echo "Usage: $0 contiki_dir"
+        echo "No symlink detected (is this your first install?). Try: $0 -p contiki_dir"
         exit 1
     fi
-else
-    CONTIKI=$(readlink -f $1)
 fi
 
 echo "Installing the library files to $CONTIKI"
+
+if [[ ${#EXCLUDED[@]} -gt 0 ]]; then
+    echo "Excluding regexes: ${EXCLUDED[@]}"
+fi
 
 LIBRARY_DIR_NAME="core"
 LMC_DIR_NAME="letmecreate"
