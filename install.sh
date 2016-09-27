@@ -11,6 +11,7 @@ function print_help {
          "The regex applies to the filename combined with the top level folder it's in," \
          "i.e. './click/*' will match all files in the click directory, while '*relay.*' will" \
          "match 'click/relay.c' and 'click/relay.h'"
+    echo "-s: Skips the feed downloads and installs files stored only locally"
 }
 
 function install_files {
@@ -113,15 +114,24 @@ function download_feeds {
     rm -rf $FEEDS_DIR
 }
 
-EXCLUDED=()
+function copy_local_files_to_staging {
+    cp -r $BASE_DIR/include/* $STAGING_DIR/
+    cp -r $BASE_DIR/src/* $STAGING_DIR/
+}
 
-while getopts ":e:p:" opt; do
+EXCLUDED=()
+SKIP_CHECKOUT=false
+
+while getopts ":e:p:s" opt; do
     case $opt in
         e)
             EXCLUDED+=("$OPTARG")
             ;;
         p)
             CONTIKI=$(readlink -f "$OPTARG")
+            ;;
+        s)
+            SKIP_CHECKOUT=true
             ;;
         h)
             print_help
@@ -169,9 +179,14 @@ fi
 mkdir -p $STAGING_DIR
 echo "Creating staging dir"
 
-download_feeds
+if [[ "$SKIP_CHECKOUT" = false ]]; then
+    download_feeds
+else
+    copy_local_files_to_staging
+fi
+
 if [[ $? -ne 0 ]]; then
-    echo "Failed to get feeds!"
+    echo "Failed to move files to staging"
     exit 1
 fi
 
