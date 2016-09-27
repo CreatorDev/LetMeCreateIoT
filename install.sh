@@ -7,7 +7,7 @@ function print_help {
          "remember to clean your repo first"
     echo "-h: Show help"
     echo "-p: Path where the library will be installed (required on first install)"
-    echo "-e: Regex to use for the find command when excluding non-core drivers." \
+    echo "-e: Regex to use for the find command when excluding headers and source files." \
          "The regex applies to the filename combined with the top level folder it's in," \
          "i.e. './click/*' will match all files in the click directory, while '*relay.*' will" \
          "match 'click/relay.c' and 'click/relay.h'"
