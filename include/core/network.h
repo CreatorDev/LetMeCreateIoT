@@ -25,13 +25,13 @@
                    } while(0)
 
 /**
- * @brief Sets local IPv6 address
+ * @brief Adds a local IPv6 address
  *
  * @param[in] address String containing the address to be set.
- * @param[out] addr Pointer to an IP addr structure to be filled with parsed data. Optional
- * @return 0 if successful, otherwise -1.
+ * @param[out] addr Pointer to an IP addr structure to be filled with IP address data. Optional
+ * @return 0 if successfully added, otherwise -1.
  */
-int set_ipv6_address(const char * address, uip_ipaddr_t * addr);
+int ipv6_add_address(const char * address, uip_ipaddr_t * addr);
 
 /**
  * @brief Creates a new UDP connection between two endpoints.

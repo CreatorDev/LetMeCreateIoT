@@ -8,7 +8,7 @@
 
 #define UIP_IP_BUF ((struct uip_ip_hdr *)&uip_buf[UIP_LLH_LEN])
 
-int set_ipv6_address(const char * address, uip_ipaddr_t * addr)
+int ipv6_add_address(const char * address, uip_ipaddr_t * addr)
 {
     uip_ipaddr_t tmp_addr;
 
