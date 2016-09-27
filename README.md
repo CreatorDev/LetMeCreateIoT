@@ -132,13 +132,13 @@ functionality.
 
 The interfaces are made to be as compatible with [LMC](https://github.com/francois-berder/LetMeCreate) 
 as much as possible to ensure the code is portable. When adding support for a new Click use its LMC
-version, modify for use with LMCIoT and generate a patch with 'git diff', then place it in the
+version, modify for use with LMCIoT and generate a patch, then place it in the
 feeds/patches/ directory.
 
 ### Known issues
 
-- At the moment the new udp connection sends dummy data to force router soliciation as soon as 
-possible
-- IDLE/SLEEP power control options might not work properly
+- At the moment the new udp connection sends dummy data to force router solicitation as soon as 
+possible.
+- IDLE/SLEEP power control options might not work properly.
 - The CA8210 radio might still come online even when power_disable_peripherals is used. This will be
-fixed once proper power saving is added for the radio 
+fixed once proper power saving is added for the radio.
