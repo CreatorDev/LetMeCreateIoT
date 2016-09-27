@@ -30,6 +30,47 @@ int ipv6_add_address(const char * address, uip_ipaddr_t * addr)
     return 0;
 }
 
+int ipv6_add_default_route(const char * address, unsigned long interval)
+{
+    uip_ipaddr_t addr;
+
+    if(!uiplib_ipaddrconv(address, &addr))
+    {
+        fprintf(stderr, "Network: Failed to convert IP: %s\n", address);
+        return -1;
+    }
+
+    if(!uip_ds6_defrt_add(&addr, interval))
+    {
+        fprintf(stderr, "Network: Failed to add a new default route %s\n", address);
+        return -1;
+    }
+
+    return 0;
+}
+
+int ipv6_remove_default_route(const char * address)
+{
+    uip_ipaddr_t addr;
+
+    if(!uiplib_ipaddrconv(address, &addr))
+    {
+        fprintf(stderr, "Network: Failed to convert IP: %s\n", address);
+        return -1;
+    }
+
+    uip_ds6_defrt_t * route = uip_ds6_defrt_lookup(&addr);
+    if(route == NULL)
+    {
+        fprintf(stderr, "Network: Route %s not found\n", address);
+        return -1;
+    }
+
+    uip_ds6_defrt_rm(route);
+
+    return 0;
+}
+
 struct uip_udp_conn * udp_new_connection(uint16_t local_port, uint16_t remote_port, const char * address)
 {
     static char * dummy_data = "dummy";

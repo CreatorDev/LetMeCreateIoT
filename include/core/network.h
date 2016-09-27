@@ -34,6 +34,23 @@
 int ipv6_add_address(const char * address, uip_ipaddr_t * addr);
 
 /**
+ * @brief Adds an IPv6 default route
+ *
+ * @param[in] address String containing the address to be added.
+ * @param[in] interval How long, in seconds, the default address should last. 0 for infinitely
+ * @return 0 if successfully added, otherwise -1.
+ */
+int ipv6_add_default_route(const char * address, unsigned long interval);
+
+/**
+ * @brief Removes an IPv6 default route
+ *
+ * @param[in] address String containing the address to be removed.
+ * @return 0 if found and removed, otherwise -1.
+ */
+int ipv6_remove_default_route(const char * address);
+
+/**
  * @brief Creates a new UDP connection between two endpoints.
  *
  * Creates and returns a new UDP connection. For the communication to work the remote host
