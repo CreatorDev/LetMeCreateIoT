@@ -29,18 +29,19 @@
  *
  * @param[in] address String containing the address to be set.
  * @param[out] addr Pointer to an IP addr structure to be filled with IP address data. Optional
+ * @param[in] lifetime How long, in seconds, the address should last. 0 for infinitely
  * @return 0 if successfully added, otherwise -1.
  */
-int ipv6_add_address(const char * address, uip_ipaddr_t * addr);
+int ipv6_add_address(const char * address, uip_ipaddr_t * addr, unsigned long lifetime);
 
 /**
  * @brief Adds an IPv6 default route
  *
  * @param[in] address String containing the address to be added.
- * @param[in] interval How long, in seconds, the default address should last. 0 for infinitely
+ * @param[in] lifetime How long, in seconds, the default address should last. 0 for infinitely
  * @return 0 if successfully added, otherwise -1.
  */
-int ipv6_add_default_route(const char * address, unsigned long interval);
+int ipv6_add_default_route(const char * address, unsigned long lifetime);
 
 /**
  * @brief Removes an IPv6 default route

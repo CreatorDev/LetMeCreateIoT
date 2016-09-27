@@ -8,7 +8,7 @@
 
 #define UIP_IP_BUF ((struct uip_ip_hdr *)&uip_buf[UIP_LLH_LEN])
 
-int ipv6_add_address(const char * address, uip_ipaddr_t * addr)
+int ipv6_add_address(const char * address, uip_ipaddr_t * addr, unsigned long lifetime)
 {
     uip_ipaddr_t tmp_addr;
 
@@ -21,7 +21,7 @@ int ipv6_add_address(const char * address, uip_ipaddr_t * addr)
         return -1;
     }
 
-    if(!uip_ds6_addr_add(addr, 0, ADDR_MANUAL))
+    if(!uip_ds6_addr_add(addr, lifetime, ADDR_MANUAL))
     {
         fprintf(stderr, "Network: Failed to set IP: %s\n", address);
         return -1;
@@ -30,7 +30,7 @@ int ipv6_add_address(const char * address, uip_ipaddr_t * addr)
     return 0;
 }
 
-int ipv6_add_default_route(const char * address, unsigned long interval)
+int ipv6_add_default_route(const char * address, unsigned long lifetime)
 {
     uip_ipaddr_t addr;
 
@@ -40,7 +40,7 @@ int ipv6_add_default_route(const char * address, unsigned long interval)
         return -1;
     }
 
-    if(!uip_ds6_defrt_add(&addr, interval))
+    if(!uip_ds6_defrt_add(&addr, lifetime))
     {
         fprintf(stderr, "Network: Failed to add a new default route %s\n", address);
         return -1;
