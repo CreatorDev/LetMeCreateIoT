@@ -1,18 +1,18 @@
 diff --git a/include/letmecreate/click/motion.h b/include/letmecreate/click/motion.h
-index 304454b..265b78e 100644
+index 1af7454..fe604c6 100644
 --- a/include/letmecreate/click/motion.h
 +++ b/include/letmecreate/click/motion.h
-@@ -26,7 +26,7 @@ int motion_click_enable(uint8_t mikrobus_index);
+@@ -29,7 +29,7 @@ int motion_click_enable(uint8_t mikrobus_index);
   *
   * @param[in] mikrobus_index Index of the mikrobus used by the click board (see #MIKROBUS_INDEX)
   * @param[in] callback Function to call if movement is detected
-- * @return ID of the callback. Use #gpio_monitor_remove_callback to detach your callback.
-+ * @return ID of the callback. Use #interrupt_configure to detach your callback.
+- * @return ID of the callback (positive integer) if successful, -1 otherwise.
++ * @return 0 if successful, -1 otherwise.
   */
  int motion_click_attach_callback(uint8_t mikrobus_index, void(*callback)(uint8_t));
  
 diff --git a/src/click/motion.c b/src/click/motion.c
-index 2df2f19..b3cdd8d 100644
+index 4d34e9b..b3cdd8d 100644
 --- a/src/click/motion.c
 +++ b/src/click/motion.c
 @@ -1,7 +1,8 @@
@@ -42,12 +42,12 @@ index 2df2f19..b3cdd8d 100644
          if (!gpio_init(MIKROBUS_1_INT)
           && !gpio_set_direction(MIKROBUS_1_INT, GPIO_INPUT)
 -         && !gpio_monitor_init())
--            return gpio_monitor_add_callback(MIKROBUS_1_INT, GPIO_RAISING, callback);
+-            return gpio_monitor_add_callback(MIKROBUS_1_INT, GPIO_EDGE, callback);
 -    case MIKROBUS_2:
 -        if (!gpio_init(MIKROBUS_2_INT)
 -         && !gpio_set_direction(MIKROBUS_2_INT, GPIO_INPUT)
 -         && !gpio_monitor_init())
--            return gpio_monitor_add_callback(MIKROBUS_2_INT, GPIO_RAISING, callback);
+-            return gpio_monitor_add_callback(MIKROBUS_2_INT, GPIO_EDGE, callback);
 +         && !interrupt_configure(callback))
 +            return 0;
      default:

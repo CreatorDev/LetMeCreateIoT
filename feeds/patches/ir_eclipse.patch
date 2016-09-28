@@ -18,10 +18,10 @@ index fb5acfa..f4ebff7 100644
  int ir_eclipse_click_add_callback(uint8_t mikrobus_index, void (*callback)(uint8_t));
  
 diff --git a/src/click/ir_eclipse.c b/src/click/ir_eclipse.c
-index 22ee17c..811740a 100644
+index 22ee17c..a68dde0 100644
 --- a/src/click/ir_eclipse.c
 +++ b/src/click/ir_eclipse.c
-@@ -2,7 +2,7 @@
+@@ -2,34 +2,18 @@
  #include "letmecreate/click/ir_eclipse.h"
  #include "letmecreate/core/common.h"
  #include "letmecreate/core/gpio.h"
@@ -30,17 +30,23 @@ index 22ee17c..811740a 100644
  
  
  int ir_eclipse_click_add_callback(uint8_t mikrobus_index, void (*callback)(uint8_t))
-@@ -13,9 +13,6 @@ int ir_eclipse_click_add_callback(uint8_t mikrobus_index, void (*callback)(uint8
-     case MIKROBUS_1:
-         gpio_pin = MIKROBUS_1_INT;
-         break;
+ {
+-    uint8_t gpio_pin;
+-
+-    switch (mikrobus_index) {
+-    case MIKROBUS_1:
+-        gpio_pin = MIKROBUS_1_INT;
+-        break;
 -    case MIKROBUS_2:
 -        gpio_pin = MIKROBUS_2_INT;
 -        break;
-     default:
-         fprintf(stderr, "ir_eclipse: Invalid mikrobus index.\n");
-         return -1;
-@@ -26,10 +23,8 @@ int ir_eclipse_click_add_callback(uint8_t mikrobus_index, void (*callback)(uint8
+-    default:
+-        fprintf(stderr, "ir_eclipse: Invalid mikrobus index.\n");
+-        return -1;
+-    }
+-
+     if (callback == NULL) {
+         fprintf(stderr, "ir_eclipse: Callback must not be null.\n");
          return -1;
      }
  

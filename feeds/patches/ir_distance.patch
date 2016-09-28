@@ -1,0 +1,14 @@
+diff --git a/src/click/ir_distance.c b/src/click/ir_distance.c
+index 8f80dcd..182669c 100644
+--- a/src/click/ir_distance.c
++++ b/src/click/ir_distance.c
+@@ -14,9 +14,6 @@ static int set_enable_pin(uint8_t mikrobus_index, bool enable)
+     case MIKROBUS_1:
+         rst_pin = MIKROBUS_1_RST;
+         break;
+-    case MIKROBUS_2:
+-        rst_pin = MIKROBUS_2_RST;
+-        break;
+     default:
+         fprintf(stderr, "ir_distance: Invalid mikrobus_index.\n");
+         return -1;
