@@ -23,6 +23,8 @@ Supported clicks:
   - Air Quality
   - Alcohol
   - Color
+  - IR Eclipse
+  - IR Distance
   - Joystick
   - 8x8R (Led Matrix)
   - Proximity
