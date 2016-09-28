@@ -1,6 +1,6 @@
 /**
  * @file gpio.h
- * @author Michal Tusnio
+ * @author Francois Berder, Michal Tusnio
  * @date 2016
  * @copyright 3-clause BSD
  */
