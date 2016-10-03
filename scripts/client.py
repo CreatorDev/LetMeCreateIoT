@@ -18,6 +18,7 @@ parser.add_argument("-w", "--wait", help="Wait time between messages in miliseco
 args = parser.parse_args()
 
 import socket
+import time
 
 server_ip = args.ip[0]
 server_port = args.dest_port
@@ -44,3 +45,6 @@ while True:
         message_count = message_count - 1;
         if message_count == 0:
             break
+
+    if wait_time > 0:
+        time.sleep(wait_time/1000.0)
