@@ -1,0 +1,28 @@
+language: C
+dist: trusty
+sudo: required
+env:
+    global:
+        - XC32_URL="http://ww1.microchip.com/downloads/en/DeviceDoc/xc32-v1.42-full-install-linux-installer.run"
+        - XC32_PATH="/opt/microchip/xc32/v1.42/bin"
+        - XC32_DL="$HOME/xc32.run"
+        - CONTIKI="$HOME/contiki"
+        - CONTIKI_REPO="https://github.com/CreatorDev/contiki.git"
+before_install:
+    - sudo dpkg --add-architecture i386
+    - sudo apt-get update
+    - sudo apt-get install libc6:i386
+    - wget -O $XC32_DL $XC32_URL
+    - chmod +x $XC32_DL
+    - sudo $XC32_DL --mode unattended --netservername localhost
+    - export PATH="$PATH:$XC32_PATH"
+    - mkdir -p $CONTIKI
+    - git clone --branch=creator $CONTIKI_REPO $CONTIKI/
+    - cd $CONTIKI && git submodule init && git submodule update
+script:
+    - cd $TRAVIS_BUILD_DIR
+    - ./install.sh -p $CONTIKI
+    - cd $TRAVIS_BUILD_DIR/examples
+    - for dir in $TRAVIS_BUILD_DIR/examples/*; do cd $dir; make; done
+    
+
