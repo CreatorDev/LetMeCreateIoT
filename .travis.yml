@@ -6,7 +6,7 @@ env:
         - XC32_URL="http://ww1.microchip.com/downloads/en/DeviceDoc/xc32-v1.42-full-install-linux-installer.run"
         - XC32_PATH="/opt/microchip/xc32/v1.42/bin"
         - XC32_DL="$HOME/xc32.run"
-        - CONTIKI="$HOME/contiki"
+        - CONTIKI="$HOME/test_contiki"
         - CONTIKI_REPO="https://github.com/CreatorDev/contiki.git"
 before_install:
     - sudo dpkg --add-architecture i386
@@ -22,5 +22,4 @@ before_install:
 script:
     - cd $TRAVIS_BUILD_DIR
     - ./install.sh -p $CONTIKI
-    - cd $TRAVIS_BUILD_DIR/examples
-    - for dir in $TRAVIS_BUILD_DIR/examples/*; do echo "***Building example $dir***"; cd $dir; make; done
+    - $TRAVIS_BUILD_DIR/.travis/build_examples.sh
