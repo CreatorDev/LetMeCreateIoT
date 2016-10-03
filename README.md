@@ -84,14 +84,15 @@ To use include the appropriate header files in your project, eg.:
 For reference how to use the different interfaces or click wrappers refer to a wide selection of 
 examples in the examples directory.
 
-### UDP server
+### UDP server & client
 
-In addition to wrappers for common networking functionality you can also find a simple UDP server to
-modify for any of your projects. To use it modify server.py to reflect the structure of your data 
-and copy it to the CI40. Make sure Python3 is installed then run the server:
+In addition to wrappers for common networking functionality the repository contains two Python scripts
+that can be used as 6lowpan client/server. Both of them can be found in the scripts directory, and
+can be freely modifid to send and receive application data. For more help run:
 
 ```python
-python3 server.py
+python3 server.py -h
+python3 client.py -h
 ```
 
 ### Debug
