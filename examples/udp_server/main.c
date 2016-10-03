@@ -13,7 +13,7 @@
 #define SERVER_PORT 3000
 #define CLIENT_PORT 3001
 #define SERVER_IP_ADDR "fe80:0000:0000:0000:28e9:3285:421c:bc82"
-#define BUFFER_SIZE 128
+#define BUFFER_SIZE 4096
 
 PROCESS(main_process, "Main process");
 AUTOSTART_PROCESSES(&main_process);
