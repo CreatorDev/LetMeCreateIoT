@@ -23,6 +23,4 @@ script:
     - cd $TRAVIS_BUILD_DIR
     - ./install.sh -p $CONTIKI
     - cd $TRAVIS_BUILD_DIR/examples
-    - for dir in $TRAVIS_BUILD_DIR/examples/*; do cd $dir; make; done
-    
-
+    - for dir in $TRAVIS_BUILD_DIR/examples/*; do echo "***Building example $dir***"; cd $dir; make; done
