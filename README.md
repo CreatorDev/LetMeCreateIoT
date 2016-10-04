@@ -113,7 +113,7 @@ CFLAGS += -DDEBUG_IP=6lowpan:ip:of:ci40
 Then use the INIT_NETWORK_DEBUG and PRINTF macros in code:
 ```C
 /* ... */
-#include "letmecreate/core/network.h"
+#include "letmecreate/core/debug.h"
 
 PROCESS(main_process, "Main process");
 AUTOSTART_PROCESSES(&main_process);
