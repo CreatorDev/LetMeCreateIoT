@@ -1,5 +1,10 @@
 # LetMeCreateIoT
 
+Master  
+[![Build Status](https://travis-ci.org/mtusnio/LetMeCreateIoT.svg?branch=master)](https://travis-ci.org/mtusnio/LetMeCreateIoT)  
+Dev  
+[![Build Status](https://travis-ci.org/mtusnio/LetMeCreateIoT.svg?branch=dev)](https://travis-ci.org/mtusnio/LetMeCreateIoT)
+
 ## Introduction
 
 A collection of wrappers for the Contiki interfaces made to speed up the development of applications 
