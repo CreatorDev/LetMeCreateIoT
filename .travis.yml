@@ -23,5 +23,6 @@ before_install:
 script:
     - cd $TRAVIS_BUILD_DIR
     - ./install.sh -p $CONTIKI
-    - $TRAVIS_SCRIPTS/build_apps.sh $TRAVIS_BUILD_DIR/examples
     - $TRAVIS_SCRIPTS/compile_python_scripts.sh
+    - $TRAVIS_SCRIPTS/build_apps.sh $TRAVIS_BUILD_DIR/examples
+    - $TRAVIS_SCRIPTS/build_apps.sh $TRAVIS_BUILD_DIR/tests
