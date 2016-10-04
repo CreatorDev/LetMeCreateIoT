@@ -11,6 +11,7 @@ for dir in $EXAMPLES_DIR/*; do
     if [[ $? -ne 0 ]]; then
         echo "Build of $EXAMPLE_NAME failed"
         FAILS+=($EXAMPLE_NAME)
+        continue
     fi
 
     ls *.hex 1>/dev/null 2>&1
