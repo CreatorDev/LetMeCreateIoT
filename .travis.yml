@@ -8,6 +8,7 @@ env:
         - XC32_DL="$HOME/xc32.run"
         - CONTIKI="$HOME/test_contiki"
         - CONTIKI_REPO="https://github.com/CreatorDev/contiki.git"
+        - TRAVIS_SCRIPTS="$TRAVIS_BUILD_DIR/.travis"
 before_install:
     - sudo dpkg --add-architecture i386
     - sudo apt-get update
@@ -22,5 +23,5 @@ before_install:
 script:
     - cd $TRAVIS_BUILD_DIR
     - ./install.sh -p $CONTIKI
-    - $TRAVIS_BUILD_DIR/.travis/build_examples.sh
-    - $TRAVIS_BUILD_DIR/.travis/compile_python_scripts.sh
+    - $TRAVIS_SCRIPTS/build_apps.sh $TRAVIS_BUILD_DIR/examples
+    - $TRAVIS_SCRIPTS/compile_python_scripts.sh

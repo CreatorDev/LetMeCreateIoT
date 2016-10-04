@@ -1,12 +1,21 @@
 #!/bin/bash
 
-EXAMPLES_DIR=$(dirname $(readlink -f $0))/../examples
+if [[ $# -ne 1 ]]; then
+    exit 1
+fi
+
+BASE_DIR=$(readlink -f $1)
 
 FAILS=()
-for dir in $EXAMPLES_DIR/*; do
-    EXAMPLE_NAME=$(basename $dir)
-    echo "*** Building example $EXAMPLE_NAME ***"
+for dir in $BASE_DIR/*; do
     cd $dir
+
+    if [[ ! -f "./Makefile" ]]; then
+        continue
+    fi
+    EXAMPLE_NAME=$(basename $dir)
+    echo "*** Building app $EXAMPLE_NAME ***"
+
     make
     if [[ $? -ne 0 ]]; then
         echo "Build of $EXAMPLE_NAME failed"
@@ -22,6 +31,6 @@ for dir in $EXAMPLES_DIR/*; do
 done
 
 if [[ ${#FAILS[@]} > 0 ]]; then
-    echo "Examples failed to build: ${FAILS[@]}"
+    echo "Apps that failed to build: ${FAILS[@]}"
     exit 1
 fi
