@@ -12,6 +12,7 @@ function print_help {
          "i.e. './click/*' will match all files in the click directory, while '*relay.*' will" \
          "match 'click/relay.c' and 'click/relay.h'"
     echo "-s: Skips the feed downloads and installs files stored only locally"
+    echo "-u: Uninstalls the library from Contiki folder"
 }
 
 function install_files {
@@ -134,10 +135,41 @@ function copy_local_files_to_staging {
     cp -r $BASE_DIR/src/* $STAGING_DIR/
 }
 
+function uninstall {
+    if [[ ! -L $CONTIKI_SYMLINK ]]; then
+        echo "No Contiki symlink found, uninstall aborted"
+        return 0
+    fi
+
+
+    echo "Removing LMC direcotry"
+    rm -rf "$CONTIKI_SYMLINK/$LIBRARY_DIR_NAME/$LMC_DIR_NAME"
+
+    if [[ $? -ne 0 ]]; then
+        echo "Failed to remove the LMC dir"
+        return 1
+    fi
+    local MAKEFILE="$CONTIKI_SYMLINK/Makefile.include"
+
+    echo "Clearing the Makefile"
+    sed -i -e "s/$LIBRARY_DIR_NAME\/$LMC_DIR_NAME\/[a-z]* //g" $MAKEFILE
+    if [[ $? -ne 0 ]]; then
+        echo "Cleanup of the Contiki Makefile failed, verify if LMC was removed from it"
+    fi
+
+    echo "Removing symlink"
+    unlink $CONTIKI_SYMLINK
+}
+
 EXCLUDED=()
 SKIP_CHECKOUT=false
+BASE_DIR=$(dirname $(readlink -f $0))
+CONTIKI_SYMLINK="$BASE_DIR/contiki"
+LIBRARY_DIR_NAME="core"
+LMC_DIR_NAME="letmecreate"
 
-while getopts ":e:p:s" opt; do
+
+while getopts ":e:p:su" opt; do
     case $opt in
         e)
             EXCLUDED+=("$OPTARG")
@@ -152,6 +184,15 @@ while getopts ":e:p:s" opt; do
             print_help
             exit 1
             ;;
+        u)
+            uninstall
+            if [[ $? -ne 0 ]]; then
+                echo "Uninstall failed"
+                exit 1
+            fi
+            echo "Uninstall finished"
+            exit 0
+            ;;
         \?)
             echo "Unrecognised option: -$OPTARG" >&2
             print_help
@@ -160,8 +201,6 @@ while getopts ":e:p:s" opt; do
     esac
 done
 
-BASE_DIR=$(dirname $(readlink -f $0))
-CONTIKI_SYMLINK="$BASE_DIR/contiki"
 
 if [[ -z $CONTIKI ]]; then
     if [[ -d "$CONTIKI_SYMLINK" ]]; then
@@ -179,8 +218,6 @@ if [[ ${#EXCLUDED[@]} -gt 0 ]]; then
     echo "Excluding regexes: ${EXCLUDED[@]}"
 fi
 
-LIBRARY_DIR_NAME="core"
-LMC_DIR_NAME="letmecreate"
 LMC_DIR="$CONTIKI/$LIBRARY_DIR_NAME/$LMC_DIR_NAME"
 SRC_DIR="$BASE_DIR/src"
 INCLUDE_DIR="$BASE_DIR/include"
