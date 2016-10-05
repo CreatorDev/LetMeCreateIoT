@@ -26,3 +26,4 @@ script:
     - $TRAVIS_SCRIPTS/compile_python_scripts.sh
     - $TRAVIS_SCRIPTS/build_apps.sh $TRAVIS_BUILD_DIR/examples
     - $TRAVIS_SCRIPTS/build_apps.sh $TRAVIS_BUILD_DIR/tests
+    - $TRAVIS_SCRIPTS/uninstall_test.sh
