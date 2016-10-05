@@ -33,7 +33,7 @@ function install_files {
     grep -E --quiet "MODULES(.*?)$LIBRARY_DIR_NAME/$LMC_DIR_NAME/core" $MAKEFILE
     if [[ $? -eq 1 ]]; then
         echo "Adding LMC core module to Contiki makefile..."
-        sed -i "0,/MODULES +=/s//MODULES += ${LIBRARY_DIR_NAME}\/${LMC_DIR_NAME}\/core/" $MAKEFILE
+        sed -i -e "0,/MODULES +=/s//MODULES += ${LIBRARY_DIR_NAME}\/${LMC_DIR_NAME}\/core/" $MAKEFILE
         if [[ $? -ne 0 ]]; then
             echo "Sed failed"
             return 1
@@ -46,7 +46,7 @@ function install_files {
     grep -E --quiet "MODULES(.*?)$LIBRARY_DIR_NAME/$LMC_DIR_NAME/click" $MAKEFILE
     if [[ $? -eq 1 ]]; then
         echo "Adding LMC click module to Contiki makefile..."
-        sed -i "0,/MODULES +=/s//MODULES += ${LIBRARY_DIR_NAME}\/${LMC_DIR_NAME}\/click/" $MAKEFILE
+        sed -i -e "0,/MODULES +=/s//MODULES += ${LIBRARY_DIR_NAME}\/${LMC_DIR_NAME}\/click/" $MAKEFILE
         if [[ $? -ne 0 ]]; then
             echo "Sed failed"
             return 1
