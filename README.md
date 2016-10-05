@@ -50,6 +50,14 @@ choice and run
 make
 ```
 
+### Uninstalling
+
+If the Contiki symlink is not removed the library can be uninstalled with a single command:
+
+```sh
+./install.sh -u
+```
+
 ### Updating
 
 To update the library run:
