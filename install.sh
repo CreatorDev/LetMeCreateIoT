@@ -31,15 +31,29 @@ function install_files {
     MAKEFILE=$CONTIKI/Makefile.include
 
     grep --quiet -P "MODULES(.*?)$LIBRARY_DIR_NAME/$LMC_DIR_NAME/core" $MAKEFILE
-    if [[ $? -ne 0 ]]; then
+    if [[ $? -eq 1 ]]; then
         echo "Adding LMC core module to Contiki makefile..."
         sed -i "0,/MODULES +=/s//MODULES += ${LIBRARY_DIR_NAME}\/${LMC_DIR_NAME}\/core/" $MAKEFILE
+        if [[ $? -ne 0 ]]; then
+            echo "Sed failed"
+            return 1
+        fi
+    elif [[ $? -gt 1 ]]; then
+        echo "Grep failed"
+        exit 1
     fi
 
     grep --quiet -P "MODULES(.*?)$LIBRARY_DIR_NAME/$LMC_DIR_NAME/click" $MAKEFILE
-    if [[ $? -ne 0 ]]; then
+    if [[ $? -eq 0 ]]; then
         echo "Adding LMC click module to Contiki makefile..."
         sed -i "0,/MODULES +=/s//MODULES += ${LIBRARY_DIR_NAME}\/${LMC_DIR_NAME}\/click/" $MAKEFILE
+        if [[ $? -ne 0 ]]; then
+            echo "Sed failed"
+            return 1
+        fi
+    elif [[ $? -gt 1 ]]; then
+        echo "Grep failed"
+        exit 1
     fi
 
     if [[ -d "$CONTIKI_SYMLINK" ]]; then
@@ -51,6 +65,7 @@ function install_files {
     if [[ $? -ne 0 ]]; then
         echo "Failed to create symlink, continuing..."
     fi
+
 
     echo "Library installed successfully"
 
