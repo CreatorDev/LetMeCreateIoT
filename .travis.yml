@@ -20,9 +20,9 @@ before_install:
     - mkdir -p $CONTIKI
     - git clone --branch=creator $CONTIKI_REPO $CONTIKI/
     - cd $CONTIKI && git submodule init && git submodule update
+install:
+    - $TRAVIS_BUILD_DIR/install.sh -p $CONTIKI
 script:
-    - cd $TRAVIS_BUILD_DIR
-    - ./install.sh -p $CONTIKI
     - $TRAVIS_SCRIPTS/compile_python_scripts.sh
     - $TRAVIS_SCRIPTS/build_apps.sh $TRAVIS_BUILD_DIR/examples
     - $TRAVIS_SCRIPTS/build_apps.sh $TRAVIS_BUILD_DIR/tests
