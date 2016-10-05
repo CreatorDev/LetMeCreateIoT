@@ -28,7 +28,7 @@ function install_files {
         cp -r $STAGING_DIR/* $LMC_DIR/
     fi
 
-    MAKEFILE=$CONTIKI/Makefile.include
+    local MAKEFILE=$CONTIKI/Makefile.include
 
     grep -E --quiet "MODULES(.*?)$LIBRARY_DIR_NAME/$LMC_DIR_NAME/core" $MAKEFILE
     if [[ $? -eq 1 ]]; then
