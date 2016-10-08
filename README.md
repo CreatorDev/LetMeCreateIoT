@@ -142,7 +142,7 @@ python3 debug_server.py
 To disable debugging simply remove DEBUG_IP from CFLAGS. In this case INIT_NETWORK_DEBUG will 
 resolve to no code at all and PRINTF will act as the standard printf function. For a full example 
 program visit [examples/debug](https://github.com/mtusnio/LetMeCreateIoT/tree/dev/examples/debug). 
-Additionally, a few other examples also incorporate this debug functionality.
+Additionally, all other examples can be used with network debug enabled by following the above steps.
 
 ### Compatibility with LMC
 
