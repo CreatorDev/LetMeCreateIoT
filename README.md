@@ -97,15 +97,22 @@ To use include the appropriate header files in your project, eg.:
 For reference how to use the different interfaces or click wrappers refer to a wide selection of 
 examples in the examples directory.
 
-### UDP server & client
+### CI40 UDP server & client
 
 In addition to wrappers for common networking functionality the repository contains two Python scripts
 that can be used as 6lowpan client/server. Both of them can be found in the scripts directory, and
 can be freely modifid to send and receive application data. For more help run:
 
-```python
+```sh
 python3 server.py -h
 python3 client.py -h
+```
+
+If Python3 is not installed use [opkg](https://docs.creatordev.io/ci40/guides/openwrt-platform/#using-opkg)
+to install the package:
+
+```sh
+opkg install python3
 ```
 
 ### Debug
