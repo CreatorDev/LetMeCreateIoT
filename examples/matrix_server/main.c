@@ -9,6 +9,8 @@
 #include "letmecreate/core/network.h"
 #include "letmecreate/click/led_matrix.h"
 
+#include "letmecreate/core/debug.h"
+
 #define SERVER_PORT 3000
 #define CLIENT_PORT 3001
 
@@ -20,17 +22,17 @@ AUTOSTART_PROCESSES(&main_process);
 PROCESS_THREAD(main_process, ev, data)
 {
     PROCESS_BEGIN();
-
+    INIT_NETWORK_DEBUG();
     {
         // Due to the way Contiki protothreads work this needs to be static,
         // otherwise the data will be lost when switching to a different thread
         static struct uip_udp_conn * conn;
-        printf("===START===\n");
+        PRINTF("===START===\n");
 
         // Making our IP address constant to match the other example
         if(ipv6_add_address(SERVER_IP_ADDR, NULL, 0) < 0)
         {
-            printf("Failed to set IPV6 address\n");
+            PRINTF("Failed to set IPV6 address\n");
             return 1;
         }
 
@@ -50,7 +52,7 @@ PROCESS_THREAD(main_process, ev, data)
         while(1)
         {
             leds_toggle(LED1);
-            printf("Waiting for data...\n");
+            PRINTF("Waiting for data...\n");
             // Give up the process until some network event pops up
             PROCESS_YIELD();
             if(ev == tcpip_event)

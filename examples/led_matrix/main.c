@@ -7,18 +7,20 @@
 #include "letmecreate/core/spi.h"
 #include "letmecreate/click/led_matrix.h"
 
+#include "letmecreate/core/debug.h"
+
 PROCESS(main_process, "Main process");
 AUTOSTART_PROCESSES(&main_process);
 /*---------------------------------------------------------------------------*/
 PROCESS_THREAD(main_process, ev, data)
 {
     PROCESS_BEGIN();
-
+    INIT_NETWORK_DEBUG();
     {
         static struct etimer et;
         static int i;
 
-        printf("=====Start=====\n");
+        PRINTF("=====Start=====\n");
 
         spi_init(3);
 
@@ -27,7 +29,7 @@ PROCESS_THREAD(main_process, ev, data)
 
         for(i = 0; i <= 99; i++)
         {
-            printf("Displaying %i\n", i);
+            PRINTF("Displaying %i\n", i);
             led_matrix_click_display_number(i);
 
             etimer_set(&et, CLOCK_SECOND);

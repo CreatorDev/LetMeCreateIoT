@@ -10,6 +10,8 @@
 #include "letmecreate/core/interrupts.h"
 #include "letmecreate/core/common.h"
 
+#include "letmecreate/core/debug.h"
+
 void motion_callback(uint8_t event)
 {
     leds_toggle(LED1);
@@ -21,9 +23,9 @@ AUTOSTART_PROCESSES(&main_process);
 PROCESS_THREAD(main_process, ev, data)
 {
     PROCESS_BEGIN();
-
+    INIT_NETWORK_DEBUG();
     {
-        printf("=====Start=====\n");
+        PRINTF("=====Start=====\n");
 
         motion_click_enable(MIKROBUS_1);
 

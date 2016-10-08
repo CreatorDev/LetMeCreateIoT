@@ -5,6 +5,8 @@
 
 #include "letmecreate/core/network.h"
 
+#include "letmecreate/core/debug.h"
+
 #define SERVER_IP_ADDR "fe80:0000:0000:0000:28e9:3285:421c:bc82"
 
 #define SERVER_PORT 3000
@@ -18,14 +20,14 @@ AUTOSTART_PROCESSES(&main_process);
 PROCESS_THREAD(main_process, ev, data)
 {
     PROCESS_BEGIN();
-
+    INIT_NETWORK_DEBUG();
     {
         // Due to the way Contiki protothreads work this needs to be static,
         // otherwise the data will be lost when switching to a different thread
         static struct uip_udp_conn * conn;
         static char buffer[BUFFER_SIZE];
         static int i = 0;
-        printf("===START===\n");
+        PRINTF("===START===\n");
 
         conn = udp_new_connection(CLIENT_PORT, SERVER_PORT, SERVER_IP_ADDR);
 
@@ -34,7 +36,7 @@ PROCESS_THREAD(main_process, ev, data)
             i++;
             sprintf(buffer, "Hello number %i from client", i);
 
-            printf("Sending data: %s\n", buffer);
+            PRINTF("Sending data: %s\n", buffer);
 
             udp_packet_send(conn, buffer, strlen(buffer));
             PROCESS_WAIT_UDP_SENT();
