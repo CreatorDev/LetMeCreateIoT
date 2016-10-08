@@ -7,8 +7,8 @@
 
 #include <string.h>
 
-#include <letmecreate/core/spi.h>
-#include <letmecreate/click/accel.h>
+#include "letmecreate/core/spi.h"
+#include "letmecreate/click/accel.h"
 
 PROCESS(main_process, "Main process");
 AUTOSTART_PROCESSES(&main_process);

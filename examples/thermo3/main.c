@@ -4,8 +4,8 @@
 
 #include <sys/clock.h>
 
-#include <letmecreate/core/i2c.h>
-#include <letmecreate/click/thermo3.h>
+#include "letmecreate/core/i2c.h"
+#include "letmecreate/click/thermo3.h"
 
 PROCESS(main_process, "Main process");
 AUTOSTART_PROCESSES(&main_process);

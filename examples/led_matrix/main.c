@@ -4,8 +4,8 @@
 
 #include <sys/clock.h>
 
-#include <letmecreate/core/spi.h>
-#include <letmecreate/click/led_matrix.h>
+#include "letmecreate/core/spi.h"
+#include "letmecreate/click/led_matrix.h"
 
 PROCESS(main_process, "Main process");
 AUTOSTART_PROCESSES(&main_process);

@@ -6,9 +6,9 @@
 
 #include "dev/leds.h"
 
-#include <letmecreate/click/motion.h>
-#include <letmecreate/core/interrupts.h>
-#include <letmecreate/core/common.h>
+#include "letmecreate/click/motion.h"
+#include "letmecreate/core/interrupts.h"
+#include "letmecreate/core/common.h"
 
 void motion_callback(uint8_t event)
 {
