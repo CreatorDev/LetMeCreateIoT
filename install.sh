@@ -78,7 +78,7 @@ function install_files {
 }
 
 function download_feeds {
-    local FEEDS_FILE="$BASE_DIR/feed"
+    local FEEDS_FILE="$BASE_DIR/feeds/feed"
     local FEEDS_DIR="$BASE_DIR/feeds_tmp"
     local FEEDS_REPO="https://github.com/francois-berder/LetMeCreate"
 
