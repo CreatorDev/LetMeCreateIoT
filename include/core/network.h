@@ -11,11 +11,13 @@
 #include <stdint.h>
 #include <contiki-net.h>
 
-/** Halts the process until UDP data has been sent */
+/** Halts the process until UDP/TCP data has been sent */
 #define PROCESS_WAIT_UDP_SENT() PROCESS_WAIT_EVENT_UNTIL(ev == tcpip_event)
+#define PROCESS_WAIT_TCP_SENT() PROCESS_WAIT_UDP_SENT()
 
-/** Halts the process until UDP data is ready to be received */
+/** Halts the process until UDP/TCP data is ready to be received */
 #define PROCESS_WAIT_UDP_RECEIVED() PROCESS_WAIT_EVENT_UNTIL(ev == tcpip_event && uip_newdata())
+#define PROCESS_WAIT_TCP_RECIEVED() PROCESS_WAIT_UDP_RECEIVED()
 
 /** Halts the process until the UDP connection has been made */
 #define PROCESS_WAIT_UDP_CONNECTED() do {                               \
@@ -105,5 +107,32 @@ int udp_packet_sendto(struct uip_udp_conn * connection, const uint8_t * data, ui
  * @return 0 if no data available, length of the received data if found, -1 if failed
  */
 int udp_packet_receive(uint8_t * data, uint32_t len, struct uip_ip_hdr * packet_data);
+
+/**
+ * @brief Creates a new TCP connection between two endpoints.
+ *
+ * Creates and returns a new TCP connection. For the communication to work the remote host
+ * has to bind a socket to @p remote_port
+ *
+ * @param[in] remote_port Remote port to connect to
+ * @param[in] remote_address, remote address to connect to with this connection.
+ * @return Pointer to a new connection if successful, otherwise NULL
+ */
+struct uip_conn * tcp_new_connection(uint16_t remote_port, const char * remote_address);
+
+/**
+ * @brief Sends data over a TCP connection.
+ *
+ * Uses the IP provided in the connection structure to send a buffer of data.
+ * To make this call blocking until data has been sent call #PROCESS_WAIT_UDP_SENT after this function
+ *
+ * @param[in] connection TCP connection
+ * @param[in] data Data buffer
+ * @param[in] len Length of the data to be sent
+ * @return 0 if successful, -1 if failed
+ */
+int tcp_packet_send(struct uip_conn * connection, const uint8_t * data, uint32_t len);
+
+#define tcp_packet_receive(data, len, packet_data) udp_packet_receive(data, len, packet_data)
 
 #endif
