@@ -9,6 +9,21 @@ env:
         - CONTIKI="$HOME/test_contiki"
         - CONTIKI_REPO="https://github.com/CreatorDev/contiki.git"
         - TRAVIS_SCRIPTS="$TRAVIS_BUILD_DIR/.travis"
+    matrix:
+        - METHOD="build" DIRECTORY="examples/accel"
+        - METHOD="build" DIRECTORY="examples/debug"
+        - METHOD="build" DIRECTORY="examples/joystick"
+        - METHOD="build" DIRECTORY="examples/led_matrix"
+        - METHOD="build" DIRECTORY="examples/matrix_server"
+        - METHOD="build" DIRECTORY="examples/motion"
+        - METHOD="build" DIRECTORY="examples/thermo3"
+        - METHOD="build" DIRECTORY="examples/thermo3_client"
+        - METHOD="build" DIRECTORY="examples/udp_client"
+        - METHOD="build" DIRECTORY="examples/udp_client_mdns"
+        - METHOD="build" DIRECTORY="examples/udp_server"
+        - METHOD="build" DIRECTORY="tests/6lowpan"
+        - METHOD="python"
+        - METHOD="uninstall"
 before_install:
     - sudo dpkg --add-architecture i386
     - sudo apt-get update
@@ -23,7 +38,14 @@ before_install:
 install:
     - $TRAVIS_BUILD_DIR/install.sh -p $CONTIKI
 script:
-    - $TRAVIS_SCRIPTS/compile_python_scripts.sh
-    - $TRAVIS_SCRIPTS/build_apps.sh $TRAVIS_BUILD_DIR/examples
-    - $TRAVIS_SCRIPTS/build_apps.sh $TRAVIS_BUILD_DIR/tests
-    - $TRAVIS_SCRIPTS/uninstall_test.sh
+        - if [[ "$METHOD" == "build" ]]; then
+              cd $TRAVIS_BUILD_DIR/$DIRECTORY &&
+              make && ls *.hex 1>/dev/null 2>&1;
+          fi
+        - if [[ "$METHOD" == "python" ]]; then
+              $TRAVIS_BUILD_DIR/.travis/compile_python_scripts.sh;
+          fi
+        - if [[ "$METHOD" == "uninstall" ]]; then
+              $TRAVIS_BUILD_DIR/.travis/uninstall_test.sh;
+          fi
+
