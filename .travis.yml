@@ -11,6 +11,7 @@ env:
         - TRAVIS_SCRIPTS="$TRAVIS_BUILD_DIR/.travis"
     matrix:
         - METHOD="build" DIRECTORY="examples/accel"
+        - METHOD="build" DIRECTORY="examples/adc"
         - METHOD="build" DIRECTORY="examples/debug"
         - METHOD="build" DIRECTORY="examples/joystick"
         - METHOD="build" DIRECTORY="examples/led_matrix"
