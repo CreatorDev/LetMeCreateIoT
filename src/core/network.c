@@ -220,7 +220,7 @@ int tcp_packet_send(struct uip_conn * connection, const uint8_t * data, uint32_t
         return -1;
     }
 
-    uip_send(connection, data, len);
+    uip_send(data, len);
     tcpip_poll_tcp(connection);
 
     return 0;
