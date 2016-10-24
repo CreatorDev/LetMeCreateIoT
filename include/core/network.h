@@ -17,7 +17,7 @@
 
 /** Halts the process until UDP/TCP data is ready to be received */
 #define PROCESS_WAIT_UDP_RECEIVED() PROCESS_WAIT_EVENT_UNTIL(ev == tcpip_event && uip_newdata())
-#define PROCESS_WAIT_TCP_RECIEVED() PROCESS_WAIT_UDP_RECEIVED()
+#define PROCESS_WAIT_TCP_RECEIVED() PROCESS_WAIT_UDP_RECEIVED()
 
 /** Halts the process until the UDP connection has been made */
 #define PROCESS_WAIT_UDP_CONNECTED() do {                               \
@@ -25,6 +25,7 @@
                    etimer_set(&timer, CLOCK_SECOND);                    \
                    PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&timer));    \
                    } while(0)
+#define PROCESS_WAIT_TCP_CONNECTED() PROCESS_WAIT_UDP_CONNECTED()
 
 /**
  * @brief Adds a local IPv6 address
