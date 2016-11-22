@@ -18,50 +18,50 @@ function print_help {
 # Courtesy of http://stackoverflow.com/questions/3572030/bash-script-absolute-path-with-osx
 # Fixes issues with Macos readlink -f lack of compatibility
 realpath() {
-    [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+    [[ "$1" = /* ]] && echo "$1" || echo "$PWD/${1#./}"
 }
 
 function install_files {
-    if [[ -d $LMC_DIR ]]; then
-        rm -rf $LMC_DIR
+    if [[ -d "$LMC_DIR" ]]; then
+        rm -rf "$LMC_DIR"
     fi
 
-    mkdir -p $LMC_DIR
+    mkdir -p "$LMC_DIR"
 
-    cp -r $SRC_DIR/* $LMC_DIR/
-    cp -r $INCLUDE_DIR/* $LMC_DIR/
+    cp -r "$SRC_DIR"/* "$LMC_DIR/"
+    cp -r "$INCLUDE_DIR"/* "$LMC_DIR/"
 
     if [[ -d "$STAGING_DIR" ]]; then
-        cp -r $STAGING_DIR/* $LMC_DIR/
+        cp -r "$STAGING_DIR"/* "$LMC_DIR/"
     fi
 
-    local MAKEFILE=$CONTIKI/Makefile.include
+    local MAKEFILE="$CONTIKI/Makefile.include"
 
-    grep -E --quiet "MODULES(.*?)$LIBRARY_DIR_NAME/$LMC_DIR_NAME/core" $MAKEFILE
+    grep -E --quiet "MODULES(.*?)$LIBRARY_DIR_NAME/$LMC_DIR_NAME/core" "$MAKEFILE"
     if [[ $? -eq 1 ]]; then
         echo "Adding LMC core module to Contiki makefile..."
-        sed -e "0,/MODULES +=/s//MODULES += ${LIBRARY_DIR_NAME}\/${LMC_DIR_NAME}\/core/" $MAKEFILE > $MAKEFILE.new
+        sed -e "0,/MODULES +=/s//MODULES += ${LIBRARY_DIR_NAME}\/${LMC_DIR_NAME}\/core/" "$MAKEFILE" > "$MAKEFILE.new"
         if [[ $? -ne 0 ]]; then
             echo "Sed failed"
-            rm $MAKEFILE.new
+            rm "$MAKEFILE.new"
             return 1
         fi
-        mv $MAKEFILE.new $MAKEFILE
+        mv "$MAKEFILE.new" "$MAKEFILE"
     elif [[ $? -gt 1 ]]; then
         echo "Grep failed"
         exit 1
     fi
 
-    grep -E --quiet "MODULES(.*?)$LIBRARY_DIR_NAME/$LMC_DIR_NAME/click" $MAKEFILE
+    grep -E --quiet "MODULES(.*?)$LIBRARY_DIR_NAME/$LMC_DIR_NAME/click" "$MAKEFILE"
     if [[ $? -eq 1 ]]; then
         echo "Adding LMC click module to Contiki makefile..."
-        sed -e "0,/MODULES +=/s//MODULES += ${LIBRARY_DIR_NAME}\/${LMC_DIR_NAME}\/click/" $MAKEFILE > $MAKEFILE.new
+        sed -e "0,/MODULES +=/s//MODULES += ${LIBRARY_DIR_NAME}\/${LMC_DIR_NAME}\/click/" "$MAKEFILE" > "$MAKEFILE.new"
         if [[ $? -ne 0 ]]; then
             echo "Sed failed"
-            rm $MAKEFILE.new
+            rm "$MAKEFILE.new"
             return 1
         fi
-        mv $MAKEFILE.new $MAKEFILE
+        mv "$MAKEFILE.new" "$MAKEFILE"
     elif [[ $? -gt 1 ]]; then
         echo "Grep failed"
         exit 1
@@ -88,65 +88,65 @@ function download_feeds {
     local FEEDS_DIR="$BASE_DIR/feeds_tmp"
     local FEEDS_REPO="https://github.com/francois-berder/LetMeCreate"
 
-    if [[ ! -e $FEEDS_FILE ]]; then
+    if [[ ! -e "$FEEDS_FILE" ]]; then
         echo "Could not find the feed tag file"
         return 1
     fi
 
-    local TAG=$(cat $FEEDS_FILE)
+    local TAG=$(cat "$FEEDS_FILE")
 
-    git clone $FEEDS_REPO $FEEDS_DIR
+    git clone "$FEEDS_REPO" "$FEEDS_DIR"
     if [[ $? -ne 0 ]]; then
         echo "Failed to clone feeds repo"
         return 1
     fi
 
-    cd $FEEDS_DIR
-    git checkout $TAG > /dev/null 2>&1
+    cd "$FEEDS_DIR"
+    git checkout "$TAG" > /dev/null 2>&1
 
     if [[ $? -ne 0 ]]; then
         echo "Failed to checkout $TAG"
         return 1
     fi
 
-    cp $BASE_DIR/feeds/patches/*.patch $FEEDS_DIR/
+    cp "$BASE_DIR/feeds/patches/"*.patch "$FEEDS_DIR/"
     for x in *.patch
     do
         echo "Applying patch $x"
-        git apply $x
+        git apply "$x"
     done
 
     # Clear headers and core files
-    rm -rf $FEEDS_DIR/include/letmecreate/core
-    rm -rf $FEEDS_DIR/include/letmecreate/*.h
-    rm -rf $FEEDS_DIR/src/core
+    rm -rf "$FEEDS_DIR/include/letmecreate/core"
+    rm -rf "$FEEDS_DIR/include/letmecreate"/*.h
+    rm -rf "$FEEDS_DIR/src/core"
 
     # Clear files that match the exclude regex
     for I in "${EXCLUDED[@]}"; do
         echo "Removing files matching regex '$I'"
-        cd $FEEDS_DIR/include/letmecreate/
+        cd "$FEEDS_DIR/include/letmecreate/"
         find ./ -wholename "$I" -type f | xargs rm -f
 
-        cd $FEEDS_DIR/src/
+        cd "$FEEDS_DIR/src/"
         find ./ -wholename "$I" -type f | xargs rm -f
     done
 
-    cd $BASE_DIR
+    cd "$BASE_DIR"
     # Copy filtered files over
-    cp -r $FEEDS_DIR/include/letmecreate/* $STAGING_DIR/
-    cp -r $FEEDS_DIR/src/* $STAGING_DIR/
-    cp -r $FEEDS_DIR/include/letmecreate/* $BASE_DIR/include/
-    cp -r $FEEDS_DIR/src/* $BASE_DIR/src/
-    rm -rf $FEEDS_DIR
+    cp -r "$FEEDS_DIR/include/letmecreate"/* "$STAGING_DIR/"
+    cp -r "$FEEDS_DIR/src"/* "$STAGING_DIR/"
+    cp -r "$FEEDS_DIR/include/letmecreate"/* "$BASE_DIR/include/"
+    cp -r "$FEEDS_DIR/src"/* "$BASE_DIR/src/"
+    rm -rf "$FEEDS_DIR"
 }
 
 function copy_local_files_to_staging {
-    cp -r $BASE_DIR/include/* $STAGING_DIR/
-    cp -r $BASE_DIR/src/* $STAGING_DIR/
+    cp -r "$BASE_DIR/include"/* "$STAGING_DIR/"
+    cp -r "$BASE_DIR/src"/* "$STAGING_DIR/"
 }
 
 function uninstall {
-    if [[ ! -L $CONTIKI_SYMLINK ]]; then
+    if [[ ! -L "$CONTIKI_SYMLINK" ]]; then
         echo "No Contiki symlink found, uninstall aborted"
         return 1
     fi
@@ -162,13 +162,13 @@ function uninstall {
     local MAKEFILE="$CONTIKI_SYMLINK/Makefile.include"
 
     echo "Clearing the Makefile"
-    sed -i -e "s/$LIBRARY_DIR_NAME\/$LMC_DIR_NAME\/[a-z]* //g" $MAKEFILE
+    sed -i -e "s/$LIBRARY_DIR_NAME\/$LMC_DIR_NAME\/[a-z]* //g" "$MAKEFILE"
     if [[ $? -ne 0 ]]; then
         echo "Cleanup of the Contiki Makefile failed, verify if LMC was removed from it"
     fi
 
     echo "Removing symlink"
-    unlink $CONTIKI_SYMLINK
+    unlink "$CONTIKI_SYMLINK"
 }
 
 EXCLUDED=()
@@ -212,7 +212,7 @@ while getopts ":e:p:su" opt; do
 done
 
 
-if [[ -z $CONTIKI ]]; then
+if [[ -z "$CONTIKI" ]]; then
     if [[ -d "$CONTIKI_SYMLINK" ]]; then
         echo "Detected contiki directory in the repository at $CONTIKI_SYMLINK"
         CONTIKI=$(realpath "$CONTIKI_SYMLINK")
@@ -238,7 +238,7 @@ if [[ ! -d "$CONTIKI/$LIBRARY_DIR_NAME" ]]; then
     exit 1
 fi
 
-mkdir -p $STAGING_DIR
+mkdir -p "$STAGING_DIR"
 echo "Creating staging dir"
 
 if [[ "$SKIP_CHECKOUT" = false ]]; then
@@ -258,5 +258,5 @@ if [[ $? -ne 0 ]]; then
     exit 1
 fi
 
-rm -rf $STAGING_DIR
+rm -rf "$STAGING_DIR"
 echo "Cleared staging dir"
