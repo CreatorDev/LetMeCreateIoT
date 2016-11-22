@@ -15,6 +15,12 @@ function print_help {
     echo "-u: Uninstalls the library from Contiki folder"
 }
 
+# Courtesy of http://stackoverflow.com/questions/3572030/bash-script-absolute-path-with-osx
+# Fixes issues with Macos readlink -f lack of compatibility
+realpath() {
+    [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+}
+
 function install_files {
     if [[ -d $LMC_DIR ]]; then
         rm -rf $LMC_DIR
@@ -167,7 +173,7 @@ function uninstall {
 
 EXCLUDED=()
 SKIP_CHECKOUT=false
-BASE_DIR=$(dirname $(readlink -f $0))
+BASE_DIR=$(realpath $(dirname $0))
 CONTIKI_SYMLINK="$BASE_DIR/contiki"
 LIBRARY_DIR_NAME="core"
 LMC_DIR_NAME="letmecreate"
@@ -179,7 +185,7 @@ while getopts ":e:p:su" opt; do
             EXCLUDED+=("$OPTARG")
             ;;
         p)
-            CONTIKI=$(readlink -f "$OPTARG")
+            CONTIKI=$(realpath "$OPTARG")
             ;;
         s)
             SKIP_CHECKOUT=true
@@ -209,7 +215,7 @@ done
 if [[ -z $CONTIKI ]]; then
     if [[ -d "$CONTIKI_SYMLINK" ]]; then
         echo "Detected contiki directory in the repository at $CONTIKI_SYMLINK"
-        CONTIKI=$(readlink -f "$CONTIKI_SYMLINK")
+        CONTIKI=$(realpath "$CONTIKI_SYMLINK")
     else
         echo "No symlink detected (is this your first install?). Try: $0 -p contiki_dir"
         exit 1
