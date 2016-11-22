@@ -6,7 +6,7 @@ env:
         - XC32_URL="http://ww1.microchip.com/downloads/en/DeviceDoc/xc32-v1.42-full-install-linux-installer.run"
         - XC32_PATH="/opt/microchip/xc32/v1.42/bin"
         - XC32_DL="$HOME/xc32.run"
-        - CONTIKI="$HOME/test_contiki"
+        - CONTIKI="$HOME/test contiki"
         - CONTIKI_REPO="https://github.com/CreatorDev/contiki.git"
         - TRAVIS_SCRIPTS="$TRAVIS_BUILD_DIR/.travis"
     matrix:
@@ -29,18 +29,18 @@ before_install:
     - sudo dpkg --add-architecture i386
     - sudo apt-get update
     - sudo apt-get install libc6:i386
-    - wget -O $XC32_DL $XC32_URL
-    - chmod +x $XC32_DL
-    - sudo $XC32_DL --mode unattended --netservername localhost
+    - wget -O "$XC32_DL" "$XC32_URL"
+    - chmod +x "$XC32_DL"
+    - sudo "$XC32_DL" --mode unattended --netservername localhost
     - export PATH="$PATH:$XC32_PATH"
-    - mkdir -p $CONTIKI
-    - git clone --branch=creator $CONTIKI_REPO $CONTIKI/
-    - cd $CONTIKI && git submodule init && git submodule update
+    - mkdir -p "$CONTIKI"
+    - git clone --branch=creator "$CONTIKI_REPO" "$CONTIKI/"
+    - cd "$CONTIKI" && git submodule init && git submodule update
 install:
-    - $TRAVIS_BUILD_DIR/install.sh -p $CONTIKI
+    - $TRAVIS_BUILD_DIR/install.sh -p "$CONTIKI"
 script:
         - if [[ "$METHOD" == "build" ]]; then
-              cd $TRAVIS_BUILD_DIR/$DIRECTORY &&
+              cd "$TRAVIS_BUILD_DIR/$DIRECTORY" &&
               make && ls *.hex 1>/dev/null 2>&1;
           fi
         - if [[ "$METHOD" == "python" ]]; then
