@@ -148,7 +148,7 @@ function copy_local_files_to_staging {
 function uninstall {
     if [[ ! -L $CONTIKI_SYMLINK ]]; then
         echo "No Contiki symlink found, uninstall aborted"
-        return 0
+        return 1
     fi
 
 
