@@ -6,6 +6,7 @@ env:
         - XC32_URL="http://ww1.microchip.com/downloads/en/DeviceDoc/xc32-v1.42-full-install-linux-installer.run"
         - XC32_PATH="/opt/microchip/xc32/v1.42/bin"
         - XC32_DL="$HOME/xc32.run"
+        - LMC_REPO="https://github.com/francois-berder/LetMeCreate/"
         - CONTIKI="$HOME/test contiki"
         - CONTIKI_REPO="https://github.com/CreatorDev/contiki.git"
         - TRAVIS_SCRIPTS="$TRAVIS_BUILD_DIR/.travis"
@@ -24,6 +25,7 @@ env:
         - METHOD="build" DIRECTORY="examples/udp_server"
         - METHOD="build" DIRECTORY="tests/6lowpan"
         - METHOD="python"
+        - METHOD="clean_feeds"
         - METHOD="uninstall"
 before_install:
     - sudo dpkg --add-architecture i386
@@ -48,5 +50,12 @@ script:
           fi
         - if [[ "$METHOD" == "uninstall" ]]; then
               $TRAVIS_BUILD_DIR/.travis/uninstall_test.sh;
+          fi
+        - if [[ "$METHOD" == "clean_feeds" ]]; then
+              mkdir -p $TRAVIS_BUILD_DIR/lmc && 
+              cd $TRAVIS_BUILD_DIR/lmc &&
+              git clone $LMC_REPO . &&
+              git checkout $(cat $TRAVIS_BUILD_DIR/feeds/feed) &&
+              $TRAVIS_BUILD_DIR/feeds/scripts/clean_feeds.sh ./;
           fi
 
