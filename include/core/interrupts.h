@@ -10,6 +10,8 @@
 
 #include <stdint.h>
 
+#include "letmecreate/core/gpio.h"
+
 /** Event on GPIO */
 enum GPIO_EVENT {
     GPIO_RAISING   = 0x01,
