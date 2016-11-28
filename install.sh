@@ -85,7 +85,6 @@ function install_files {
 
 function download_feeds {
     local FEEDS_FILE="$BASE_DIR/feeds/feed"
-    local FEEDS_DIR="$BASE_DIR/feeds_tmp"
     local FEEDS_REPO="https://github.com/francois-berder/LetMeCreate"
 
     if [[ ! -e "$FEEDS_FILE" ]]; then
@@ -182,7 +181,6 @@ CONTIKI_SYMLINK="$BASE_DIR/contiki"
 LIBRARY_DIR_NAME="core"
 LMC_DIR_NAME="letmecreate"
 
-
 while getopts ":e:p:su" opt; do
     case $opt in
         e)
@@ -236,6 +234,7 @@ LMC_DIR="$CONTIKI/$LIBRARY_DIR_NAME/$LMC_DIR_NAME"
 SRC_DIR="$BASE_DIR/src"
 INCLUDE_DIR="$BASE_DIR/include"
 STAGING_DIR="$BASE_DIR/staging_dir"
+FEEDS_DIR="$BASE_DIR/feeds_tmp"
 
 if [[ ! -d "$CONTIKI/$LIBRARY_DIR_NAME" ]]; then
     echo "Could not find directory $LIBRARY_DIR_NAME. Check your contiki path"
@@ -252,12 +251,15 @@ else
 fi
 
 if [[ $? -ne 0 ]]; then
+    rm -rf "$STAGING_DIR"
     echo "Failed to move files to staging"
     exit 1
 fi
 
 install_files
 if [[ $? -ne 0 ]]; then
+    rm -rf "$STAGING_DIR"
+    rm -rf "$FEEDS_DIR"
     echo "Install failed!"
     exit 1
 fi
