@@ -10,7 +10,7 @@ function clear_header_file {
     local FILE=$1
 
     sed -i.bak -e "/letmecreate\/click\/export/d" $FILE || return 1
-    sed -i.bak -e "s/ LETMECREATE_(.*?)_EXPORT / /g" $FILE || return 1
+    sed -i.bak -r -e "s/ LETMECREATE_(.*?)_EXPORT / /g" $FILE || return 1
 
     rm $FILE.bak || return 1
 }
@@ -19,7 +19,7 @@ function clear_source_file {
     local FILE=$1
 
     sed -i.bak -e "s;letmecreate/core/gpio_monitor.h;letmecreate/core/interrupts.h;g" $FILE || return 1
-    sed -i.bak -r "s/gpio_monitor_add_callback\((.*?),(.*?),( *)(.*?)\)/interrupt_configure(\4)/" $FILE || return 1
+    sed -i.bak -r -e "s/gpio_monitor_add_callback\((.*?),(.*?),( *)(.*?)\)/interrupt_configure(\4)/" $FILE || return 1
 
     rm $FILE.bak || return 1
 }
