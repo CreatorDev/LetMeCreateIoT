@@ -114,6 +114,10 @@ function download_feeds {
     do
         echo "Applying patch $x"
         git apply "$x"
+        if [[ $? -ne 0 ]]; then
+            echo "Patch failed to apply, aborting"
+            return 1
+        fi
     done
 
     # Clear headers and core files
