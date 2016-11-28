@@ -1,50 +1,70 @@
 diff --git a/include/letmecreate/click/thermo3.h b/include/letmecreate/click/thermo3.h
-index 30971df..b299282 100644
+index fe90a9e..302e941 100644
 --- a/include/letmecreate/click/thermo3.h
 +++ b/include/letmecreate/click/thermo3.h
-@@ -3,8 +3,6 @@
-  * @author Francois Berder
-  * @date 2016
-  * @copyright 3-clause BSD
-- *
-- * @example thermo3/main.c
+@@ -12,7 +12,6 @@
+ #define __LETMECREATE_CLICK_THERMO3_H__
+ 
+ #include <stdint.h>
+-#include <letmecreate/click/export.h>
+ 
+ /**
+  * @brief Enable Thermo3 click.
+@@ -20,7 +19,7 @@
+  * @param add_bit Thermo3 click has a jumper on its board to change its address (must be 0 or 1)
+  * @return 0 if successful, otherwise it returns -1.
   */
+-int LETMECREATE_CLICK_EXPORT thermo3_click_enable(uint8_t add_bit);
++int thermo3_click_enable(uint8_t add_bit);
  
+ /**
+  * @brief Get a temperature measure (in degrees Celsius) from Thermo3 click.
+@@ -28,26 +27,26 @@ int LETMECREATE_CLICK_EXPORT thermo3_click_enable(uint8_t add_bit);
+  * @param[out] temperature Pointer to a 16-bit variable for writing temperature read from Thermo3 click
+  * @return 0 if successful, otherwise it returns -1.
+  */
+-int LETMECREATE_CLICK_EXPORT thermo3_click_get_temperature(float *temperature);
++int thermo3_click_get_temperature(float *temperature);
  
-@@ -33,7 +31,7 @@ int thermo3_click_get_temperature(float *temperature);
+ /**
   * @brief Configure Thermo3 click to trigger an interrupt if temperature is too high.
   *
   * Notice that once the temperature is higher than threshold, callback will be called up to four
 - * times a second. Use #gpio_monitor_remove_callback to remove callback.
-+ * times a second. Use #interrupt_configure to remove callback.
++ * times a second.
   *
   * @param[in] mikrobus_index Index of the mikrobus used by the click (see #MIKROBUS_INDEX)
   * @param[in] threshold in degrees Celsius
+  * @param[in] callback Function to call if temperature is higher than threshold (must not be null)
+- * @return callback ID (positive integer if successful, -1 otherwise.
++ * @return 1 if successful, -1 otherwise.
+  */
+-int LETMECREATE_CLICK_EXPORT thermo3_click_set_alarm(uint8_t mikrobus_index, float threshold, void(*callback)(uint8_t));
++int thermo3_click_set_alarm(uint8_t mikrobus_index, float threshold, void(*callback)(uint8_t));
+ 
+ /**
+  * @brief Disable Thermo3 click.
+  *
+  * @return 0 if successful, otherwise it returns -1.
+  */
+-int LETMECREATE_CLICK_EXPORT thermo3_click_disable(void);
++int thermo3_click_disable(void);
+ 
+ #endif
 diff --git a/src/click/thermo3.c b/src/click/thermo3.c
-index 076b353..fe6c1c1 100644
+index 8680a84..c4b21d7 100644
 --- a/src/click/thermo3.c
 +++ b/src/click/thermo3.c
 @@ -4,7 +4,7 @@
- #include "letmecreate/click/thermo3.h"
- #include "letmecreate/core/common.h"
- #include "letmecreate/core/gpio.h"
--#include "letmecreate/core/gpio_monitor.h"
-+#include "letmecreate/core/interrupts.h"
- #include "letmecreate/core/i2c.h"
+ #include <letmecreate/click/thermo3.h>
+ #include <letmecreate/core/common.h>
+ #include <letmecreate/core/gpio.h>
+-#include <letmecreate/core/gpio_monitor.h>
++#include <letmecreate/core/interrupts.h>
+ #include <letmecreate/core/i2c.h>
  
  #define TMP102_ADDRESS                  (0x48 | (last_address_bit & 0x01))
-@@ -70,9 +70,8 @@ int thermo3_click_get_temperature(float *temperature)
- 
- int thermo3_click_set_alarm(uint8_t mikrobus_index, float threshold, void(*callback)(uint8_t))
- {
--    uint8_t alarm_pin = 0;
-     uint8_t buffer[3];
--    int alarm_callback_ID = -1;
-+    uint8_t alarm_pin = 0;
- 
-     if (callback == NULL) {
-         fprintf(stderr, "thermo3: Cannot set alarm using null callback.\n");
-@@ -83,9 +82,6 @@ int thermo3_click_set_alarm(uint8_t mikrobus_index, float threshold, void(*callb
+@@ -88,9 +88,6 @@ int thermo3_click_set_alarm(uint8_t mikrobus_index, float threshold, void(*callb
      case MIKROBUS_1:
          alarm_pin = MIKROBUS_1_INT;
          break;
@@ -54,22 +74,15 @@ index 076b353..fe6c1c1 100644
      default:
          fprintf(stderr, "thermo3: Invalid mikrobus index.\n");
          return -1;
-@@ -106,13 +102,13 @@ int thermo3_click_set_alarm(uint8_t mikrobus_index, float threshold, void(*callb
+@@ -111,10 +108,7 @@ int thermo3_click_set_alarm(uint8_t mikrobus_index, float threshold, void(*callb
          return -1;
      }
  
 -    if (gpio_monitor_init() < 0)
-+    if(interrupt_configure(callback) < 0)
-+    {
-+        fprintf(stderr, "thermo3: Failed to configure an interrupt\n");
-         return -1;
-+    }
- 
--    if ((alarm_callback_ID = gpio_monitor_add_callback(alarm_pin, GPIO_FALLING, callback)) < 0)
--        fprintf(stderr, "thermo3: Failed to attach callback to alarm pin.\n");
+-        return -1;
 -
--    return alarm_callback_ID;
-+    return 0;
- }
+-    if ((alarm_callback_ID = gpio_monitor_add_callback(alarm_pin, GPIO_FALLING, callback)) < 0)
++    if (interrupt_configure(callback) < 0)
+         fprintf(stderr, "thermo3: Failed to attach callback to alarm pin.\n");
  
- int thermo3_click_disable(void)
+     return alarm_callback_ID;

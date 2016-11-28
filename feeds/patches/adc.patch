@@ -1,0 +1,20 @@
+diff --git a/include/letmecreate/click/adc.h b/include/letmecreate/click/adc.h
+index a32b899..f92d827 100644
+--- a/include/letmecreate/click/adc.h
++++ b/include/letmecreate/click/adc.h
+@@ -12,7 +12,6 @@
+ 
+ 
+ #include <stdint.h>
+-#include <letmecreate/click/export.h>
+ 
+ /** Channel index of the ADC Click */
+ enum ADC_CLICK_CHANNEL_INDEX {
+@@ -31,6 +30,6 @@ enum ADC_CLICK_CHANNEL_INDEX {
+  * returned is a 12-bit integer.
+  * @return 0 if successful, otherwise it returns -1.
+  */
+-int LETMECREATE_CLICK_EXPORT adc_click_get_raw_value(uint8_t channel, uint16_t *value);
++int adc_click_get_raw_value(uint8_t channel, uint16_t *value);
+ 
+ #endif

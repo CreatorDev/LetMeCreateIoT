@@ -1,31 +1,62 @@
 diff --git a/include/letmecreate/click/motion.h b/include/letmecreate/click/motion.h
-index 1af7454..fe604c6 100644
+index 46776bc..7d6d0eb 100644
 --- a/include/letmecreate/click/motion.h
 +++ b/include/letmecreate/click/motion.h
-@@ -29,7 +29,7 @@ int motion_click_enable(uint8_t mikrobus_index);
+@@ -9,7 +9,6 @@
+ #define __LETMECREATE_CLICK_MOTION_H__
+ 
+ #include <stdint.h>
+-#include <letmecreate/click/export.h>
+ 
+ /**
+  * @brief Enable the Motion Click.
+@@ -17,21 +16,19 @@
+  * @param[in] mikrobus_index Index of the mikrobus used by the click board (see #MIKROBUS_INDEX)
+  * @return 0 if successful, -1 otherwise
+  */
+-int LETMECREATE_CLICK_EXPORT motion_click_enable(uint8_t mikrobus_index);
++int motion_click_enable(uint8_t mikrobus_index);
+ 
+ /**
+  * @brief Attach a callback if movement is detected or if no movement is detected anymore.
+  *
+- * Use #gpio_monitor_remove_callback to detach your callback.
+- * Notice that you can attach multiple callbacks.
+  * The argument of the callback function has value 1 or 2. If it has value 1, it means
+  * that a movement has been detected, and if it has value 2 no movement is detected.
   *
   * @param[in] mikrobus_index Index of the mikrobus used by the click board (see #MIKROBUS_INDEX)
   * @param[in] callback Function to call if movement is detected
 - * @return ID of the callback (positive integer) if successful, -1 otherwise.
-+ * @return 0 if successful, -1 otherwise.
++ * @return 1 if successful, -1 otherwise.
   */
- int motion_click_attach_callback(uint8_t mikrobus_index, void(*callback)(uint8_t));
+-int LETMECREATE_CLICK_EXPORT motion_click_attach_callback(uint8_t mikrobus_index, void(*callback)(uint8_t));
++int motion_click_attach_callback(uint8_t mikrobus_index, void(*callback)(uint8_t));
  
+ /**
+  * @brief Disable the Motion Click.
+@@ -39,6 +36,6 @@ int LETMECREATE_CLICK_EXPORT motion_click_attach_callback(uint8_t mikrobus_index
+  * @param[in] mikrobus_index Index of the mikrobus used by the click board (see #MIKROBUS_INDEX)
+  * @return 0 if successful, -1 otherwise
+  */
+-int LETMECREATE_CLICK_EXPORT motion_click_disable(uint8_t mikrobus_index);
++int motion_click_disable(uint8_t mikrobus_index);
+ 
+ #endif
 diff --git a/src/click/motion.c b/src/click/motion.c
-index 4d34e9b..b3cdd8d 100644
+index 04ef179..8aabf23 100644
 --- a/src/click/motion.c
 +++ b/src/click/motion.c
-@@ -1,7 +1,8 @@
+@@ -1,7 +1,7 @@
  #include <stdio.h>
- #include "letmecreate/click/motion.h"
- #include "letmecreate/core/common.h"
--#include "letmecreate/core/gpio_monitor.h"
-+#include "letmecreate/core/interrupts.h"
-+#include "letmecreate/core/gpio.h"
+ #include <letmecreate/click/motion.h>
+ #include <letmecreate/core/common.h>
+-#include <letmecreate/core/gpio_monitor.h>
++#include <letmecreate/core/interrupts.h>
+ 
  
  int motion_click_enable(uint8_t mikrobus_index)
- {
-@@ -11,11 +12,6 @@ int motion_click_enable(uint8_t mikrobus_index)
+@@ -12,11 +12,6 @@ int motion_click_enable(uint8_t mikrobus_index)
          &&  !gpio_set_direction(MIKROBUS_1_RST, GPIO_OUTPUT)
          &&  !gpio_set_value(MIKROBUS_1_RST, 1))
              return 0;
@@ -37,10 +68,11 @@ index 4d34e9b..b3cdd8d 100644
      default:
          fprintf(stderr, "motion: Invalid mikrobus index.\n");
          return -1;
-@@ -30,13 +26,8 @@ int motion_click_attach_callback(uint8_t mikrobus_index, void(*callback)(uint8_t
+@@ -30,14 +25,8 @@ int motion_click_attach_callback(uint8_t mikrobus_index, void(*callback)(uint8_t
+     switch (mikrobus_index) {
      case MIKROBUS_1:
          if (!gpio_init(MIKROBUS_1_INT)
-          && !gpio_set_direction(MIKROBUS_1_INT, GPIO_INPUT)
+-         && !gpio_set_direction(MIKROBUS_1_INT, GPIO_INPUT)
 -         && !gpio_monitor_init())
 -            return gpio_monitor_add_callback(MIKROBUS_1_INT, GPIO_EDGE, callback);
 -    case MIKROBUS_2:
@@ -48,12 +80,12 @@ index 4d34e9b..b3cdd8d 100644
 -         && !gpio_set_direction(MIKROBUS_2_INT, GPIO_INPUT)
 -         && !gpio_monitor_init())
 -            return gpio_monitor_add_callback(MIKROBUS_2_INT, GPIO_EDGE, callback);
-+         && !interrupt_configure(callback))
-+            return 0;
++         && !gpio_set_direction(MIKROBUS_1_INT, GPIO_INPUT))
++            return interrupt_configure(callback);
      default:
          fprintf(stderr, "motion: Invalid mikrobus index.\n");
          return -1;
-@@ -53,11 +44,6 @@ int motion_click_disable(uint8_t mikrobus_index)
+@@ -54,11 +43,6 @@ int motion_click_disable(uint8_t mikrobus_index)
          &&  !gpio_set_direction(MIKROBUS_1_RST, GPIO_OUTPUT)
          &&  !gpio_set_value(MIKROBUS_1_RST, 0))
              return 0;

@@ -1,0 +1,20 @@
+diff --git a/include/letmecreate/click/light.h b/include/letmecreate/click/light.h
+index e16f197..8ab7d09 100644
+--- a/include/letmecreate/click/light.h
++++ b/include/letmecreate/click/light.h
+@@ -9,7 +9,6 @@
+ #define __LETMECREATE_CLICK_LIGHT_H__
+ 
+ #include <stdint.h>
+-#include <letmecreate/click/export.h>
+ 
+ /**
+  * @brief Get light intensity measurement from Light Click.
+@@ -21,6 +20,6 @@
+  * @param[in] use_spi 0: use AN output, otherwise read value from SPI
+  * @return 0 if successful, -1 otherwise
+  */
+-int LETMECREATE_CLICK_EXPORT light_click_get_measure(uint8_t mikrobus_index, uint16_t *measure, uint8_t use_spi);
++int light_click_get_measure(uint8_t mikrobus_index, uint16_t *measure, uint8_t use_spi);
+ 
+ #endif

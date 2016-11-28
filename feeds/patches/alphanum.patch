@@ -1,0 +1,79 @@
+diff --git a/include/letmecreate/click/alphanum.h b/include/letmecreate/click/alphanum.h
+index 28a2545..2c4030e 100644
+--- a/include/letmecreate/click/alphanum.h
++++ b/include/letmecreate/click/alphanum.h
+@@ -11,7 +11,6 @@
+ #define __LETMECREATE_CLICK_ALPHANUM_H__
+ 
+ #include <stdint.h>
+-#include <letmecreate/click/export.h>
+ 
+ /**
+  * @brief Initialise the Alphanum Click.
+@@ -21,7 +20,7 @@
+  * @param[in] mikrobus_index Index of the mikrobus (see #MIKROBUS_INDEX)
+  * @return 0 if successful, -1 otherwise
+  */
+-int LETMECREATE_CLICK_EXPORT alphanum_click_init(uint8_t mikrobus_index);
++int alphanum_click_init(uint8_t mikrobus_index);
+ 
+ /**
+  * @brief Convert a character to a 14bit value.
+@@ -34,7 +33,7 @@ int LETMECREATE_CLICK_EXPORT alphanum_click_init(uint8_t mikrobus_index);
+  * @param[out] value 14bit value which encodes the character (must not be null)
+  * @return 0 if successful, -1 otherwise
+  */
+-int LETMECREATE_CLICK_EXPORT alphanum_click_get_char(char c, uint16_t *value);
++int alphanum_click_get_char(char c, uint16_t *value);
+ 
+ /**
+  * @brief Latch two characters in the LED drivers.
+@@ -46,7 +45,7 @@ int LETMECREATE_CLICK_EXPORT alphanum_click_get_char(char c, uint16_t *value);
+  * @param[in] b Character on right display
+  * @return 0 if successful, -1 otherwise
+  */
+-int LETMECREATE_CLICK_EXPORT alphanum_click_write(char a, char b);
++int alphanum_click_write(char a, char b);
+ 
+ /**
+  * @brief Latch two values in the LED drivers.
+@@ -55,20 +54,20 @@ int LETMECREATE_CLICK_EXPORT alphanum_click_write(char a, char b);
+  * @param[in] b Value for right display
+  * @return 0 if successful, -1 otherwise
+  */
+-int LETMECREATE_CLICK_EXPORT alphanum_click_raw_write(uint16_t a, uint16_t b);
++int alphanum_click_raw_write(uint16_t a, uint16_t b);
+ 
+ /**
+  * @brief Select the left display.
+  *
+  * @return 0 if successful, -1 otherwise
+  */
+-int LETMECREATE_CLICK_EXPORT alphanum_click_select_left_display(void);
++int alphanum_click_select_left_display(void);
+ 
+ /**
+  * @brief Select the right display.
+  *
+  * @return 0 if successful, -1 otherwise
+  */
+-int LETMECREATE_CLICK_EXPORT alphanum_click_select_right_display(void);
++int alphanum_click_select_right_display(void);
+ 
+ #endif
+diff --git a/src/click/alphanum.c b/src/click/alphanum.c
+index 14d00cc..87959f6 100644
+--- a/src/click/alphanum.c
++++ b/src/click/alphanum.c
+@@ -180,11 +180,6 @@ int alphanum_click_init(uint8_t bus)
+             gpio_pin_oe = MIKROBUS_1_INT;
+             gpio_pin_oe2 = MIKROBUS_1_PWM;
+             break;
+-        case MIKROBUS_2:
+-            gpio_pin_le2 = MIKROBUS_2_RST;
+-            gpio_pin_oe = MIKROBUS_2_INT;
+-            gpio_pin_oe2 = MIKROBUS_2_PWM;
+-            break;
+         default:
+             fprintf(stderr, "alphanum: Invalid mikrobus index.\n");
+             return -1;

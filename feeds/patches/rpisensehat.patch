@@ -1,0 +1,1017 @@
+diff --git a/include/letmecreate/rpisensehat/attiny88.h b/include/letmecreate/rpisensehat/attiny88.h
+deleted file mode 100755
+index ba5b337..0000000
+--- a/include/letmecreate/rpisensehat/attiny88.h
++++ /dev/null
+@@ -1,27 +0,0 @@
+-/**
+- * @file attiny88.h
+- * @author Francois Berder
+- * @date 2016
+- * @copyright 3-clause BSD
+- */
+-
+-
+-#ifndef __LETMECREATE_RPISENSEHAT_ATTINY88_H__
+-#define __LETMECREATE_RPISENSEHAT_ATTINY88_H__
+-
+-#include <stdint.h>
+-
+-enum RPISENSEHAT_JOYSTICK_STATE {
+-    JOYSTICK_LEFT       = 0x10,
+-    JOYSTICK_RIGHT      = 0x02,
+-    JOYSTICK_DOWN       = 0x01,
+-    JOYSTICK_UP         = 0x04,
+-    JOYSTICK_PRESSED    = 0x08
+-};
+-
+-int attiny88_enable(void);
+-int attiny88_get_joystick_input(uint8_t *state);
+-int attiny88_set_leds_state(uint8_t *pixels);
+-int attiny88_display_rainbow(void);
+-int attiny88_disable(void);
+-#endif
+diff --git a/include/letmecreate/rpisensehat/board.h b/include/letmecreate/rpisensehat/board.h
+deleted file mode 100644
+index 875cd0e..0000000
+--- a/include/letmecreate/rpisensehat/board.h
++++ /dev/null
+@@ -1,122 +0,0 @@
+-/**
+- * @file board.h
+- * @author Francois Berder
+- * @date 2016
+- * @copyright 3-clause BSD
+- */
+-
+-
+-#ifndef __LETMECREATE_RPISENSEHAT_BOARD_H__
+-#define __LETMECREATE_RPISENSEHAT_BOARD_H__
+-
+-#include <stdint.h>
+-#include <letmecreate/rpisensehat/export.h>
+-
+-
+-/**
+- * @brief Initialise all sensors on board.
+- *
+- * @return 0 if successful, -1 otherwise.
+- */
+-int LETMECREATE_RPISENSEHAT_EXPORT rpisensehat_init(void);
+-
+-/**
+- * @brief Read the temperature measurement from humidity sensor.
+- *
+- * @param[out] temperature Temperature in degrees celsius
+- * @return 0 if successful, -1 otherwise.
+- */
+-int LETMECREATE_RPISENSEHAT_EXPORT rpisensehat_get_temperature(float *temperature);
+-
+-/**
+- * @brief Read humidity measurement from humidity sensor.
+- *
+- * @param[out] humidity Percentage of air humidity
+- * @return 0 if successful, -1 otherwise.
+- */
+-int LETMECREATE_RPISENSEHAT_EXPORT rpisensehat_get_humidity(float *humidity);
+-
+-/**
+- * @brief Read pressure measurement from pressure sensor.
+- *
+- * @param[out] pressure Pressure in hPa
+- * @return 0 if successful, -1 otherwise.
+- */
+-int LETMECREATE_RPISENSEHAT_EXPORT rpisensehat_get_pressure(float *pressure);
+-
+-/**
+- * @brief Read acccelerometer measurement from accel/mag/gyro sensor.
+- *
+- * @param[out] accelX X component of acceleration in g
+- * @param[out] accelY Y component of acceleration in g
+- * @param[out] accelZ Z component of acceleration in g
+- * @return 0 if successful, -1 otherwise.
+- */
+-int LETMECREATE_RPISENSEHAT_EXPORT rpisensehat_get_accelerometer_measure(float *accelX, float *accelY, float *accelZ);
+-
+-/**
+- * @brief Read gyroscope measurement from accel/mag/gyro sensor.
+- *
+- * @param[out] gyroX X component in degrees per second
+- * @param[out] gyroY Y component in degrees per second
+- * @param[out] gyroZ Z component in degrees per second
+- * @return 0 if successful, -1 otherwise.
+- */
+-int LETMECREATE_RPISENSEHAT_EXPORT rpisensehat_get_gyroscope_measure(float *gyroX, float *gyroY, float *gyroZ);
+-
+-/**
+- * @brief Read magnetometer measurement from accel/mag/gyro sensor.
+- *
+- * @param[out] magX X component in gauss
+- * @param[out] magY Y component in gauss
+- * @param[out] magZ Z component in gauss
+- * @return 0 if successful, -1 otherwise.
+- */
+-int LETMECREATE_RPISENSEHAT_EXPORT rpisensehat_get_magnetometer_measure(float *magX, float *magY, float *magZ);
+-
+-/**
+- * @brief Read joystick position.
+- *
+- * @param[out] state (see #RPISENSEHAT_JOYSTICK_STATE for meaning of each value)
+- * @return 0 if successful, -1 otherwise.
+- */
+-int LETMECREATE_RPISENSEHAT_EXPORT rpisensehat_get_joystick_input(uint8_t *state);
+-
+-/**
+- * @brief Set LED's
+- *
+- * Layout of the array:
+- *
+- *  RGB RGB RGB RGB RGB RGB RGB RGB
+- *  RGB RGB RGB RGB RGB RGB RGB RGB
+- *  RGB RGB RGB RGB RGB RGB RGB RGB
+- *  RGB RGB RGB RGB RGB RGB RGB RGB
+- *  RGB RGB RGB RGB RGB RGB RGB RGB
+- *  RGB RGB RGB RGB RGB RGB RGB RGB
+- *  RGB RGB RGB RGB RGB RGB RGB RGB
+- *  RGB RGB RGB RGB RGB RGB RGB RGB
+- *
+- * The first 24 bytes of the array stores the first line of the LED's, the
+- * following 24 bytes stores the second line, etc.
+- * Each value of the array should not be greater than 0x1F.
+- *
+- * @param[in] pixels Array of 8 bits pixels.
+- * @return 0 if successful, -1 otherwise.
+- */
+-int LETMECREATE_RPISENSEHAT_EXPORT rpisensehat_set_leds_state(uint8_t *pixels);
+-
+-/**
+- * @brief Display a rainbow on the LED matrix.
+- *
+- * @return 0 if successful, -1 otherwise.
+- */
+-int LETMECREATE_RPISENSEHAT_EXPORT rpisensehat_display_rainbow(void);
+-
+-/**
+- * @brief Power-down all sensors on board.
+- *
+- * @return 0 if successful, -1 otherwise.
+- */
+-int LETMECREATE_RPISENSEHAT_EXPORT rpisensehat_release(void);
+-
+-#endif
+diff --git a/include/letmecreate/rpisensehat/hts221.h b/include/letmecreate/rpisensehat/hts221.h
+deleted file mode 100644
+index e7a9e9b..0000000
+--- a/include/letmecreate/rpisensehat/hts221.h
++++ /dev/null
+@@ -1,17 +0,0 @@
+-/**
+- * @file hts221.h
+- * @author Francois Berder
+- * @date 2016
+- * @copyright 3-clause BSD
+- */
+-
+-
+-#ifndef __LETMECREATE_RPISENSEHAT_HTS221_H__
+-#define __LETMECREATE_RPISENSEHAT_HTS221_H__
+-
+-int hts221_enable(void);
+-int hts221_get_temperature_measure(float *temperature);
+-int hts221_get_humidity_measure(float *humidity);
+-int hts221_disable(void);
+-
+-#endif
+diff --git a/include/letmecreate/rpisensehat/lps25h.h b/include/letmecreate/rpisensehat/lps25h.h
+deleted file mode 100644
+index 56b6645..0000000
+--- a/include/letmecreate/rpisensehat/lps25h.h
++++ /dev/null
+@@ -1,15 +0,0 @@
+-/**
+- * @file lps25h.h
+- * @author Francois Berder
+- * @date 2016
+- * @copyright 3-clause BSD
+- */
+-
+-#ifndef __LETMECREATE_RPISENSEHAT_LPS25H_H__
+-#define __LETMECREATE_RPISENSEHAT_LPS25H_H__
+-
+-int lps25h_enable(void);
+-int lps25h_get_pressure_measure(float *pressure);
+-int lps25h_disable(void);
+-
+-#endif
+diff --git a/include/letmecreate/rpisensehat/lsm9ds1.h b/include/letmecreate/rpisensehat/lsm9ds1.h
+deleted file mode 100644
+index 28eb93d..0000000
+--- a/include/letmecreate/rpisensehat/lsm9ds1.h
++++ /dev/null
+@@ -1,17 +0,0 @@
+-/**
+- * @file lsm9ds1.h
+- * @author Francois Berder
+- * @date 2016
+- * @copyright 3-clause BSD
+- */
+-
+-#ifndef __LETMECREATE_RPISENSEHAT_LSM9DS1_H__
+-#define __LETMECREATE_RPISENSEHAT_LSM9DS1_H__
+-
+-int lsm9ds1_enable(void);
+-int lsm9ds1_get_accelerometer_measure(float *accelX, float *accelY, float *accelZ);
+-int lsm9ds1_get_gyroscope_measure(float *gyroX, float *gyroY, float *gyroZ);
+-int lsm9ds1_get_magnetometer_measure(float *magX, float *magY, float *magZ);
+-int lsm9ds1_disable(void);
+-
+-#endif
+diff --git a/src/rpisensehat/attiny88.c b/src/rpisensehat/attiny88.c
+deleted file mode 100755
+index 2d0d97b..0000000
+--- a/src/rpisensehat/attiny88.c
++++ /dev/null
+@@ -1,186 +0,0 @@
+-#include <stdio.h>
+-#include <string.h>
+-#include <time.h>
+-#include <letmecreate/core/gpio.h>
+-#include <letmecreate/core/i2c.h>
+-#include <letmecreate/rpisensehat/attiny88.h>
+-
+-/* I2C slave address */
+-#define ATTINY88_ADDRESS    (0x46)
+-
+-/* Commands */
+-#define KEYS_CMD            (0xF2)
+-#define LEDS_CMD            (0x00)
+-
+-
+-/* Values for displaying a rainbow on LED matrix.
+- * (copied from https://github.com/raspberrypi/rpi-sense/blob/master/main.c)
+- */
+-static uint8_t rainbow[] = {
+-    0x1F, 0x1F, 0x1F, 0x1F, 0x14, 0x03, 0x00, 0x00,
+-    0x00, 0x00, 0x03, 0x12, 0x1F, 0x1F, 0x1F, 0x1F,
+-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x07,
+-
+-    0x1F, 0x1F, 0x1F, 0x12, 0x03, 0x00, 0x00, 0x00,
+-    0x00, 0x04, 0x14, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F,
+-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x1D,
+-
+-    0x1F, 0x1F, 0x11, 0x02, 0x00, 0x00, 0x00, 0x00,
+-    0x05, 0x15, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x0B,
+-    0x00, 0x00, 0x00, 0x00, 0x00, 0x09, 0x1F, 0x1F,
+-
+-    0x1F, 0x0F, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
+-    0x17, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x0A, 0x00,
+-    0x00, 0x00, 0x00, 0x00, 0x0A, 0x1F, 0x1F, 0x1F,
+-
+-    0x0E, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03,
+-    0x1F, 0x1F, 0x1F, 0x1F, 0x1D, 0x08, 0x00, 0x00,
+-    0x00, 0x00, 0x01, 0x0B, 0x1F, 0x1F, 0x1F, 0x1F,
+-
+-    0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x14,
+-    0x1F, 0x1F, 0x1F, 0x1B, 0x07, 0x00, 0x00, 0x00,
+-    0x00, 0x01, 0x0C, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F,
+-
+-    0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x15, 0x1F,
+-    0x1F, 0x1F, 0x19, 0x06, 0x00, 0x00, 0x00, 0x00,
+-    0x02, 0x0E, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x12,
+-
+-    0x00, 0x00, 0x00, 0x00, 0x05, 0x17, 0x1F, 0x1F,
+-    0x1F, 0x17, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00,
+-    0x0F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x0F, 0x02,
+-};
+-
+-static void sleep_50ms(void)
+-{
+-    struct timespec rem, req = {
+-        .tv_sec = 0,
+-        .tv_nsec = 50000000
+-    };
+-
+-    while (nanosleep(&req, &rem))
+-        req = rem;
+-}
+-
+-static int reset(void)
+-{
+-    if (gpio_init(GPIO_21) < 0
+-    ||  gpio_set_direction(GPIO_21, GPIO_OUTPUT) < 0)
+-        return -1;
+-
+-    if (gpio_set_value(GPIO_21, 0) < 0)
+-        return -1;
+-
+-    sleep_50ms();
+-
+-    if (gpio_set_value(GPIO_21, 1) < 0)
+-        return -1;
+-
+-    sleep_50ms();
+-    sleep_50ms();
+-
+-    return 0;
+-}
+-
+-
+-int attiny88_enable(void)
+-{
+-    uint8_t pixels[64*3];
+-
+-    /* Reset Atmel Chip otherwise it hangs the I2C bus. */
+-    if (reset() < 0) {
+-        fprintf(stderr, "attiny88: Failed to reset chip.\n");
+-        return -1;
+-    }
+-
+-    /* Switch off LED's */
+-    memset(pixels, 0, sizeof(pixels));
+-    return attiny88_set_leds_state(pixels);
+-}
+-
+-int attiny88_get_joystick_input(uint8_t *state)
+-{
+-    if (state == NULL) {
+-        fprintf(stderr, "attiny88: Cannot store joystick state using null pointer.\n");
+-        return -1;
+-    }
+-
+-    if (i2c_write_byte(ATTINY88_ADDRESS, KEYS_CMD) < 0
+-    ||  i2c_read_byte(ATTINY88_ADDRESS, state) < 0)
+-        return -1;
+-
+-    return 0;
+-}
+-
+-int attiny88_set_leds_state(uint8_t *pixels)
+-{
+-    uint8_t col = 0, row = 0;
+-    uint8_t buffer[64*3+1];
+-    uint8_t *values = NULL;
+-
+-    if (pixels == NULL) {
+-        fprintf(stderr, "attiny88: Cannot set leds using null buffer.\n");
+-        return -1;
+-    }
+-
+-    buffer[0] = LEDS_CMD;
+-    memcpy(&buffer[1], pixels, 64*3);
+-
+-    /* Pixels need to be sent to the atmel chip using this layout:
+-     *
+-     * First column:    RRRRRRRR
+-     *                  GGGGGGGG
+-     *                  BBBBBBBB
+-     *
+-     * Second column:   RRRRRRRR
+-     *                  GGGGGGGG
+-     *                  BBBBBBBB
+-     *         ....
+-     *
+-     * Each value must not be greater than 0x1F.
+-     */
+-    values = &buffer[1];
+-    for (row = 0; row < 8; ++row) {
+-        uint8_t i = row * 24;
+-        for (col = 0; col < 8; ++col) {
+-            uint8_t index = (row*8 + col)*3;
+-            values[i]    = pixels[index];
+-            values[i+8]  = pixels[index + 1];
+-            values[i+16] = pixels[index + 2];
+-
+-            /* Ensure that not value is greater than 0x1F */
+-            if (values[i] > 0x1F)
+-                values[i] = 0x1F;
+-            if (values[i+8] > 0x1F)
+-                values[i+8] = 0x1F;
+-            if (values[i+16] > 0x1F)
+-                values[i+16] = 0x1F;
+-
+-            ++i;
+-        }
+-    }
+-
+-    if (i2c_write(ATTINY88_ADDRESS, buffer, sizeof(buffer)) < 0)
+-        return -1;
+-
+-    return 0;
+-}
+-
+-int attiny88_display_rainbow(void)
+-{
+-    uint8_t buffer[64*3+1];
+-    buffer[0] = LEDS_CMD;
+-    memcpy(&buffer[1], rainbow, sizeof(rainbow));
+-    if (i2c_write(ATTINY88_ADDRESS, buffer, sizeof(buffer)) < 0)
+-        return -1;
+-
+-    return 0;
+-}
+-
+-int attiny88_disable(void)
+-{
+-    uint8_t pixels[64*3];
+-
+-    /* Switch off LED's */
+-    memset(pixels, 0, sizeof(pixels));
+-    return attiny88_set_leds_state(pixels);
+-}
+diff --git a/src/rpisensehat/board.c b/src/rpisensehat/board.c
+deleted file mode 100644
+index 3251df1..0000000
+--- a/src/rpisensehat/board.c
++++ /dev/null
+@@ -1,74 +0,0 @@
+-#include <time.h>
+-#include <letmecreate/rpisensehat/attiny88.h>
+-#include <letmecreate/rpisensehat/board.h>
+-#include <letmecreate/rpisensehat/hts221.h>
+-#include <letmecreate/rpisensehat/lps25h.h>
+-#include <letmecreate/rpisensehat/lsm9ds1.h>
+-
+-
+-int rpisensehat_init(void)
+-{
+-    if (attiny88_enable() < 0   /* Enable attiny88 (led and joystick) */
+-    ||  hts221_enable() < 0     /* Enable humidity sensor */
+-    ||  lps25h_enable() < 0     /* Enable pressure sensor */
+-    ||  lsm9ds1_enable() < 0)   /* Enable accel/gyro/mag sensor */
+-     return -1;
+-
+-    return 0;
+-}
+-
+-int rpisensehat_get_temperature(float *temperature)
+-{
+-    return hts221_get_temperature_measure(temperature);
+-}
+-
+-int rpisensehat_get_humidity(float *humidity)
+-{
+-    return hts221_get_humidity_measure(humidity);
+-}
+-
+-int rpisensehat_get_pressure(float *pressure)
+-{
+-    return lps25h_get_pressure_measure(pressure);
+-}
+-
+-int rpisensehat_get_accelerometer_measure(float *accelX, float *accelY, float *accelZ)
+-{
+-    return lsm9ds1_get_accelerometer_measure(accelX, accelY, accelZ);
+-}
+-
+-int rpisensehat_get_gyroscope_measure(float *gyroX, float *gyroY, float *gyroZ)
+-{
+-    return lsm9ds1_get_gyroscope_measure(gyroX, gyroY, gyroZ);
+-}
+-
+-int rpisensehat_get_magnetometer_measure(float *magX, float *magY, float *magZ)
+-{
+-    return lsm9ds1_get_magnetometer_measure(magX, magY, magZ);
+-}
+-
+-int rpisensehat_get_joystick_input(uint8_t *state)
+-{
+-    return attiny88_get_joystick_input(state);
+-}
+-
+-int rpisensehat_set_leds_state(uint8_t *pixels)
+-{
+-    return attiny88_set_leds_state(pixels);
+-}
+-
+-int rpisensehat_display_rainbow(void)
+-{
+-    return attiny88_display_rainbow();
+-}
+-
+-int rpisensehat_release(void)
+-{
+-    if (attiny88_disable() < 0  /* Switch off all LED's */
+-    ||  hts221_disable() < 0    /* Disable humidity sensor */
+-    ||  lps25h_disable() < 0    /* Disable pressure sensor */
+-    ||  lsm9ds1_disable() < 0)  /* Disable accel/gyro/mag sensor */
+-        return -1;
+-
+-    return 0;
+-}
+diff --git a/src/rpisensehat/hts221.c b/src/rpisensehat/hts221.c
+deleted file mode 100644
+index f480bdf..0000000
+--- a/src/rpisensehat/hts221.c
++++ /dev/null
+@@ -1,228 +0,0 @@
+-#include <stdio.h>
+-#include <stdint.h>
+-#include <letmecreate/core/i2c.h>
+-#include <letmecreate/rpisensehat/hts221.h>
+-
+-/* I2C address of device */
+-#define HTS221_ADDRESS              (0x5F)
+-
+-/* Register addresses */
+-#define HTS221_DEVICE_ID_REG        (0x0F)
+-#define HTS221_AV_CONF_REG          (0x10)
+-#define HTS221_CTRL1_REG            (0x20)
+-#define HTS221_CTRL2_REG            (0x21)
+-#define HTS221_CTRL3_REG            (0x22)
+-#define HTS221_HUMIDITY_OUT_L_REG   (0x28)
+-#define HTS221_HUMIDITY_OUT_H_REG   (0x29)
+-#define HTS221_TEMP_OUT_L_REG       (0x2A)
+-#define HTS221_TEMP_OUT_H_REG       (0x2B)
+-#define HTS221_H0_RH_X2_REG         (0x30)
+-#define HTS221_H1_RH_X2_REG         (0x31)
+-#define HTS221_T0_DEG_LOW_REG       (0x32)
+-#define HTS221_T1_DEG_LOW_REG       (0x33)
+-#define HTS221_T0_T1_DEG_HIGH_REG   (0x35)
+-#define HTS221_H0_T0_OUT_L_REG      (0x36)
+-#define HTS221_H0_T0_OUT_H_REG      (0x37)
+-#define HTS221_H1_T0_OUT_L_REG      (0x3A)
+-#define HTS221_H1_T0_OUT_H_REG      (0x3B)
+-#define HTS221_T0_OUT_L_REG         (0x3C)
+-#define HTS221_T0_OUT_H_REG         (0x3D)
+-#define HTS221_T1_OUT_L_REG         (0x3E)
+-#define HTS221_T1_OUT_H_REG         (0x3F)
+-
+-/* Register values */
+-#define HTS221_DEVICE_ID    (0xBC)
+-#define ACTIVE_MODE         (0x80)
+-#define ONE_SHOT            (0x00)
+-#define START_CONVERSION    (0x01)
+-
+-
+-/* HTS221 device contains calibration data for temperature and humidity.
+- * Using linear interpolation, it is then possible to convert a 16bit signed
+- * integer to a floating point variable in the right unit (celsius degrees
+- * for temperature, percentage for relative humidity).
+- *
+- * The following formulas are used:
+- *
+- * temperature_a * raw_temperature_measure + temperature_b = temperature in deg celsius
+- *
+- * humidity_a * raw_humidity_measure + humidity_b = relative humidity in %
+- *
+- * This structure contains all calibration coefficients.
+- */
+-static struct {
+-    float temperature_a;
+-    float temperature_b;
+-    float humidity_a;
+-    float humidity_b;
+-} calibration_data;
+-
+-static int check_device_id(void)
+-{
+-    uint8_t device_id = 0;
+-
+-    if (i2c_read_register(HTS221_ADDRESS, HTS221_DEVICE_ID_REG, &device_id) < 0)
+-        return -1;
+-
+-    if (device_id != HTS221_DEVICE_ID) {
+-        fprintf(stderr, "hts221: Invalid device id.\n");
+-        return -1;
+-    }
+-
+-    return 0;
+-}
+-
+-static int read_calibration_data(void)
+-{
+-    uint8_t tmp;
+-    int16_t raw_t0, raw_t1, raw_h0, raw_h1, t0_deg_8x, t1_deg_8x;
+-    float t0_deg, t1_deg;
+-    float rh0, rh1;
+-
+-    /* Reading raw_t0 and raw_t1 */
+-    if (i2c_read_16b_register(HTS221_ADDRESS, HTS221_T0_OUT_L_REG, HTS221_T0_OUT_H_REG, (uint16_t*)&raw_t0) < 0
+-    ||  i2c_read_16b_register(HTS221_ADDRESS, HTS221_T1_OUT_L_REG, HTS221_T1_OUT_H_REG, (uint16_t*)&raw_t1) < 0)
+-        return -1;
+-
+-    /* Since we divide by (raw_t1 - raw_t0) for computing temperature_a,
+-     * we need to make sure we are not going to divide by 0.
+-     */
+-    if (raw_t1 == raw_t0) {
+-        fprintf(stderr, "hts221: Invalid calibration data for temperature.\n");
+-        return -1;
+-    }
+-
+-    /* Reading t0_deg and t1_deg */
+-    if (i2c_read_register(HTS221_ADDRESS, HTS221_T0_T1_DEG_HIGH_REG, &tmp) < 0)
+-        return -1;
+-    t0_deg_8x = (tmp & 0x03) << 8;
+-    t1_deg_8x = (tmp & 0x0C) << 6;
+-
+-    if (i2c_read_register(HTS221_ADDRESS, HTS221_T0_DEG_LOW_REG, &tmp) < 0)
+-        return -1;
+-    t0_deg_8x |= tmp;
+-    t0_deg = ((float)t0_deg_8x)/ 8.f;
+-
+-    if (i2c_read_register(HTS221_ADDRESS, HTS221_T1_DEG_LOW_REG, &tmp) < 0)
+-        return -1;
+-    t1_deg_8x |= tmp;
+-    t1_deg = ((float)t1_deg_8x)/ 8.f;
+-
+-    /* Computing temperature calibration coefficients */
+-    calibration_data.temperature_a = (t1_deg - t0_deg) / ((float)(raw_t1 - raw_t0));
+-    calibration_data.temperature_b = t0_deg - calibration_data.temperature_a * (float)raw_t0;
+-
+-
+-    /* Reading raw_h0 and raw_h1 */
+-    if (i2c_read_16b_register(HTS221_ADDRESS, HTS221_H0_T0_OUT_L_REG, HTS221_H0_T0_OUT_H_REG, (uint16_t*)&raw_h0) < 0)
+-        return -1;
+-    if (i2c_read_16b_register(HTS221_ADDRESS, HTS221_H1_T0_OUT_L_REG, HTS221_H1_T0_OUT_H_REG, (uint16_t*)&raw_h1) < 0)
+-        return -1;
+-
+-    /* Since we divide by (raw_h1 - raw_h0) for computing humidity_a,
+-     * we need to make sure we are not going to divide by 0.
+-     */
+-    if (raw_h1 == raw_h0) {
+-        fprintf(stderr, "hts221: Invalid calibration data for humidity.\n");
+-        return -1;
+-    }
+-
+-    /* Reading rh0 and rh1 */
+-    if (i2c_read_register(HTS221_ADDRESS, HTS221_H0_RH_X2_REG, &tmp) < 0)
+-        return -1;
+-    rh0 = tmp;
+-    rh0 /= 2.f;
+-
+-    if (i2c_read_register(HTS221_ADDRESS, HTS221_H1_RH_X2_REG, &tmp) < 0)
+-        return -1;
+-    rh1 = tmp;
+-    rh1 /= 2.f;
+-
+-    /* Computing humidity calibration coefficients */
+-    calibration_data.humidity_a = (rh1 - rh0) / ((float)(raw_h1 - raw_h0));
+-    calibration_data.humidity_b = rh0 - calibration_data.humidity_a * (float)raw_h0;
+-
+-    return 0;
+-}
+-
+-int hts221_enable(void)
+-{
+-    if (check_device_id() < 0)
+-        return -1;
+-
+-    if (i2c_write_register(HTS221_ADDRESS, HTS221_CTRL1_REG, ACTIVE_MODE | ONE_SHOT) < 0
+-    ||  i2c_write_register(HTS221_ADDRESS, HTS221_CTRL2_REG, 0) < 0     /* Disable heater */
+-    ||  i2c_write_register(HTS221_ADDRESS, HTS221_CTRL3_REG, 0) < 0) {  /* Disable DRDY signal */
+-        fprintf(stderr, "hts221: Failed to configure device.\n");
+-        return -1;
+-    }
+-
+-    if (read_calibration_data() < 0) {
+-        fprintf(stderr, "hts221: Failed to read calibration data.\n");
+-        return -1;
+-    }
+-
+-    return 0;
+-}
+-
+-int hts221_get_temperature_measure(float *temperature)
+-{
+-    uint8_t ctrl2_reg = START_CONVERSION;
+-    int16_t raw_measure = 0;
+-
+-    if (temperature == NULL) {
+-        fprintf(stderr, "hts221: Cannot store temperature using null pointer.\n");
+-        return -1;
+-    }
+-
+-    /* Ask device to perform conversion */
+-    if (i2c_write_register(HTS221_ADDRESS, HTS221_CTRL2_REG, ctrl2_reg) < 0)
+-        return -1;
+-    while (ctrl2_reg & START_CONVERSION) {
+-        if (i2c_read_register(HTS221_ADDRESS, HTS221_CTRL2_REG, &ctrl2_reg) < 0)
+-            return -1;
+-    }
+-
+-    if (i2c_read_16b_register(HTS221_ADDRESS, HTS221_TEMP_OUT_L_REG, HTS221_TEMP_OUT_H_REG, (uint16_t*)&raw_measure) < 0)
+-        return -1;
+-
+-    *temperature = calibration_data.temperature_a * ((float)raw_measure) + calibration_data.temperature_b;
+-
+-    return 0;
+-}
+-
+-int hts221_get_humidity_measure(float *humidity)
+-{
+-    uint8_t ctrl2_reg = START_CONVERSION;
+-    int16_t raw_measure = 0;
+-
+-    if (humidity == NULL) {
+-        fprintf(stderr, "hts221: Cannot store humidity using null pointer.\n");
+-        return -1;
+-    }
+-
+-    /* Ask device to perform conversion */
+-    if (i2c_write_register(HTS221_ADDRESS, HTS221_CTRL2_REG, ctrl2_reg) < 0)
+-        return -1;
+-    while (ctrl2_reg & START_CONVERSION) {
+-        if (i2c_read_register(HTS221_ADDRESS, HTS221_CTRL2_REG, &ctrl2_reg) < 0)
+-            return -1;
+-    }
+-
+-    if (i2c_read_16b_register(HTS221_ADDRESS, HTS221_HUMIDITY_OUT_L_REG, HTS221_HUMIDITY_OUT_H_REG, (uint16_t*)&raw_measure) < 0)
+-        return -1;
+-
+-    *humidity = calibration_data.humidity_a * ((float)raw_measure) + calibration_data.humidity_b;
+-
+-    return 0;
+-}
+-
+-int hts221_disable(void)
+-{
+-    if (i2c_write_register(HTS221_ADDRESS, HTS221_CTRL2_REG, 0) < 0     /* Disable heater */
+-    ||  i2c_write_register(HTS221_ADDRESS, HTS221_CTRL3_REG, 0) < 0     /* Disable DRDY signal */
+-    ||  i2c_write_register(HTS221_ADDRESS, HTS221_CTRL1_REG, 0) < 0)    /* Set device in power-down mode */
+-        return -1;
+-
+-    return 0;
+-}
+diff --git a/src/rpisensehat/lps25h.c b/src/rpisensehat/lps25h.c
+deleted file mode 100644
+index e9eb7c4..0000000
+--- a/src/rpisensehat/lps25h.c
++++ /dev/null
+@@ -1,96 +0,0 @@
+-#include <stdio.h>
+-#include <letmecreate/core/i2c.h>
+-#include <letmecreate/rpisensehat/lps25h.h>
+-
+-/* I2C address of LPS25H device */
+-#define LPS25H_ADDRESS          (0x5C)
+-
+-/* Register addresses */
+-#define LPS25H_DEVICE_ID_REG    (0x0F)
+-#define LPS25H_CTRL1_REG        (0x20)
+-#define LPS25H_CTRL2_REG        (0x21)
+-#define LPS25H_CTRL3_REG        (0x22)
+-#define LPS25H_INT_CFG_REG      (0x24)
+-#define LPS25H_PRESS_OUT_XL_REG (0x28)
+-#define LPS25H_PRESS_OUT_L_REG  (0x29)
+-#define LPS25H_PRESS_OUT_H_REG  (0x2A)
+-
+-/* Register values */
+-#define LPS25H_DEVICE_ID        (0xBD)
+-#define ACTIVE_MODE             (0x80)
+-#define START_CONVERSION        (0x01)
+-
+-
+-static int check_device_id(void)
+-{
+-    uint8_t device_id = 0;
+-
+-    if (i2c_read_register(LPS25H_ADDRESS, LPS25H_DEVICE_ID_REG, &device_id) < 0)
+-        return -1;
+-
+-    if (device_id != LPS25H_DEVICE_ID)
+-        return -1;
+-
+-    return 0;
+-}
+-
+-int lps25h_enable(void)
+-{
+-    if (check_device_id() < 0) {
+-        fprintf(stderr, "lps25h: Invalid device id.\n");
+-        return -1;
+-    }
+-
+-    if (i2c_write_register(LPS25H_ADDRESS, LPS25H_CTRL1_REG, ACTIVE_MODE) < 0
+-    ||  i2c_write_register(LPS25H_ADDRESS, LPS25H_CTRL2_REG, 0) < 0             /* Disable FIFO */
+-    ||  i2c_write_register(LPS25H_ADDRESS, LPS25H_INT_CFG_REG, 0) < 0)          /* Disable interrupts */
+-        return -1;
+-
+-    return 0;
+-}
+-
+-int lps25h_get_pressure_measure(float *pressure)
+-{
+-    uint8_t ctrl2_reg = START_CONVERSION;
+-    uint32_t raw_pressure = 0;
+-    uint8_t tmp = 0;
+-
+-    if (pressure == NULL) {
+-        fprintf(stderr, "lps25h: Cannot store pressure using null pointer.\n");
+-        return -1;
+-    }
+-
+-    /* Ask device to perform conversion */
+-    if (i2c_write_register(LPS25H_ADDRESS, LPS25H_CTRL2_REG, ctrl2_reg) < 0)
+-        return -1;
+-    while (ctrl2_reg & START_CONVERSION) {
+-        if (i2c_read_register(LPS25H_ADDRESS, LPS25H_CTRL2_REG, &ctrl2_reg) < 0)
+-            return -1;
+-    }
+-
+-    /* Read output registers */
+-    if (i2c_read_register(LPS25H_ADDRESS, LPS25H_PRESS_OUT_H_REG, &tmp) < 0)
+-        return -1;
+-    raw_pressure = tmp;
+-    if (i2c_read_register(LPS25H_ADDRESS, LPS25H_PRESS_OUT_L_REG, &tmp) < 0)
+-        return -1;
+-    raw_pressure <<= 8;
+-    raw_pressure |= tmp;
+-    if (i2c_read_register(LPS25H_ADDRESS, LPS25H_PRESS_OUT_XL_REG, &tmp) < 0)
+-        return -1;
+-    raw_pressure <<= 8;
+-    raw_pressure |= tmp;
+-
+-    *pressure = ((float)raw_pressure) / 4096.f;
+-
+-    return 0;
+-}
+-
+-int lps25h_disable(void)
+-{
+-    /* Set device in power down mode */
+-    if (i2c_write_register(LPS25H_ADDRESS, LPS25H_CTRL1_REG, 0) < 0)
+-        return -1;
+-
+-    return 0;
+-}
+diff --git a/src/rpisensehat/lsm9ds1.c b/src/rpisensehat/lsm9ds1.c
+deleted file mode 100644
+index 5dcebfd..0000000
+--- a/src/rpisensehat/lsm9ds1.c
++++ /dev/null
+@@ -1,174 +0,0 @@
+-#include <stdio.h>
+-#include <letmecreate/core/i2c.h>
+-#include <letmecreate/rpisensehat/lsm9ds1.h>
+-
+-/* I2C address for accelerometer and gyroscope */
+-#define LSM9DS1_ACCEL_GYRO_ADDRESS  (0x6A)
+-
+-/* I2C address for magnetometer */
+-#define LSM9DS1_MAG_ADDRESS         (0x1C)
+-
+-/* Register addresses */
+-#define LSM9DS1_DEVICE_ID_REG           (0x0F)
+-#define LSM9DS1_ACCEL_OUT_X_L_REG       (0x28)
+-#define LSM9DS1_GYRO_OUT_X_L_REG        (0x18)
+-#define LSM9DS1_GYRO_CTRL1_REG          (0x10)
+-#define LSM9DS1_GYRO_CTRL4_REG          (0x1E)
+-#define LSM9DS1_ACCEL_CTRL5_REG         (0x1F)
+-#define LSM9DS1_ACCEL_CTRL6_REG         (0x20)
+-#define LSM9DS1_FIFO_CTRL_REG           (0x2E)
+-#define LSM9DS1_MAG_OUT_X_L_REG         (0x28)
+-#define LSM9DS1_MAG_CTRL1_REG           (0x20)
+-#define LSM9DS1_MAG_CTRL2_REG           (0x21)
+-#define LSM9DS1_MAG_CTRL3_REG           (0x22)
+-#define LSM9DS1_MAG_CTRL4_REG           (0x23)
+-
+-/* Register values for accel/gyro */
+-#define LSM9DS1_ACCEL_GYRO_DEVICE_ID        (0x68)
+-#define GYRO_BANDWIDTH                      (0x03)
+-#define GYRO_500_DPS                        (0x08)  /* scale: 500 degrees/second */
+-#define MAX_OUTPUT_RATE                     (0xC0)  /* output rate: 952Hz */
+-#define DPS_PER_LSB                         (0.015258789f)  /* 500/32768 */
+-
+-#define GYRO_X_EN                           (0x08)
+-#define GYRO_Y_EN                           (0x10)
+-#define GYRO_Z_EN                           (0x20)
+-#define ACCEL_X_EN                          (0x08)
+-#define ACCEL_Y_EN                          (0x10)
+-#define ACCEL_Z_EN                          (0x20)
+-#define ACCEL_RANGE_8G                      (0x18)
+-#define G_PER_LSB                           (0.000244141f)  /* 8/32768 */
+-
+-/* Register values for magnetometer */
+-#define LSM9DS1_MAG_DEVICE_ID               (0x3D)
+-#define TEMP_COMPENSATION                   (0x80)
+-#define XY_ULTRA_HIGH_PERF                  (0x60)
+-#define MAG_MAX_OUTPUT_RATE                 (0x1C)
+-#define MAG_8GAUSS                          (0x20)
+-#define Z_ULTRA_HIGH_PERF                   (0xC0)
+-#define GAUSS_PER_LSB                       (0.000244141f)  /* 8/32768 */
+-
+-static int check_device_id(void)
+-{
+-    uint8_t device_id = 0;
+-
+-    if (i2c_read_register(LSM9DS1_ACCEL_GYRO_ADDRESS, LSM9DS1_DEVICE_ID_REG, &device_id) < 0)
+-        return -1;
+-    if (device_id != LSM9DS1_ACCEL_GYRO_DEVICE_ID)
+-        return -1;
+-
+-    if (i2c_read_register(LSM9DS1_MAG_ADDRESS, LSM9DS1_DEVICE_ID_REG, &device_id) < 0)
+-        return -1;
+-    if (device_id != LSM9DS1_MAG_DEVICE_ID)
+-        return -1;
+-
+-    return 0;
+-}
+-
+-int lsm9ds1_enable(void)
+-{
+-    if (check_device_id() < 0) {
+-        fprintf(stderr, "lsm9ds1: Invalid device id.\n");
+-        return -1;
+-    }
+-
+-    /* Configure accelerometer and gyroscope */
+-    if (i2c_write_register(LSM9DS1_ACCEL_GYRO_ADDRESS, LSM9DS1_GYRO_CTRL4_REG, GYRO_X_EN | GYRO_Y_EN | GYRO_Z_EN) < 0
+-    ||  i2c_write_register(LSM9DS1_ACCEL_GYRO_ADDRESS, LSM9DS1_GYRO_CTRL1_REG, MAX_OUTPUT_RATE | GYRO_500_DPS | GYRO_BANDWIDTH) < 0
+-    ||  i2c_write_register(LSM9DS1_ACCEL_GYRO_ADDRESS, LSM9DS1_ACCEL_CTRL5_REG, ACCEL_X_EN | ACCEL_Y_EN | ACCEL_Z_EN) < 0
+-    ||  i2c_write_register(LSM9DS1_ACCEL_GYRO_ADDRESS, LSM9DS1_ACCEL_CTRL6_REG, ACCEL_RANGE_8G | MAX_OUTPUT_RATE) < 0
+-    ||  i2c_write_register(LSM9DS1_ACCEL_GYRO_ADDRESS, LSM9DS1_FIFO_CTRL_REG, 0) < 0)           /* Bypass FIFO */
+-        return -1;
+-
+-    /* Configure magnetometer */
+-    if (i2c_write_register(LSM9DS1_MAG_ADDRESS, LSM9DS1_MAG_CTRL1_REG, TEMP_COMPENSATION | XY_ULTRA_HIGH_PERF | MAG_MAX_OUTPUT_RATE) < 0
+-    ||  i2c_write_register(LSM9DS1_MAG_ADDRESS, LSM9DS1_MAG_CTRL2_REG, MAG_8GAUSS) < 0
+-    ||  i2c_write_register(LSM9DS1_MAG_ADDRESS, LSM9DS1_MAG_CTRL3_REG, 0) < 0
+-    ||  i2c_write_register(LSM9DS1_MAG_ADDRESS, LSM9DS1_MAG_CTRL4_REG, Z_ULTRA_HIGH_PERF) < 0)
+-        return -1;
+-
+-    return 0;
+-}
+-
+-int lsm9ds1_get_accelerometer_measure(float *accelX, float *accelY, float *accelZ)
+-{
+-    int16_t buffer[3];
+-
+-    if (accelX == NULL || accelY == NULL || accelZ == NULL) {
+-        fprintf(stderr, "lsm9ds1: Cannot store accelerometer measure using null pointers.\n");
+-        return -1;
+-    }
+-
+-    if (i2c_write_byte(LSM9DS1_ACCEL_GYRO_ADDRESS, LSM9DS1_ACCEL_OUT_X_L_REG) < 0
+-    ||  i2c_read(LSM9DS1_ACCEL_GYRO_ADDRESS, (uint8_t*)buffer, sizeof(buffer)) < 0)
+-        return -1;
+-
+-    *accelX = (float)(buffer[0]);
+-    *accelY = (float)(buffer[1]);
+-    *accelZ = (float)(buffer[2]);
+-
+-    *accelX *= G_PER_LSB;
+-    *accelY *= G_PER_LSB;
+-    *accelZ *= G_PER_LSB;
+-
+-    return 0;
+-}
+-
+-int lsm9ds1_get_gyroscope_measure(float *gyroX, float *gyroY, float *gyroZ)
+-{
+-    int16_t buffer[3];
+-
+-    if (gyroX == NULL || gyroY == NULL || gyroZ == NULL) {
+-        fprintf(stderr, "lsm9ds1: Cannot store gyroscope measure using null pointers.\n");
+-        return -1;
+-    }
+-
+-    if (i2c_write_byte(LSM9DS1_ACCEL_GYRO_ADDRESS, LSM9DS1_GYRO_OUT_X_L_REG) < 0
+-    ||  i2c_read(LSM9DS1_ACCEL_GYRO_ADDRESS, (uint8_t*)buffer, sizeof(buffer)) < 0)
+-        return -1;
+-
+-    *gyroX = (float)(buffer[0]);
+-    *gyroY = (float)(buffer[1]);
+-    *gyroZ = (float)(buffer[2]);
+-
+-    *gyroX *= DPS_PER_LSB;
+-    *gyroY *= DPS_PER_LSB;
+-    *gyroZ *= DPS_PER_LSB;
+-
+-    return 0;
+-}
+-
+-int lsm9ds1_get_magnetometer_measure(float *magX, float *magY, float *magZ)
+-{
+-    int16_t buffer[3];
+-
+-    if (magX == NULL || magY == NULL || magZ == NULL) {
+-        fprintf(stderr, "lsm9ds1: Cannot store magnetometer measure using null pointers.\n");
+-        return -1;
+-    }
+-
+-    if (i2c_write_byte(LSM9DS1_MAG_ADDRESS, LSM9DS1_MAG_OUT_X_L_REG) < 0
+-    ||  i2c_read(LSM9DS1_MAG_ADDRESS, (uint8_t*)buffer, sizeof(buffer)) < 0)
+-        return -1;
+-
+-    *magX = (float)(buffer[0]);
+-    *magY = (float)(buffer[1]);
+-    *magZ = (float)(buffer[2]);
+-
+-    *magX *= GAUSS_PER_LSB;
+-    *magY *= GAUSS_PER_LSB;
+-    *magZ *= GAUSS_PER_LSB;
+-
+-    return 0;
+-}
+-
+-int lsm9ds1_disable(void)
+-{
+-    if (i2c_write_register(LSM9DS1_ACCEL_GYRO_ADDRESS, LSM9DS1_GYRO_CTRL1_REG, 0) < 0
+-    ||  i2c_write_register(LSM9DS1_ACCEL_GYRO_ADDRESS, LSM9DS1_ACCEL_CTRL6_REG, 0) < 0
+-    ||  i2c_write_register(LSM9DS1_MAG_ADDRESS, LSM9DS1_MAG_CTRL3_REG, 0x3) < 0
+-    ||  i2c_write_register(LSM9DS1_MAG_ADDRESS, LSM9DS1_MAG_CTRL4_REG, 0) < 0)
+-        return -1;
+-
+-    return 0;
+-}
+\ No newline at end of file

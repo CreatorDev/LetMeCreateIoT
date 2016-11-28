@@ -1,9 +1,9 @@
 diff --git a/include/letmecreate/click/bargraph.h b/include/letmecreate/click/bargraph.h
 deleted file mode 100644
-index d2ded30..0000000
+index bec2d0a..0000000
 --- a/include/letmecreate/click/bargraph.h
 +++ /dev/null
-@@ -1,36 +0,0 @@
+@@ -1,37 +0,0 @@
 -/**
 - * @file bargraph.h
 - * @author Francois Berder
@@ -17,6 +17,7 @@ index d2ded30..0000000
 -#define __LETMECREATE_CLICK_BARGRAPH_H__
 -
 -#include <stdint.h>
+-#include <letmecreate/click/export.h>
 -
 -/**
 - * @brief Switch on/off LED's of the Bargraph Click.
@@ -28,7 +29,7 @@ index d2ded30..0000000
 - * significant bits are used.
 - * @return 0 if successful, otherwise it returns -1.
 - */
--int bargraph_click_set_value(uint16_t value);
+-int LETMECREATE_CLICK_EXPORT bargraph_click_set_value(uint16_t value);
 -
 -/**
 - * @brief Set the intensity of the LED's of the Bargraph Click.
@@ -37,19 +38,19 @@ index d2ded30..0000000
 - * @param[in] intensity Must be in range 0..100
 - * @return 0 if successful, otherwise it returns -1.
 - */
--int bargraph_click_set_intensity(uint8_t mikrobus_index, float intensity);
+-int LETMECREATE_CLICK_EXPORT bargraph_click_set_intensity(uint8_t mikrobus_index, float intensity);
 -
 -#endif
 diff --git a/src/click/bargraph.c b/src/click/bargraph.c
 deleted file mode 100644
-index de67acd..0000000
+index 2fed1f2..0000000
 --- a/src/click/bargraph.c
 +++ /dev/null
 @@ -1,23 +0,0 @@
 -#include <stddef.h>
--#include "letmecreate/click/bargraph.h"
--#include "letmecreate/core/pwm.h"
--#include "letmecreate/core/spi.h"
+-#include <letmecreate/click/bargraph.h>
+-#include <letmecreate/core/pwm.h>
+-#include <letmecreate/core/spi.h>
 -
 -
 -int bargraph_click_set_value(uint16_t value)

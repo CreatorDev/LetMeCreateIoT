@@ -21,19 +21,31 @@ Wrappers:
   - Power saving control
 
 Supported clicks:
-  - Relay
-  - Thermo3
-  - Motion
-  - Accel (SPI only)
-  - Air Quality
-  - Alcohol
-  - Color
-  - IR Eclipse
-  - IR Distance
-  - Joystick
   - 8x8R (Led Matrix)
+  - Accel
+  - ADC
+  - Air quality
+  - Alcohol
+  - Alphanum
+  - CO
+  - Color
+  - Color2
+  - EVE
+  - Fan
+  - GYRO
+  - IR distance
+  - IR eclipse
+  - Joystick
+  - Light
+  - Motion
+  - OLED
+  - Opto
   - Proximity
+  - Relay
   - Relay2
+  - Relay4 (partial support)
+  - RTC
+  - Thermo3
 
 ## Installation and updating
 

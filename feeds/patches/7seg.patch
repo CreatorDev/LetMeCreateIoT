@@ -1,9 +1,9 @@
 diff --git a/include/letmecreate/click/7seg.h b/include/letmecreate/click/7seg.h
 deleted file mode 100644
-index 211c629..0000000
+index d70e1fc..0000000
 --- a/include/letmecreate/click/7seg.h
 +++ /dev/null
-@@ -1,47 +0,0 @@
+@@ -1,48 +0,0 @@
 -/**
 - * @file 7seg.h
 - * @author Francois Berder
@@ -17,6 +17,7 @@ index 211c629..0000000
 -#define __LETMECREATE_CLICK_7SEG_H__
 -
 -#include <stdint.h>
+-#include <letmecreate/click/export.h>
 -
 -/**
 - * @brief Display a decimal number on the 7Seg Click.
@@ -28,7 +29,7 @@ index 211c629..0000000
 - * significant bits are used.
 - * @return 0 if successful, otherwise it returns -1.
 - */
--int seven_seg_click_display_decimal_number(uint8_t number);
+-int LETMECREATE_CLICK_EXPORT seven_seg_click_display_decimal_number(uint8_t number);
 -
 -/**
 - * @brief Display a hexidecimal number on the 7Seg Click.
@@ -39,7 +40,7 @@ index 211c629..0000000
 - * @param[in] hex Hexadecimal number
 - * @return 0 if successful, otherwise it returns -1.
 - */
--int seven_seg_click_display_hex_number(uint8_t hex);
+-int LETMECREATE_CLICK_EXPORT seven_seg_click_display_hex_number(uint8_t hex);
 -
 -/**
 - * @brief Set the intensity of the LED's of the 7seg Click.
@@ -48,18 +49,20 @@ index 211c629..0000000
 - * @param[in] intensity Must be in range 0..100
 - * @return 0 if successful, otherwise it returns -1.
 - */
--int seven_seg_click_set_intensity(uint8_t mikrobus_index, float intensity);
+-int LETMECREATE_CLICK_EXPORT seven_seg_click_set_intensity(uint8_t mikrobus_index, float intensity);
 -
 -#endif
 diff --git a/src/click/7seg.c b/src/click/7seg.c
 deleted file mode 100644
-index c3ba760..0000000
+index a13008f..0000000
 --- a/src/click/7seg.c
 +++ /dev/null
-@@ -1,61 +0,0 @@
+@@ -1,63 +0,0 @@
 -#include <stdio.h>
--#include "letmecreate/core/pwm.h"
--#include "letmecreate/core/spi.h"
+-#include <letmecreate/click/7seg.h>
+-#include <letmecreate/core/pwm.h>
+-#include <letmecreate/core/spi.h>
+-
 -
 -static const uint8_t characters[] = {
 -0x7E,   /* 0 */

@@ -1,61 +1,58 @@
 diff --git a/include/letmecreate/click/ir_eclipse.h b/include/letmecreate/click/ir_eclipse.h
-index fb5acfa..f4ebff7 100644
+index b6645cb..8308c97 100644
 --- a/include/letmecreate/click/ir_eclipse.h
 +++ b/include/letmecreate/click/ir_eclipse.h
-@@ -13,12 +13,11 @@
+@@ -9,7 +9,6 @@
+ #define __LETMECREATE_CLICK_IR_ECLIPSE_H__
+ 
+ #include <stdint.h>
+-#include <letmecreate/click/export.h>
+ 
  /**
   * @brief Attach callback triggered if an object is detected.
-  *
-- * To remove this callback, call gpio_monitor_remove_callback function with
-- * the callback ID returned by this function.
-+ * To remove this callback, call #interrupt_configure function to remove the callback
+@@ -19,8 +18,8 @@
   *
   * @param[in] mikrobus_index Index of the mikrobus
   * @param[in] callback Must not be null.
 - * @return A callback ID (positive integer) if successful, -1 otherwise
-+ * @return 0 if successful, -1 otherwise
++ * @return 1 if successful, -1 otherwise
   */
- int ir_eclipse_click_add_callback(uint8_t mikrobus_index, void (*callback)(uint8_t));
+-int LETMECREATE_CLICK_EXPORT ir_eclipse_click_add_callback(uint8_t mikrobus_index, void (*callback)(uint8_t));
++int ir_eclipse_click_add_callback(uint8_t mikrobus_index, void (*callback)(uint8_t));
  
+ #endif
 diff --git a/src/click/ir_eclipse.c b/src/click/ir_eclipse.c
-index 22ee17c..a68dde0 100644
+index 3843e8d..2ac7a67 100644
 --- a/src/click/ir_eclipse.c
 +++ b/src/click/ir_eclipse.c
-@@ -2,34 +2,18 @@
- #include "letmecreate/click/ir_eclipse.h"
- #include "letmecreate/core/common.h"
- #include "letmecreate/core/gpio.h"
--#include "letmecreate/core/gpio_monitor.h"
-+#include "letmecreate/core/interrupts.h"
+@@ -2,7 +2,7 @@
+ #include <letmecreate/click/ir_eclipse.h>
+ #include <letmecreate/core/common.h>
+ #include <letmecreate/core/gpio.h>
+-#include <letmecreate/core/gpio_monitor.h>
++#include <letmecreate/core/interrupts.h>
  
  
  int ir_eclipse_click_add_callback(uint8_t mikrobus_index, void (*callback)(uint8_t))
- {
--    uint8_t gpio_pin;
--
--    switch (mikrobus_index) {
--    case MIKROBUS_1:
--        gpio_pin = MIKROBUS_1_INT;
--        break;
+@@ -13,9 +13,6 @@ int ir_eclipse_click_add_callback(uint8_t mikrobus_index, void (*callback)(uint8
+     case MIKROBUS_1:
+         gpio_pin = MIKROBUS_1_INT;
+         break;
 -    case MIKROBUS_2:
 -        gpio_pin = MIKROBUS_2_INT;
 -        break;
--    default:
--        fprintf(stderr, "ir_eclipse: Invalid mikrobus index.\n");
--        return -1;
--    }
--
-     if (callback == NULL) {
-         fprintf(stderr, "ir_eclipse: Callback must not be null.\n");
+     default:
+         fprintf(stderr, "ir_eclipse: Invalid mikrobus index.\n");
          return -1;
+@@ -27,9 +24,8 @@ int ir_eclipse_click_add_callback(uint8_t mikrobus_index, void (*callback)(uint8
      }
  
--    if (gpio_init(gpio_pin) < 0
+     if (gpio_init(gpio_pin) < 0
 -    ||  gpio_set_direction(gpio_pin, GPIO_INPUT) < 0
 -    ||  gpio_monitor_init() < 0)
-+    if (interrupt_configure(callback) < 0)
++    ||  gpio_set_direction(gpio_pin, GPIO_INPUT) < 0)
          return -1;
  
 -    return gpio_monitor_add_callback(gpio_pin, GPIO_EDGE, callback);
-+    return 0;
++    return interrupt_configure(callback);
  }

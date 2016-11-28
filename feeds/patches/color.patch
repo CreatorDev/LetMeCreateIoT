@@ -1,18 +1,41 @@
 diff --git a/include/letmecreate/click/color.h b/include/letmecreate/click/color.h
-index e7501d4..e1c1538 100644
+index 1e7fcfe..e7501d4 100644
 --- a/include/letmecreate/click/color.h
 +++ b/include/letmecreate/click/color.h
-@@ -3,8 +3,6 @@
-  * @author Matthew Fennell
-  * @date 2016
-  * @copyright 3-clause BSD
-- *
-- * @example color/main.c
-  */
+@@ -11,14 +11,13 @@
+ #define __LETMECREATE_CLICK_COLOR_H__
  
- #ifndef __LETMECREATE_CLICK_COLOR_H__
+ #include <stdint.h>
+-#include <letmecreate/click/export.h>
+ 
+ /**
+  * @brief Enables color click.
+  *
+  * @return 0 if successful, otherwise it returns -1.
+  */
+-int LETMECREATE_CLICK_EXPORT color_click_enable(void);
++int color_click_enable(void);
+ 
+ /**
+  * @brief Reads color measurement from sensor.
+@@ -29,13 +28,13 @@ int LETMECREATE_CLICK_EXPORT color_click_enable(void);
+  * @param[out] blue Blue light intensity
+  * @return 0 if successful, otherwise it returns -1.
+  */
+-int LETMECREATE_CLICK_EXPORT color_click_get_color(uint16_t *clear, uint16_t *red, uint16_t *green, uint16_t *blue);
++int color_click_get_color(uint16_t *clear, uint16_t *red, uint16_t *green, uint16_t *blue);
+ 
+ /**
+  * @brief Disables color click.
+  *
+  * @return 0 if successful, otherwise it returns -1.
+  */
+-int LETMECREATE_CLICK_EXPORT color_click_disable(void);
++int color_click_disable(void);
+ 
+ #endif
 diff --git a/src/click/color.c b/src/click/color.c
-index e7b6e53..9e7515b 100644
+index 867d7b2..246b818 100644
 --- a/src/click/color.c
 +++ b/src/click/color.c
 @@ -1,5 +1,7 @@
@@ -21,9 +44,9 @@ index e7b6e53..9e7515b 100644
 +
 +#include "sys/clock.h"
 +
- #include "letmecreate/click/common.h"
- #include "letmecreate/click/color.h"
- #include "letmecreate/core/i2c.h"
+ #include <letmecreate/click/common.h>
+ #include <letmecreate/click/color.h>
+ #include <letmecreate/core/i2c.h>
 @@ -18,13 +20,7 @@
  
  void sleep_5ms(void)
