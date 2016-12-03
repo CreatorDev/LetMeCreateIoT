@@ -26,6 +26,7 @@ env:
         - METHOD="build" DIRECTORY="tests/6lowpan"
         - METHOD="python"
         - METHOD="clean_feeds"
+        - METHOD="update" DIRECTORY="examples/accel"
         - METHOD="uninstall"
 before_install:
     - sudo dpkg --add-architecture i386
@@ -41,6 +42,10 @@ before_install:
 install:
     - $TRAVIS_BUILD_DIR/install.sh -p "$CONTIKI"
 script:
+        - if [[ "$METHOD" == "update" ]]; then
+              cd $TRAVIS_BUILD_DIR && ./install.sh &&
+              METHOD="build";
+          fi
         - if [[ "$METHOD" == "build" ]]; then
               cd "$TRAVIS_BUILD_DIR/$DIRECTORY" &&
               make && ls *.hex 1>/dev/null 2>&1;
