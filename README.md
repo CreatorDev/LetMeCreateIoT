@@ -16,7 +16,7 @@ Wrappers:
   - GPIO
   - Interrupts
   - ADC
-  - Network
+  - UDP/TCP & network helpers
   - Debug over 6lowpan
   - Power saving control
 

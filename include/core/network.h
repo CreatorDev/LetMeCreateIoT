@@ -1,6 +1,6 @@
 /**
  * @file network.h
- * @author Michal Tusnio
+ * @author Michal Tusnio, Julien D
  * @date 2016
  * @copyright 3-clause BSD
  */
@@ -11,12 +11,16 @@
 #include <stdint.h>
 #include <contiki-net.h>
 
-/** Halts the process until UDP/TCP data has been sent */
+/** Halts the process until UDP data has been sent */
 #define PROCESS_WAIT_UDP_SENT() PROCESS_WAIT_EVENT_UNTIL(ev == tcpip_event)
+
+/** Halts the process until TCP data has been sent */
 #define PROCESS_WAIT_TCP_SENT() PROCESS_WAIT_UDP_SENT()
 
-/** Halts the process until UDP/TCP data is ready to be received */
+/** Halts the process until UDP data is ready to be received */
 #define PROCESS_WAIT_UDP_RECEIVED() PROCESS_WAIT_EVENT_UNTIL(ev == tcpip_event && uip_newdata())
+
+/** Halts the process until TCP data is ready to be received */
 #define PROCESS_WAIT_TCP_RECEIVED() PROCESS_WAIT_UDP_RECEIVED()
 
 /** Halts the process until the UDP connection has been made */
@@ -25,6 +29,8 @@
                    etimer_set(&timer, CLOCK_SECOND);                    \
                    PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&timer));    \
                    } while(0)
+
+/** Halts the process until the TCP connection has been made */
 #define PROCESS_WAIT_TCP_CONNECTED() PROCESS_WAIT_UDP_CONNECTED()
 
 /**
@@ -125,7 +131,7 @@ struct uip_conn * tcp_new_connection(uint16_t remote_port, const char * remote_a
  * @brief Sends data over a TCP connection.
  *
  * Uses the IP provided in the connection structure to send a buffer of data.
- * To make this call blocking until data has been sent call #PROCESS_WAIT_UDP_SENT after this function
+ * To make this call blocking until data has been sent call #PROCESS_WAIT_TCP_SENT after this function
  *
  * @param[in] connection TCP connection
  * @param[in] data Data buffer
@@ -134,6 +140,18 @@ struct uip_conn * tcp_new_connection(uint16_t remote_port, const char * remote_a
  */
 int tcp_packet_send(struct uip_conn * connection, const uint8_t * data, uint32_t len);
 
-#define tcp_packet_receive(data, len, packet_data) udp_packet_receive(data, len, packet_data)
+
+/**
+ * @brief Receives a TCP packet.
+ *
+ * Checks for and receives data available in the TCP buffer
+ * In order to block until there's any data available call #PROCESS_WAIT_TCP_RECEIVED before this function
+ *
+ * @param[out] data Data buffer to write to
+ * @param[in] len Length of the data buffer
+ * @param[out] packet_data Optional, structure containing metadata for the packet
+ * @return 0 if no data available, length of the received data if found, -1 if failed
+ */
+int tcp_packet_receive(uint8_t * data, uint32_t len, struct uip_ip_hdr * packet_data);
 
 #endif

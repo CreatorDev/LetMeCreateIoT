@@ -188,7 +188,7 @@ struct uip_conn * tcp_new_connection(uint16_t remote_port, const char * address)
 {
     struct uip_conn * conn = NULL;
     uip_ipaddr_t addr;
-    
+
     if(!uiplib_ipaddrconv(address, &addr))
     {
         printf("TCP: Failed to convert IP: %s\n", address);
@@ -211,7 +211,7 @@ int tcp_packet_send(struct uip_conn * connection, const uint8_t * data, uint32_t
     if (connection == NULL)
     {
         fprintf(stderr, "TCP: Connection cannot be null\n");
-        return -1;        
+        return -1;
     }
 
     if (data == NULL)
@@ -226,3 +226,7 @@ int tcp_packet_send(struct uip_conn * connection, const uint8_t * data, uint32_t
     return 0;
 }
 
+int tcp_packet_receive(uint8_t * data, uint32_t len, struct uip_ip_hdr * packet_data)
+{
+    return udp_packet_receive(data, len, packet_data);
+}
