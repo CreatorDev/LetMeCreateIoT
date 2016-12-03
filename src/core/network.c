@@ -184,3 +184,45 @@ int udp_packet_receive(uint8_t * data, uint32_t len, struct uip_ip_hdr * packet_
     return 0;
 }
 
+struct uip_conn * tcp_new_connection(uint16_t remote_port, const char * address)
+{
+    struct uip_conn * conn = NULL;
+    uip_ipaddr_t addr;
+    
+    if(!uiplib_ipaddrconv(address, &addr))
+    {
+        printf("TCP: Failed to convert IP: %s\n", address);
+        return NULL;
+    }
+
+    conn = tcp_connect(&addr, UIP_HTONS(remote_port), NULL);
+
+    if (!conn)
+    {
+        printf("TCP: Failed to create connection\n");
+        return NULL;
+    }
+
+    return conn;
+}
+
+int tcp_packet_send(struct uip_conn * connection, const uint8_t * data, uint32_t len)
+{
+    if (connection == NULL)
+    {
+        fprintf(stderr, "TCP: Connection cannot be null\n");
+        return -1;        
+    }
+
+    if (data == NULL)
+    {
+        fprintf(stderr, "TCP: Cannot send null data\n");
+        return -1;
+    }
+
+    uip_send(data, len);
+    tcpip_poll_tcp(connection);
+
+    return 0;
+}
+
