@@ -72,7 +72,10 @@ function install_files {
     fi
 
     echo "Creating symbolic link..."
-    ln -s "$CONTIKI" "$CONTIKI_SYMLINK"
+    if [[ ! -d "$CONTIKI_SYMLINK" ]]; then
+        ln -s "$CONTIKI" "$CONTIKI_SYMLINK"
+    fi
+
     if [[ $? -ne 0 ]]; then
         echo "Failed to create symlink, continuing..."
     fi
@@ -188,6 +191,9 @@ while getopts ":e:p:su" opt; do
             ;;
         p)
             CONTIKI=$(realpath "$OPTARG")
+            if [[ -d "$CONTIKI_SYMLINK" ]]; then
+                unlink "$CONTIKI_SYMLINK"
+            fi
             ;;
         s)
             SKIP_CHECKOUT=true
