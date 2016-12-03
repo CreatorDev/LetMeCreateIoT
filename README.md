@@ -1,8 +1,9 @@
+![logo](https://static.creatordev.io/logo-md-s.svg)
 # LetMeCreateIoT
 
-Master  
+**Master**  
 [![Build Status](https://travis-ci.org/mtusnio/LetMeCreateIoT.svg?branch=master)](https://travis-ci.org/mtusnio/LetMeCreateIoT)  
-Dev  
+**Dev**  
 [![Build Status](https://travis-ci.org/mtusnio/LetMeCreateIoT.svg?branch=dev)](https://travis-ci.org/mtusnio/LetMeCreateIoT)
 
 ## Introduction
@@ -10,42 +11,27 @@ Dev
 A collection of wrappers for the Contiki interfaces made to speed up the development of applications 
 for the Mikro-e PIC32MX clicker.
 
-Wrappers:
-  - I2C
-  - SPI
-  - GPIO
-  - Interrupts
-  - ADC
-  - UDP/TCP & network helpers
-  - Debug over 6lowpan
-  - Power saving control
+|Wrappers||
+|:------------| :-------------------|
+|I²C|SPI|
+|GPIO|Interrupts|
+|ADC|UDP/TCP & network helpers|
+|Debug over 6lowpan|Power saving control|
 
-Supported clicks:
-  - 8x8R (Led Matrix)
-  - Accel
-  - ADC
-  - Air quality
-  - Alcohol
-  - Alphanum
-  - CO
-  - Color
-  - Color2
-  - EVE
-  - Fan
-  - GYRO
-  - IR distance
-  - IR eclipse
-  - Joystick
-  - Light
-  - Motion
-  - OLED
-  - Opto
-  - Proximity
-  - Relay
-  - Relay2
-  - Relay4 (partial support)
-  - RTC
-  - Thermo3
+All drivers are checked out from [LMC 1.3](https://github.com/francois-berder/LetMeCreate/tree/v1.3.0) and Contiki-specific patches are applied on top of them. Any drivers which were not ported are crossed out in the table below.
+
+|Drivers|||
+|:------------|:-------------------|:-------------------|
+|~~7Seg~~|8x8R (Led Matrix)|Accel|
+|ADC|Air quality|Alcohol|
+|Alphanum|~~Bargraph~~|CO|
+|Color|Color2|EVE|
+|Fan|GYRO|IR distance|
+|IR eclipse|Joystick|Light|
+|Motion|OLED|Opto|
+|Proximity|Relay|Relay2|
+|Relay4 (partial support)|RTC|Thermo3|
+|~~Weather~~||||
 
 ## Installation and updating
 
