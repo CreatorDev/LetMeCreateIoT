@@ -11,7 +11,7 @@ function print_help {
          "The regex applies to the filename combined with the top level folder it's in," \
          "i.e. './click/*' will match all files in the click directory, while '*relay.*' will" \
          "match 'click/relay.c' and 'click/relay.h'"
-    echo "-s: Skips the feed downloads and installs files stored only locally"
+    echo "-s: Skips the feed downloads and installs files stored locally"
     echo "-u: Uninstalls the library from Contiki folder"
 }
 
@@ -158,7 +158,7 @@ function uninstall {
     fi
 
 
-    echo "Removing LMC direcotry"
+    echo "Removing LMC directory"
     rm -rf "$CONTIKI_SYMLINK/$LIBRARY_DIR_NAME/$LMC_DIR_NAME"
 
     if [[ $? -ne 0 ]]; then
