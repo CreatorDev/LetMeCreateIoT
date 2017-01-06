@@ -29,13 +29,13 @@ env:
         - METHOD="update" DIRECTORY="examples/accel"
         - METHOD="uninstall"
 before_install:
-    - sudo dpkg --add-architecture i386
-    - sudo apt-get update
-    - sudo apt-get install libc6:i386
-    - wget -O "$XC32_DL" "$XC32_URL"
-    - chmod +x "$XC32_DL"
-    - sudo "$XC32_DL" --mode unattended --netservername localhost
-    - export PATH="$PATH:$XC32_PATH"
+    - if [[ "$METHOD" == "build" || "$METHOD" == "update" ]]; then
+        sudo dpkg --add-architecture i386 && sudo apt-get update
+            && sudo apt-get install libc6:i386 && wget -O "$XC32_DL" "$XC32_URL"
+            && chmod +x "$XC32_DL"
+            && sudo "$XC32_DL" --mode unattended --netservername localhost
+            && export PATH="$PATH:$XC32_PATH";
+      fi
     - mkdir -p "$CONTIKI"
     - git clone --branch=creator "$CONTIKI_REPO" "$CONTIKI/"
     - cd "$CONTIKI" && git submodule init && git submodule update
