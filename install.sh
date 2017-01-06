@@ -223,7 +223,9 @@ done
 if [[ -z "$CONTIKI" ]]; then
     if [[ -d "$CONTIKI_SYMLINK" ]]; then
         echo "Detected contiki directory in the repository at $CONTIKI_SYMLINK"
-        CONTIKI=$(realpath "$CONTIKI_SYMLINK")
+        cd -P "$CONTIKI_SYMLINK"
+        CONTIKI=$(pwd)
+        cd "$BASE_DIR"
     else
         echo "No symlink detected (is this your first install?). Try: $0 -p contiki_dir"
         exit 1
