@@ -11,6 +11,10 @@ env:
         - CONTIKI_REPO="https://github.com/CreatorDev/contiki.git"
         - TRAVIS_SCRIPTS="$TRAVIS_BUILD_DIR/.travis"
     matrix:
+        - METHOD="python"
+        - METHOD="clean_feeds"
+        - METHOD="update" DIRECTORY="examples/accel"
+        - METHOD="uninstall"
         - METHOD="build" DIRECTORY="examples/accel"
         - METHOD="build" DIRECTORY="examples/adc"
         - METHOD="build" DIRECTORY="examples/debug"
@@ -24,10 +28,6 @@ env:
         - METHOD="build" DIRECTORY="examples/udp_client_mdns"
         - METHOD="build" DIRECTORY="examples/udp_server"
         - METHOD="build" DIRECTORY="tests/6lowpan"
-        - METHOD="python"
-        - METHOD="clean_feeds"
-        - METHOD="update" DIRECTORY="examples/accel"
-        - METHOD="uninstall"
 before_install:
     - if [[ "$METHOD" == "build" || "$METHOD" == "update" ]]; then
         sudo dpkg --add-architecture i386 && sudo apt-get update
