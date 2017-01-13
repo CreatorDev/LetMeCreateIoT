@@ -4,6 +4,7 @@ TARGET = mikro-e
 VERSION? = $(shell git describe --abbrev=4 --dirty --always --tags)
 
 CONTIKI_WITH_IPV6 = 1
+CONTIKI_WITH_RPL = 0
 USE_SERIAL_PADS = 1
 
 CFLAGS += -DVERSION=$(VERSION)

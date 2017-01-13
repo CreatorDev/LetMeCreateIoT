@@ -3,6 +3,7 @@ CONTIKI=../../contiki/
 TARGET = mikro-e
 USE_CA8210 = 1
 CONTIKI_WITH_IPV6 = 1
+CONTIKI_WITH_RPL = 0
 
 VERSION? = $(shell git describe --abbrev=4 --dirty --always --tags)
 
