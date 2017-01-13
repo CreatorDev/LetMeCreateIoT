@@ -28,6 +28,7 @@ env:
         - METHOD="build" DIRECTORY="examples/udp_client_mdns"
         - METHOD="build" DIRECTORY="examples/udp_server"
         - METHOD="build" DIRECTORY="examples/power_saving"
+        - METHOD="build" DIRECTORY="examples/opto"
         - METHOD="build" DIRECTORY="tests/6lowpan"
 before_install:
     - if [[ "$METHOD" == "build" || "$METHOD" == "update" ]]; then
