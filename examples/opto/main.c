@@ -27,7 +27,7 @@ PROCESS_THREAD(main_process, ev, data)
         {
             uint8_t state;
             opto_click_read_channel(MIKROBUS_1, OPTO_CLICK_CHANNEL_4, &state);
-            PRINTF("Opto state: %i\n");
+            PRINTF("Opto state: %i\n", state);
         }
     }
 
