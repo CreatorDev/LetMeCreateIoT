@@ -13,18 +13,18 @@
 
 /** GPIO pin number */
 enum GPIO_PIN {
-    AN  = 22,
-    RST = 23,
-    PWM = 73,
-    INT = 21,
-    CS  = 24, // Temporary
+    GPIO_AN  = 22,
+    GPIO_RST = 23,
+    GPIO_PWM = 73,
+    GPIO_INT = 21,
+    GPIO_CS  = 24, // Temporary
 
     /** For CI40 LMC compatibility */
-    MIKROBUS_1_AN  = AN,
-    MIKROBUS_1_RST = RST,
-    MIKROBUS_1_PWM = PWM,
-    MIKROBUS_1_INT = INT,
-    MIKROBUS_1_CS  = CS,
+    MIKROBUS_1_AN  = GPIO_AN,
+    MIKROBUS_1_RST = GPIO_RST,
+    MIKROBUS_1_PWM = GPIO_PWM,
+    MIKROBUS_1_INT = GPIO_INT,
+    MIKROBUS_1_CS  = GPIO_CS,
 };
 
 /** GPIO direction */

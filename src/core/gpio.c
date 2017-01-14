@@ -1,24 +1,26 @@
 #include <letmecreate/core/gpio.h>
 
+#include <p32xxxx.h>
+
 #include <stdio.h>
 #include <pic32_gpio.h>
 
 #define PIN_FUNCTION(func, gpio_pin)   {        \
     switch(gpio_pin)                            \
     {                                           \
-        case(AN):                               \
+        case(GPIO_AN):                          \
         func(G, 9);                             \
         break;                                  \
-        case(RST):                              \
+        case(GPIO_RST):                         \
         func(D, 6);                             \
         break;                                  \
-        case(PWM):                              \
+        case(GPIO_PWM):                         \
         func(B, 8);                             \
         break;                                  \
-        case(INT):                              \
+        case(GPIO_INT):                         \
         func(D, 0);                             \
         break;                                  \
-        case(CS):                               \
+        case(GPIO_CS):                          \
         func(E, 5);                             \
         break;                                  \
         default:                                \
@@ -34,13 +36,13 @@ int gpio_init(uint8_t gpio_pin)
 {
     switch(gpio_pin)
     {
-        case AN:
+        case GPIO_AN:
         GPIO_CONFIGURE_AS_DIGITAL(G, 9);
         break;
-        case PWM:
+        case GPIO_PWM:
         GPIO_CONFIGURE_AS_DIGITAL(B, 8);
         break;
-        case CS:
+        case GPIO_CS:
         GPIO_CONFIGURE_AS_DIGITAL(E, 5);
         default:
         fprintf(stderr, "GPIO: Unknown pin\n");
@@ -71,16 +73,16 @@ int gpio_set_direction(uint8_t gpio_pin, uint8_t dir)
 
     switch(gpio_pin)
     {
-        case AN:
+        case GPIO_AN:
         pin_direction[0] = dir;
         break;
-        case RST:
+        case GPIO_RST:
         pin_direction[1] = dir;
         break;
-        case PWM:
+        case GPIO_PWM:
         pin_direction[2] = dir;
         break;
-        case INT:
+        case GPIO_INT:
         pin_direction[3] = dir;
         break;
         default:
@@ -100,16 +102,16 @@ int gpio_get_direction(uint8_t gpio_pin, uint8_t *dir)
 
     switch(gpio_pin)
     {
-        case AN:
+        case GPIO_AN:
         *dir = pin_direction[0];
         break;
-        case RST:
+        case GPIO_RST:
         *dir = pin_direction[1];
         break;
-        case PWM:
+        case GPIO_PWM:
         *dir = pin_direction[2];
         break;
-        case INT:
+        case GPIO_INT:
         *dir = pin_direction[3];
         break;
         default:

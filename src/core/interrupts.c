@@ -16,7 +16,7 @@ static void interrupt_handler()
     }
 
     uint8_t value;
-    if(gpio_get_value(INT, &value) < 0)
+    if(gpio_get_value(GPIO_INT, &value) < 0)
     {
         fprintf(stderr, "interrupts: Failed to get interrupt value\n");
         return;
