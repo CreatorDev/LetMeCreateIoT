@@ -11,9 +11,7 @@ env:
         - CONTIKI_REPO="https://github.com/CreatorDev/contiki.git"
         - TRAVIS_SCRIPTS="$TRAVIS_BUILD_DIR/.travis"
     matrix:
-        - METHOD="python"
-        - METHOD="clean_feeds"
-        - METHOD="uninstall"
+        - METHOD="scripts"
         - METHOD="build" DIRECTORY="examples"
         - METHOD="build" DIRECTORY="tests"
         - METHOD="update" DIRECTORY="examples"
@@ -38,17 +36,12 @@ script:
         - if [[ "$METHOD" == "build" ]]; then
               $TRAVIS_BUILD_DIR/.travis/build_apps.sh "$TRAVIS_BUILD_DIR/$DIRECTORY";
           fi
-        - if [[ "$METHOD" == "python" ]]; then
-              $TRAVIS_BUILD_DIR/.travis/compile_python_scripts.sh;
-          fi
-        - if [[ "$METHOD" == "uninstall" ]]; then
-              $TRAVIS_BUILD_DIR/.travis/uninstall_test.sh;
-          fi
-        - if [[ "$METHOD" == "clean_feeds" ]]; then
+        - if [[ "$METHOD" == "scripts" ]]; then
+              $TRAVIS_BUILD_DIR/.travis/compile_python_scripts.sh &&
+              $TRAVIS_BUILD_DIR/.travis/uninstall_test.sh &&
               mkdir -p $TRAVIS_BUILD_DIR/lmc && 
               cd $TRAVIS_BUILD_DIR/lmc &&
               git clone $LMC_REPO . &&
               git checkout $(cat $TRAVIS_BUILD_DIR/feeds/feed) &&
               $TRAVIS_BUILD_DIR/feeds/scripts/clean_feeds.sh ./;
           fi
-
