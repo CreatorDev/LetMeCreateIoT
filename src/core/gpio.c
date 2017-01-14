@@ -32,6 +32,23 @@ static uint8_t pin_direction[4] = { 0 };
 
 int gpio_init(uint8_t gpio_pin)
 {
+    switch(gpio_pin)
+    {
+        case AN:
+        GPIO_CONFIGURE_AS_DIGITAL(G, 9);
+        break;
+        case PWM:
+        GPIO_CONFIGURE_AS_DIGITAL(B, 8);
+        break;
+        case CS:
+        GPIO_CONFIGURE_AS_DIGITAL(E, 5);
+        default:
+        fprintf(stderr, "GPIO: Unknown pin\n");
+        return -1;
+    }
+
+    PIN_FUNCTION(GPIO_CLR, gpio_pin);
+
     return gpio_set_direction(gpio_pin, GPIO_INPUT);
 }
 
