@@ -13,23 +13,10 @@ env:
     matrix:
         - METHOD="python"
         - METHOD="clean_feeds"
-        - METHOD="update" DIRECTORY="examples/accel"
         - METHOD="uninstall"
-        - METHOD="build" DIRECTORY="examples/accel"
-        - METHOD="build" DIRECTORY="examples/adc"
-        - METHOD="build" DIRECTORY="examples/debug"
-        - METHOD="build" DIRECTORY="examples/joystick"
-        - METHOD="build" DIRECTORY="examples/led_matrix"
-        - METHOD="build" DIRECTORY="examples/matrix_server"
-        - METHOD="build" DIRECTORY="examples/motion"
-        - METHOD="build" DIRECTORY="examples/opto"
-        - METHOD="build" DIRECTORY="examples/power_saving"
-        - METHOD="build" DIRECTORY="examples/thermo3"
-        - METHOD="build" DIRECTORY="examples/thermo3_client"
-        - METHOD="build" DIRECTORY="examples/udp_client"
-        - METHOD="build" DIRECTORY="examples/udp_client_mdns"
-        - METHOD="build" DIRECTORY="examples/udp_server"
-        - METHOD="build" DIRECTORY="tests/6lowpan"
+        - METHOD="build" DIRECTORY="examples"
+        - METHOD="build" DIRECTORY="tests"
+        - METHOD="update" DIRECTORY="examples"
 before_install:
     - if [[ "$METHOD" == "build" || "$METHOD" == "update" ]]; then
         sudo dpkg --add-architecture i386 && sudo apt-get update
@@ -49,8 +36,7 @@ script:
               METHOD="build";
           fi
         - if [[ "$METHOD" == "build" ]]; then
-              cd "$TRAVIS_BUILD_DIR/$DIRECTORY" &&
-              make && ls *.hex 1>/dev/null 2>&1;
+              $TRAVIS_BUILD_DIR/.travis/build_apps.sh "$TRAVIS_BUILD_DIR/$DIRECTORY";
           fi
         - if [[ "$METHOD" == "python" ]]; then
               $TRAVIS_BUILD_DIR/.travis/compile_python_scripts.sh;
