@@ -37,43 +37,61 @@ ISR(_CHANGE_NOTICE_VECTOR) {
         button2_isr();
     }
 
+    int callback_id = -1;
+    int value = -1;
     if(IFS1bits.CNGIF & CNSTATGbits.CNSTATG9 && callbacks[AN_CALLBACK].callback)
     {
-        callbacks[AN_CALLBACK].callback(1);
+        callback_id = AN_CALLBACK;
+        value = GPIO_VALUE(G, 9);
         (void)PORTG;
         IFS1CLR = _IFS1_CNGIF_MASK;
         CNSTATGCLR = _CNSTATG_CNSTATG9_MASK;
     }
     if(IFS1bits.CNDIF & CNSTATDbits.CNSTATD0 && callbacks[INT_CALLBACK].callback)
     {
-        callbacks[INT_CALLBACK].callback(1);
+        callback_id = INT_CALLBACK;
+        value = GPIO_VALUE(D, 0);
         (void)PORTD;
         IFS1CLR = _IFS1_CNDIF_MASK;
         CNSTATDCLR = _CNSTATD_CNSTATD0_MASK;
     }
     if(IFS1bits.CNFIF & CNSTATFbits.CNSTATF3 && callbacks[PWM_CALLBACK].callback)
     {
-        callbacks[PWM_CALLBACK].callback(1);
+        callback_id = PWM_CALLBACK;
+        value = GPIO_VALUE(F, 3);
         (void)PORTF;
         IFS1CLR = _IFS1_CNFIF_MASK;
         CNSTATFCLR = _CNSTATF_CNSTATF3_MASK;
     }
     if(IFS1bits.CNEIF & CNSTATEbits.CNSTATE5 && callbacks[CS_CALLBACK].callback)
     {
-        callbacks[CS_CALLBACK].callback(1);
+        callback_id = CS_CALLBACK;
+        value = GPIO_VALUE(E, 5);
         (void)PORTE;
         IFS1CLR = _IFS1_CNEIF_MASK;
         CNSTATECLR = _CNSTATE_CNSTATE5_MASK;
     }
     if(IFS1bits.CNDIF & CNSTATDbits.CNSTATD6 && callbacks[RST_CALLBACK].callback)
     {
-        callbacks[RST_CALLBACK].callback(1);
+        callback_id = RST_CALLBACK;
+        value = GPIO_VALUE(D, 6);
         (void)PORTD;
         IFS1CLR = _IFS1_CNDIF_MASK;
         CNSTATDCLR = _CNSTATD_CNSTATD6_MASK;
     }
 
+    if(callback_id != -1 && value != -1)
+    {
+        struct interrupt_callback * call = &callbacks[callback_id];
 
+        int event_type;
+        if(value == 0)
+            event_type = GPIO_FALLING;
+        else
+            event_type = GPIO_RAISING;
+        if(call->event_mask & event_type)
+            call->callback(event_type);
+    }
 
 }
 
