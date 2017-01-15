@@ -36,6 +36,7 @@ function install_files {
     fi
 
     local MAKEFILE="$CONTIKI/Makefile.include"
+    local PLATFORM_MAIN="$CONTIKI/platform/mikro-e/contiki-mikro-e-main.c"
 
     grep -E --quiet "MODULES(.*?)$LIBRARY_DIR_NAME/$LMC_DIR_NAME/core" "$MAKEFILE"
     if [[ $? -eq 1 ]]; then
@@ -65,6 +66,15 @@ function install_files {
     elif [[ $? -gt 1 ]]; then
         echo "Grep failed"
         exit 1
+    fi
+
+    echo "Checking if should remove ISR calls..."
+    grep -E --quiet "CHANGE_NOTICE_VECTOR" "$PLATFORM_MAIN"
+    if [[ $? -eq 0 ]]; then
+        echo "Removing ISR from contiki-mikro-e-main.c"
+        cd "$CONTIKI/platform/mikro-e"
+        git apply "$BASE_DIR/contiki.diff" || exit 1
+        cd -
     fi
 
     if [[ -d "$CONTIKI_SYMLINK" ]]; then
