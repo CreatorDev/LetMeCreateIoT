@@ -36,6 +36,9 @@ int gpio_init(uint8_t gpio_pin)
 {
     switch(gpio_pin)
     {
+        case GPIO_INT:
+        case GPIO_RST:
+        break;
         case GPIO_AN:
         GPIO_CONFIGURE_AS_DIGITAL(G, 9);
         break;
@@ -44,6 +47,7 @@ int gpio_init(uint8_t gpio_pin)
         break;
         case GPIO_CS:
         GPIO_CONFIGURE_AS_DIGITAL(E, 5);
+        break;
         default:
         fprintf(stderr, "GPIO: Unknown pin\n");
         return -1;
