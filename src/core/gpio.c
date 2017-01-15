@@ -15,7 +15,7 @@
         func(D, 6);                             \
         break;                                  \
         case(GPIO_PWM):                         \
-        func(B, 8);                             \
+        func(F, 3);                             \
         break;                                  \
         case(GPIO_INT):                         \
         func(D, 0);                             \
@@ -38,12 +38,10 @@ int gpio_init(uint8_t gpio_pin)
     {
         case GPIO_INT:
         case GPIO_RST:
+        case GPIO_PWM:
         break;
         case GPIO_AN:
         GPIO_CONFIGURE_AS_DIGITAL(G, 9);
-        break;
-        case GPIO_PWM:
-        GPIO_CONFIGURE_AS_DIGITAL(B, 8);
         break;
         case GPIO_CS:
         GPIO_CONFIGURE_AS_DIGITAL(E, 5);
