@@ -14,7 +14,7 @@ for the Mikro-e PIC32MX clicker.
 |Wrappers||
 |:------------| :-------------------|
 |I²C|SPI|
-|GPIO|Interrupts|
+|GPIO|GPIO Monitor|
 |ADC|UDP/TCP & network helpers|
 |Debug over 6lowpan|Power saving control|
 
