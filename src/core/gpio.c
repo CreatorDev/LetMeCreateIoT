@@ -84,6 +84,7 @@ int gpio_set_direction(uint8_t gpio_pin, uint8_t dir)
         break;
         case GPIO_INT:
         pin_direction[3] = dir;
+        break;
         case GPIO_CS:
         pin_direction[4] = dir;
         break;
