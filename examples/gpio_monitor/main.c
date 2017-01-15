@@ -51,9 +51,9 @@ PROCESS_THREAD(main_process, ev, data)
         gpio_monitor_init();
         gpio_monitor_add_callback(GPIO_AN, GPIO_RAISING, monitor_callback_an);
         gpio_monitor_add_callback(GPIO_INT, GPIO_RAISING, monitor_callback_int);
-        gpio_monitor_add_callback(GPIO_PWM, GPIO_RAISING, monitor_callback_pwm);
-        gpio_monitor_add_callback(GPIO_RST, GPIO_RAISING, monitor_callback_rst);
-        gpio_monitor_add_callback(GPIO_CS, GPIO_RAISING, monitor_callback_cs);
+        gpio_monitor_add_callback(GPIO_PWM, GPIO_EDGE, monitor_callback_pwm);
+        gpio_monitor_add_callback(GPIO_RST, GPIO_FALLING, monitor_callback_rst);
+        gpio_monitor_add_callback(GPIO_CS, GPIO_FALLING, monitor_callback_cs);
         while(1)
         {
 
