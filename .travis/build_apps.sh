@@ -16,7 +16,7 @@ for dir in $BASE_DIR/*; do
     EXAMPLE_NAME=$(basename $dir)
     echo "*** Building app $EXAMPLE_NAME ***"
 
-    make
+    make -j5
     if [[ $? -ne 0 ]]; then
         echo "Build of $EXAMPLE_NAME failed"
         FAILS+=($EXAMPLE_NAME)
