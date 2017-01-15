@@ -4,6 +4,7 @@
 #include <contiki.h>
 #include <letmecreate/core/gpio.h>
 
+#include "button-sensor.h"
 
 #define INTERRUPT_PRIORITY 6
 #define INTERRUPT_SUBPRIORITY 0
@@ -27,6 +28,15 @@ enum callback_index
 static struct interrupt_callback callbacks[CALLBACK_COUNT];
 
 ISR(_CHANGE_NOTICE_VECTOR) {
+    if(BUTTON1_CHECK_IRQ())
+    {
+        button1_isr();
+    }
+    else if(BUTTON2_CHECK_IRQ())
+    {
+        button2_isr();
+    }
+
     if(IFS1bits.CNGIF & CNSTATGbits.CNSTATG9 && callbacks[AN_CALLBACK].callback)
     {
         callbacks[AN_CALLBACK].callback(1);
