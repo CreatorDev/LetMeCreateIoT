@@ -52,18 +52,9 @@ index fe90a9e..302e941 100644
  
  #endif
 diff --git a/src/click/thermo3.c b/src/click/thermo3.c
-index 8680a84..c4b21d7 100644
+index 8680a84..518c437 100644
 --- a/src/click/thermo3.c
 +++ b/src/click/thermo3.c
-@@ -4,7 +4,7 @@
- #include <letmecreate/click/thermo3.h>
- #include <letmecreate/core/common.h>
- #include <letmecreate/core/gpio.h>
--#include <letmecreate/core/gpio_monitor.h>
-+#include <letmecreate/core/interrupts.h>
- #include <letmecreate/core/i2c.h>
- 
- #define TMP102_ADDRESS                  (0x48 | (last_address_bit & 0x01))
 @@ -88,9 +88,6 @@ int thermo3_click_set_alarm(uint8_t mikrobus_index, float threshold, void(*callb
      case MIKROBUS_1:
          alarm_pin = MIKROBUS_1_INT;
@@ -74,15 +65,3 @@ index 8680a84..c4b21d7 100644
      default:
          fprintf(stderr, "thermo3: Invalid mikrobus index.\n");
          return -1;
-@@ -111,10 +108,7 @@ int thermo3_click_set_alarm(uint8_t mikrobus_index, float threshold, void(*callb
-         return -1;
-     }
- 
--    if (gpio_monitor_init() < 0)
--        return -1;
--
--    if ((alarm_callback_ID = gpio_monitor_add_callback(alarm_pin, GPIO_FALLING, callback)) < 0)
-+    if (interrupt_configure(callback) < 0)
-         fprintf(stderr, "thermo3: Failed to attach callback to alarm pin.\n");
- 
-     return alarm_callback_ID;

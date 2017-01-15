@@ -298,10 +298,10 @@ index 4d53b6c..19b91d3 100644
                                                                uint32_t d, uint32_t e, uint32_t f);
  #endif
 diff --git a/src/click/eve.c b/src/click/eve.c
-index 41570a4..2237867 100644
+index 41570a4..2694fae 100644
 --- a/src/click/eve.c
 +++ b/src/click/eve.c
-@@ -1,15 +1,15 @@
+@@ -1,10 +1,10 @@
 -#include <linux/spi/spidev.h>
  #include <stdarg.h>
  #include <stdio.h>
@@ -315,12 +315,6 @@ index 41570a4..2237867 100644
  #include <letmecreate/click/eve.h>
  #include <letmecreate/click/ft800_defs.h>
  #include <letmecreate/core/common.h>
- #include <letmecreate/core/gpio.h>
--#include <letmecreate/core/gpio_monitor.h>
-+#include <letmecreate/core/interrupts.h>
- #include <letmecreate/core/spi.h>
- 
- #define FIFO_SIZE               (4096)  /* 4KB */
 @@ -32,12 +32,9 @@ static void (*touch_event_callback)(void) = NULL;
  
  static void sleep_ms(unsigned int ms)
@@ -337,7 +331,7 @@ index 41570a4..2237867 100644
  }
  
  static int send_command(uint8_t cmd)
-@@ -870,18 +867,14 @@ static int attach_interrupt_handler(uint8_t mikrobus_index)
+@@ -870,9 +867,6 @@ static int attach_interrupt_handler(uint8_t mikrobus_index)
      case MIKROBUS_1:
          int_pin = MIKROBUS_1_INT;
          break;
@@ -347,18 +341,7 @@ index 41570a4..2237867 100644
      default:
          return -1;
      }
- 
--    if (gpio_init(int_pin) < 0
--    ||  gpio_monitor_init() < 0)
-+    if (gpio_init(int_pin) < 0)
-         return -1;
- 
--    if ((int_callback_id = gpio_monitor_add_callback(int_pin, GPIO_FALLING, interrupt_handler)) < 0)
-+    if (interrupt_configure(interrupt_handler) < 0)
-         return -1;
- 
-     return 0;
-@@ -895,9 +888,6 @@ static int detach_interrupt_handler(uint8_t mikrobus_index)
+@@ -895,9 +889,6 @@ static int detach_interrupt_handler(uint8_t mikrobus_index)
      case MIKROBUS_1:
          int_pin = MIKROBUS_1_INT;
          break;
@@ -368,16 +351,7 @@ index 41570a4..2237867 100644
      default:
          return -1;
      }
-@@ -905,7 +895,7 @@ static int detach_interrupt_handler(uint8_t mikrobus_index)
-     if (int_callback_id < 0)
-         return 0;
- 
--    if (gpio_monitor_remove_callback(int_callback_id) < 0)
-+    if (interrupt_configure(NULL) < 0)
-         return -1;
- 
-     int_callback_id = -1;
-@@ -931,9 +921,6 @@ static int ft800_power(uint8_t bus_index, bool enable)
+@@ -931,9 +922,6 @@ static int ft800_power(uint8_t bus_index, bool enable)
      case MIKROBUS_1:
          pd_n_pin = MIKROBUS_1_RST;
          break;
@@ -387,7 +361,7 @@ index 41570a4..2237867 100644
      default:
          return -1;
      }
-@@ -956,9 +943,6 @@ static int ft800_use_spi(uint8_t bus_index)
+@@ -956,9 +944,6 @@ static int ft800_use_spi(uint8_t bus_index)
      case MIKROBUS_1:
          mode_pin = MIKROBUS_1_AN;
          break;

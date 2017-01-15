@@ -28,16 +28,10 @@ index 58ca984..97fac8e 100644
  
  #endif
 diff --git a/src/click/opto.c b/src/click/opto.c
-index 310d201..d03c7be 100644
+index 310d201..9f99f8c 100644
 --- a/src/click/opto.c
 +++ b/src/click/opto.c
-@@ -3,17 +3,16 @@
- #include <letmecreate/click/opto.h>
- #include <letmecreate/core/common.h>
- #include <letmecreate/core/gpio.h>
--#include <letmecreate/core/gpio_monitor.h>
-+#include <letmecreate/core/interrupts.h>
- 
+@@ -8,12 +8,11 @@
  
  static const uint8_t channel_pins[MIKROBUS_COUNT][OPTO_CLICK_CHANNEL_COUNT] = {
      { MIKROBUS_1_INT, 0, MIKROBUS_1_RST, MIKROBUS_1_AN },
@@ -51,15 +45,7 @@ index 310d201..d03c7be 100644
          fprintf(stderr, "opto: Invalid mikrobus index.\n");
          return false;
      }
-@@ -51,14 +50,13 @@ int opto_click_attach_callback(uint8_t mikrobus_index, uint8_t channel_index, vo
- 
-     gpio_pin = channel_pins[mikrobus_index][channel_index];
-     if (gpio_init(gpio_pin) < 0
--    ||  gpio_monitor_init() < 0
--    ||  gpio_monitor_add_callback(gpio_pin, GPIO_EDGE, callback) < 0)
-+    ||  interrupt_configure(callback) < 0)
-         return -1;
- 
+@@ -58,7 +57,7 @@ int opto_click_attach_callback(uint8_t mikrobus_index, uint8_t channel_index, vo
      return 0;
  }
  
