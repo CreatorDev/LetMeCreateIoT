@@ -21,7 +21,7 @@ enum GPIO_EVENT {
 
 
 /**
- * @brief Initialise variables and start monitoring thread.
+ * @brief Initialise interrupt bits.
  *
  * This function must be called before adding/removing callbacks.
  *
@@ -30,7 +30,7 @@ enum GPIO_EVENT {
 int gpio_monitor_init(void);
 
 /**
- * @brief Attach a callback to a GPIO.
+ * @brief Attach a callback to a GPIO. At the moment only one callback per pin is supported
  *
  * @param[in] gpio_pin GPIO to monitor (see #GPIO_PIN)
  * @param[in] event_mask Events which trigger callback (see #GPIO_EVENT)
@@ -48,7 +48,7 @@ int gpio_monitor_add_callback(uint8_t gpio_pin, uint8_t event_mask, void(*callba
 int gpio_monitor_remove_callback(int callback_ID);
 
 /**
- * @brief Remove all callbacks and stop monitoring thread.
+ * @brief Remove all callbacks.
  *
  * @return 0 if successful, -1 otherwise
  */
