@@ -16,10 +16,11 @@ for dir in $BASE_DIR/*; do
     EXAMPLE_NAME=$(basename $dir)
     echo "*** Building app $EXAMPLE_NAME ***"
 
-    make -j5
+    make -j5 2>&1 1>build.log
     if [[ $? -ne 0 ]]; then
         echo "Build of $EXAMPLE_NAME failed"
         FAILS+=($EXAMPLE_NAME)
+        tail -n 100 build.log
         continue
     fi
 
@@ -28,6 +29,7 @@ for dir in $BASE_DIR/*; do
         echo "No output hex file found for $EXAMPLE_NAME"
         FAILS+=($EXAMPLE_NAME)
     fi
+    echo "$EXAMPLE_NAME built properly"
 done
 
 if [[ ${#FAILS[@]} > 0 ]]; then
