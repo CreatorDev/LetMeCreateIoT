@@ -129,7 +129,7 @@ int spi_transfer(const uint8_t * tx_buffer, uint8_t * rx_buffer, uint32_t len)
            return -1;
         }
     }
-    else if(tx_buffer && rx_buffer)
+    else if(!tx_buffer && rx_buffer)
     {
         if(spi_read_registers(tx_buffer[0], &rx_buffer[1], len - 1) < 0)
         {
