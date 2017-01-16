@@ -55,13 +55,13 @@ ISR(_CHANGE_NOTICE_VECTOR) {
         IFS1CLR = _IFS1_CNDIF_MASK;
         CNSTATDCLR = _CNSTATD_CNSTATD0_MASK;
     }
-    if(IFS1bits.CNFIF & CNSTATFbits.CNSTATF3 && callbacks[PWM_CALLBACK].callback)
+    if(IFS1bits.CNBIF & CNSTATBbits.CNSTATB8 && callbacks[PWM_CALLBACK].callback)
     {
         callback_id = PWM_CALLBACK;
-        value = GPIO_VALUE(F, 3);
-        (void)PORTF;
-        IFS1CLR = _IFS1_CNFIF_MASK;
-        CNSTATFCLR = _CNSTATF_CNSTATF3_MASK;
+        value = GPIO_VALUE(B, 8);
+        (void)PORTB;
+        IFS1CLR = _IFS1_CNBIF_MASK;
+        CNSTATBCLR = _CNSTATB_CNSTATB8_MASK;
     }
     if(IFS1bits.CNEIF & CNSTATEbits.CNSTATE5 && callbacks[CS_CALLBACK].callback)
     {
@@ -128,11 +128,11 @@ int gpio_monitor_add_callback(uint8_t gpio_pin, uint8_t event_mask, void(*callba
         callback_id = AN_CALLBACK;
         break;
         case GPIO_PWM:
-        CNCONFSET = _CNCONF_ON_MASK;
-        IEC1SET = _IEC1_CNFIE_MASK;
-        IFS1CLR = _IFS1_CNFIF_MASK;
-        (void)PORTF;
-        CNENFSET = _CNENF_CNIEF3_MASK;
+        CNCONBSET = _CNCONB_ON_MASK;
+        IEC1SET = _IEC1_CNBIE_MASK;
+        IFS1CLR = _IFS1_CNBIF_MASK;
+        (void)PORTB;
+        CNENBSET = _CNENB_CNIEB8_MASK;
         callback_id = PWM_CALLBACK;
         break;
         case GPIO_INT:
@@ -188,11 +188,11 @@ int gpio_monitor_remove_callback(int callback_ID)
         CNENGCLR = _CNENG_CNIEG9_MASK;
         break;
         case PWM_CALLBACK:
-        CNCONFCLR = _CNCONF_ON_MASK;
-        IEC1CLR = _IEC1_CNFIE_MASK;
-        IFS1CLR = _IFS1_CNFIF_MASK;
-        (void)PORTF;
-        CNENFCLR = _CNENF_CNIEF3_MASK;
+        CNCONBCLR = _CNCONB_ON_MASK;
+        IEC1CLR = _IEC1_CNBIE_MASK;
+        IFS1CLR = _IFS1_CNBIF_MASK;
+        (void)PORTB;
+        CNENBCLR = _CNENB_CNIEB8_MASK;
         break;
         case INT_CALLBACK:
         CNCONDCLR = _CNCOND_ON_MASK;
