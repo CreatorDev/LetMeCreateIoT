@@ -15,7 +15,7 @@
         func(D, 6);                             \
         break;                                  \
         case(GPIO_PWM):                         \
-        func(F, 3);                             \
+        func(B, 8);                             \
         break;                                  \
         case(GPIO_INT):                         \
         func(D, 0);                             \
