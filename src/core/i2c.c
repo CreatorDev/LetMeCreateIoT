@@ -36,13 +36,22 @@ static int i2c_send_address(uint16_t address, uint8_t read_byte)
 int i2c_init()
 {
     if(i2c1_init())
+    {
+        fprintf(stderr, "I2C: Failed to initialise\n");
         return -1;
+    }
 
     if(i2c1_set_frequency(I2C_DEFAULT_FREQUENCY))
+    {
+        fprintf(stderr, "I2C: Failed to set frequency\n");
         return -1;
+    }
 
     if(i2c1_master_enable())
+    {
+        fprintf(stderr, "I2C: Failed to enable master\n");
         return -1;
+    }
 
 
     return 0;
@@ -51,7 +60,10 @@ int i2c_init()
 int i2c_release()
 {
     if(i2c1_master_disable())
+    {
+        fprintf(stderr, "I2C: Failed to disable master\n");
         return -1;
+    }
 
     return 0;
 }
@@ -59,7 +71,10 @@ int i2c_release()
 int i2c_set_frequency(uint32_t frequency)
 {
     if(i2c1_set_frequency(frequency))
+    {
+        fprintf(stderr, "I2C: Failed to set frequency\n");
         return -1;
+    }
 
     return 0;
 }
@@ -68,27 +83,39 @@ int i2c_write(uint16_t address, const uint8_t * bytes, uint32_t length)
 {
     if(!bytes)
     {
-        printf("I2C: Cannot write null bytes\n");
+        fprintf(stderr, "I2C: Cannot write null bytes\n");
         return -1;
     }
 
     if(!length)
     {
-        printf("I2C: Length cannot be 0\n");
+        fprintf(stderr, "I2C: Length cannot be 0\n");
         return -1;
     }
 
     if(i2c1_send_start())
+    {
+        fprintf(stderr, "I2C: Send start failed\n");
         return -1;
+    }
 
     if(i2c_send_address(address, I2C_WRITE_MODE) < 0)
+    {
+        fprintf(stderr, "I2C: Send address failed\n");
         return -1;
+    }
 
     if(i2c1_send_bytes(bytes, length))
+    {
+        fprintf(stderr, "I2C: Send bytes failed\n");
         return -1;
+    }
 
     if(i2c1_send_stop())
+    {
+        fprintf(stderr, "I2C: Send stop failed\n");
         return -1;
+    }
 
     return 0;
 }
@@ -97,30 +124,45 @@ int i2c_read(uint16_t address, uint8_t * bytes, uint32_t length)
 {
     if(!bytes)
     {
-        printf("I2C: Cannot read to null bytes\n");
+        fprintf(stderr, "I2C: Cannot read to null bytes\n");
         return -1;
     }
 
     if(!length)
     {
-        printf("I2C: Length cannot be 0\n");
+        fprintf(stderr, "I2C: Length cannot be 0\n");
         return -1;
     }
 
     if(i2c1_send_start())
+    {
+        fprintf(stderr, "I2C: Send start failed\n");
         return -1;
+    }
 
     if(i2c_send_address(address, I2C_READ_MODE) < 0)
+    {
+        fprintf(stderr, "I2C: Send address failed\n");
         return -1;
+    }
 
     if(i2c1_set_nack(1))
+    {
+        fprintf(stderr, "I2C: Set nack failed\n");
         return -1;
+    }
 
     if(i2c1_receive_bytes(bytes, length))
+    {
+        fprintf(stderr, "I2C: Receive bytes failed\n");
         return -1;
+    }
 
     if(i2c1_send_stop())
+    {
+        fprintf(stderr, "I2C: Send stop failed\n");
         return -1;
+    }
 
     return 0;
 }
@@ -144,7 +186,10 @@ int i2c_write_register(uint16_t address, uint8_t reg_address, uint8_t value)
 int i2c_read_register(uint16_t address, uint8_t reg_address, uint8_t *data)
 {
     if (i2c_write_byte(address, reg_address) < 0)
+    {
+        fprintf(stderr, "I2C: Failed to read register\n");
         return -1;
+    }
 
     return i2c_read_byte(address, data);
 }
@@ -156,7 +201,10 @@ int i2c_read_16b_register(uint16_t address,
     uint8_t low = 0, high = 0;
 
     if (data == NULL)
+    {
+        fprintf(stderr, "I2C: Data cannot be null\n");
         return -1;
+    }
 
     if (i2c_read_register(address, reg_low_address, &low) < 0)
         return -1;
