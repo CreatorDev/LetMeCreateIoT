@@ -15,10 +15,10 @@ function print_help {
     echo "-u: Uninstalls the library from Contiki folder"
 }
 
-# Courtesy of http://stackoverflow.com/questions/3572030/bash-script-absolute-path-with-osx
-# Fixes issues with Macos readlink -f lack of compatibility
 realpath() {
-    [[ "$1" = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+    cd -P "$1"
+    echo "$PWD"
+    cd - > /dev/null
 }
 
 function install_files {
