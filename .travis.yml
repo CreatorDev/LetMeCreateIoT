@@ -8,6 +8,7 @@ env:
         - XC32_DL="$HOME/xc32.run"
         - LMC_REPO="https://github.com/francois-berder/LetMeCreate/"
         - CONTIKI="$HOME/test contiki"
+        - CONTIKI_BRANCH="3.0-mikro-e"
         - CONTIKI_REPO="https://github.com/CreatorDev/contiki.git"
         - TRAVIS_SCRIPTS="$TRAVIS_BUILD_DIR/.travis"
     matrix:
@@ -24,7 +25,7 @@ before_install:
             && export PATH="$PATH:$XC32_PATH";
       fi
     - mkdir -p "$CONTIKI"
-    - git clone --branch=creator "$CONTIKI_REPO" "$CONTIKI/"
+    - git clone --branch="$CONTIKI_BRANCH" "$CONTIKI_REPO" "$CONTIKI/"
     - cd "$CONTIKI" && git submodule init && git submodule update
 install:
     - $TRAVIS_BUILD_DIR/install.sh -p "$CONTIKI"
