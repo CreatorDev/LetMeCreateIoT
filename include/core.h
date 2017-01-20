@@ -13,7 +13,7 @@
 #include "letmecreate/core/common.h"
 #include "letmecreate/core/debug.h"
 #include "letmecreate/core/gpio.h"
-#include "letmecreate/core/interrupts.h"
+#include "letmecreate/core/gpio_monitor.h"
 #include "letmecreate/core/i2c.h"
 #include "letmecreate/core/network.h"
 #include "letmecreate/core/power.h"
