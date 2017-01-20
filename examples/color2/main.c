@@ -1,12 +1,11 @@
+
 #include <stdio.h>
 
 #include <contiki.h>
 
 #include <sys/clock.h>
 
-#include "letmecreate/click/color2.h"
-#include "letmecreate/core/i2c.h"
-#include "letmecreate/core/debug.h"
+#include "letmecreate/letmecreate.h"
 
 PROCESS(main_process, "Main process");
 AUTOSTART_PROCESSES(&main_process);
