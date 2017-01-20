@@ -5,6 +5,7 @@
 #include <sys/clock.h>
 
 #include "letmecreate/click/color2.h"
+#include "letmecreate/core/i2c.h"
 #include "letmecreate/core/debug.h"
 
 PROCESS(main_process, "Main process");
