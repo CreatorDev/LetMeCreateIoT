@@ -40,6 +40,8 @@ script:
         - if [[ "$METHOD" == "scripts" ]]; then
               $TRAVIS_BUILD_DIR/.travis/compile_python_scripts.sh &&
               $TRAVIS_BUILD_DIR/.travis/uninstall_test.sh &&
+              $TRAVIS_BUILD_DIR/.travis/check_clicks_header.sh &&
+              $TRAVIS_BUILD_DIR/.travis/check_core_header.sh &&
               mkdir -p $TRAVIS_BUILD_DIR/lmc && 
               cd $TRAVIS_BUILD_DIR/lmc &&
               git clone $LMC_REPO . &&
