@@ -38,34 +38,13 @@ function install_files {
     local MAKEFILE="$CONTIKI/Makefile.include"
     local PLATFORM_MAIN="$CONTIKI/platform/mikro-e/contiki-mikro-e-main.c"
 
+    echo "Checking if Makefile patch needs to be applied"
     grep -E --quiet "MODULES(.*?)$LIBRARY_DIR_NAME/$LMC_DIR_NAME/core" "$MAKEFILE"
     if [[ $? -eq 1 ]]; then
-        echo "Adding LMC core module to Contiki makefile..."
-        sed -e "0,/MODULES +=/s//MODULES += ${LIBRARY_DIR_NAME}\/${LMC_DIR_NAME}\/core/" "$MAKEFILE" > "$MAKEFILE.new"
-        if [[ $? -ne 0 ]]; then
-            echo "Sed failed"
-            rm "$MAKEFILE.new"
-            return 1
-        fi
-        mv "$MAKEFILE.new" "$MAKEFILE"
-    elif [[ $? -gt 1 ]]; then
-        echo "Grep failed"
-        exit 1
-    fi
-
-    grep -E --quiet "MODULES(.*?)$LIBRARY_DIR_NAME/$LMC_DIR_NAME/click" "$MAKEFILE"
-    if [[ $? -eq 1 ]]; then
-        echo "Adding LMC click module to Contiki makefile..."
-        sed -e "0,/MODULES +=/s//MODULES += ${LIBRARY_DIR_NAME}\/${LMC_DIR_NAME}\/click/" "$MAKEFILE" > "$MAKEFILE.new"
-        if [[ $? -ne 0 ]]; then
-            echo "Sed failed"
-            rm "$MAKEFILE.new"
-            return 1
-        fi
-        mv "$MAKEFILE.new" "$MAKEFILE"
-    elif [[ $? -gt 1 ]]; then
-        echo "Grep failed"
-        exit 1
+        echo "Adding LMC files"
+        cd "$CONTIKI"
+        git apply "$BASE_DIR/patches/makefile.patch" || exit 1
+        cd - > /dev/null
     fi
 
     echo "Checking if should remove ISR calls..."
@@ -73,8 +52,8 @@ function install_files {
     if [[ $? -eq 0 ]]; then
         echo "Removing ISR from contiki-mikro-e-main.c"
         cd "$CONTIKI/platform/mikro-e"
-        git apply "$BASE_DIR/contiki.diff" || exit 1
-        cd -
+        git apply "$BASE_DIR/patches/mikro-e.patch" || exit 1
+        cd - > /dev/null
     fi
 
     if [[ -d "$CONTIKI_SYMLINK" ]]; then
@@ -177,11 +156,12 @@ function uninstall {
     fi
     local MAKEFILE="$CONTIKI_SYMLINK/Makefile.include"
 
-    echo "Clearing the Makefile"
-    sed -i -e "s/$LIBRARY_DIR_NAME\/$LMC_DIR_NAME\/[a-z]* //g" "$MAKEFILE"
-    if [[ $? -ne 0 ]]; then
-        echo "Cleanup of the Contiki Makefile failed, verify if LMC was removed from it"
-    fi
+    echo "Removing patches"
+    cd "$CONTIKI_SYMLINK"
+    for x in "$BASE_DIR/patches/"*.patch; do
+        git apply -R "$x" || exit 1
+    done
+    cd - > /dev/null
 
     echo "Removing symlink"
     unlink "$CONTIKI_SYMLINK"
@@ -241,6 +221,7 @@ if [[ -z "$CONTIKI" ]]; then
         exit 1
     fi
 fi
+
 
 echo "Installing the library files to $CONTIKI"
 
