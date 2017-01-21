@@ -9,13 +9,23 @@
 #ifndef H_CORE_COMMON
 #define H_CORE_COMMON
 
+#include <stdint.h>
+
 #define MAX_STR_LENGTH          (255)
-#define MIKROBUS_COUNT          (1)
 
 /** Index of Mikrobus interfaces */
 enum MIKROBUS_INDEX {
     MIKROBUS_1,
+    MIKROBUS_2,
+    MIKROBUS_COUNT
 };
 
+/**
+ * @brief Checks if mikrobus exists
+ *
+ * @param[in] mikrobus_index Mikrobus to check
+ * @return 0 if successful, -1 otherwise
+ */
+int check_valid_mikrobus(uint8_t mikrobus_index);
 
 #endif
