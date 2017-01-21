@@ -27,6 +27,17 @@ enum GPIO_PIN {
     MIKROBUS_1_CS  = GPIO_CS,
 };
 
+/** Mikrobus pin type */
+enum PIN_TYPE
+{
+    TYPE_AN,
+    TYPE_RST,
+    TYPE_PWM,
+    TYPE_INT,
+    TYPE_CS,
+    TYPE_COUNT
+};
+
 /** GPIO direction */
 enum GPIO_DIR {
     GPIO_OUTPUT,
@@ -43,6 +54,16 @@ enum GPIO_DIR {
  * @return 0 if successful, -1 otherwise
  */
 int gpio_init(uint8_t gpio_pin);
+
+/**
+ * @brief Returns GPIO index of a pin on provided mikrobus
+ *
+ * @param[in] mikrobus_index Index of the Mikrobus
+ * @param[in] pin_type Type of the desired pin
+ * @param[out] pin Pointer to a variable awaiting the pin index
+ * @return 0 if successful, -1 otherwise
+ */
+int gpio_get_pin(uint8_t mikrobus_index, uint8_t pin_type, uint8_t * pin);
 
 /**
  * @brief Configure GPIO as input or output.
