@@ -48,6 +48,8 @@ while True:
         print_debug("Connected for debug to {0}".format(address))
         if(index != 0):
             print_debug("First message is out of order, {0} messages are missing".format(index))
+    elif(new_index == 0):
+        print_debug("Clicker has been rebooted")
     elif(new_index != index + 1):
         print_debug("Missed {0} messages".format(new_index - index - 1))
 
