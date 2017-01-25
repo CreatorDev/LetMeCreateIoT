@@ -31,7 +31,7 @@
   }
 
 
-static uint8_t pin_lookup[MIKROBUS_COUNT][TYPE_COUNT] = {
+static const uint8_t pin_lookup[MIKROBUS_COUNT][TYPE_COUNT] = {
  { MIKROBUS_1_AN, MIKROBUS_1_RST, MIKROBUS_1_PWM, MIKROBUS_1_INT, MIKROBUS_1_CS },
 };
 
