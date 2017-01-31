@@ -36,7 +36,9 @@ int __network_printf(const char * format, ...)
     va_end(list);
 
     memcpy(message, &packet_index, sizeof(packet_index));
+#ifndef DEBUG_NO_SERIAL
     vprintf(format, list);
+#endif
 
     if(udp_packet_send(__debug_connection, message,
         strlen(message + sizeof(packet_index)) + sizeof(packet_index)) < 0)
