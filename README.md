@@ -123,6 +123,12 @@ define in the Makefile:
 CFLAGS += -DDEBUG_IP=6lowpan:ip:of:ci40
 ```
 
+By default data is not only sent over 6lowpan but also printed over UART. To disable serial logging use:
+
+```Makefile
+CFLAGS += -DDEBUG_IP=6lowpan:ip:of:ci40 -DDEBUG_NO_SERIAL
+```
+
 Then use the INIT_NETWORK_DEBUG and PRINTF macros in code:
 ```C
 /* ... */
