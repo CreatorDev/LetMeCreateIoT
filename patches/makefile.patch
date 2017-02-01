@@ -7,7 +7,7 @@ index 36b5e06..191b167 100644
  CFLAGS += -DCONTIKI=1 -DCONTIKI_TARGET_$(TARGET_UPPERCASE)=1
  
 -MODULES += core/sys core/dev core/lib
-+MODULES += core/letmecreate/click core/letmecreate/core core/sys core/dev core/lib
++MODULES += core/letmecreate/click core/letmecreate/bosch core/letmecreate/core core/sys core/dev core/lib
  
  # Include IPv6, IPv4, and/or Rime
  
