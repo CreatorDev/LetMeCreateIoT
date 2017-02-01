@@ -31,7 +31,7 @@ All drivers are checked out from [LMC 1.3](https://github.com/francois-berder/Le
 |Motion|OLED|Opto|
 |Proximity|Relay|Relay2|
 |Relay4 (partial support)|RTC|Thermo3|
-|~~Weather~~||||
+|Weather||||
 
 ## Installation and updating
 
