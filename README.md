@@ -2,9 +2,9 @@
 # LetMeCreateIoT
 
 **Master**  
-[![Build Status](https://travis-ci.org/mtusnio/LetMeCreateIoT.svg?branch=master)](https://travis-ci.org/mtusnio/LetMeCreateIoT)  
+[![Build Status](https://travis-ci.org/CreatorDev/LetMeCreateIoT.svg?branch=master)](https://travis-ci.org/mtusnio/LetMeCreateIoT)  
 **Dev**  
-[![Build Status](https://travis-ci.org/mtusnio/LetMeCreateIoT.svg?branch=dev)](https://travis-ci.org/mtusnio/LetMeCreateIoT)
+[![Build Status](https://travis-ci.org/CreatorDev/LetMeCreateIoT.svg?branch=dev)](https://travis-ci.org/mtusnio/LetMeCreateIoT)
 
 ## Introduction
 
@@ -18,7 +18,7 @@ for the Mikro-e PIC32MX clicker.
 |ADC|UDP/TCP & network helpers|
 |Debug over 6lowpan|Power saving control|
 
-All drivers are checked out from [LMC 1.3](https://github.com/francois-berder/LetMeCreate/tree/v1.3.0) and Contiki-specific patches are applied on top of them. Any drivers which were not ported are crossed out in the table below.
+All drivers are checked out from [LMC 1.3](https://github.com/CreatorDev/LetMeCreate/tree/v1.3.0) and Contiki-specific patches are applied on top of them. Any drivers which were not ported are crossed out in the table below.
 
 |Drivers|||
 |:------------|:-------------------|:-------------------|
@@ -152,12 +152,12 @@ python3 debug_server.py
 
 To disable debugging simply remove DEBUG_IP from CFLAGS. In this case INIT_NETWORK_DEBUG will 
 resolve to no code at all and PRINTF will act as the standard printf function. For a full example 
-program visit [examples/debug](https://github.com/mtusnio/LetMeCreateIoT/tree/master/examples/debug). 
+program visit [examples/debug](https://github.com/CreatorDev/LetMeCreateIoT/tree/master/examples/debug). 
 Additionally, all other examples can be used with network debug enabled by following the above steps.
 
 ### Compatibility with LMC
 
-The interfaces are made to be as compatible with [LMC](https://github.com/francois-berder/LetMeCreate) 
+The interfaces are made to be as compatible with [LMC](https://github.com/CreatorDev/LetMeCreate) 
 as much as possible to ensure the code is portable. When adding support for a new Click use its LMC
 version, modify for use with LMCIoT and generate a patch, then place it in the
 feeds/patches/ directory.
