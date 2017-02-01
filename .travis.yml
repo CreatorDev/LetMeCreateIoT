@@ -6,7 +6,7 @@ env:
         - XC32_URL="http://ww1.microchip.com/downloads/en/DeviceDoc/xc32-v1.42-full-install-linux-installer.run"
         - XC32_PATH="/opt/microchip/xc32/v1.42/bin"
         - XC32_DL="$HOME/xc32.run"
-        - LMC_REPO="https://github.com/francois-berder/LetMeCreate/"
+        - LMC_REPO="https://github.com/CreatorDev/LetMeCreate/"
         - CONTIKI="$HOME/test contiki"
         - CONTIKI_BRANCH="3.0-mikro-e"
         - CONTIKI_REPO="https://github.com/CreatorDev/contiki.git"
