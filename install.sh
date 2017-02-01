@@ -77,7 +77,7 @@ function install_files {
 
 function download_feeds {
     local FEEDS_FILE="$BASE_DIR/feeds/feed"
-    local FEEDS_REPO="https://github.com/francois-berder/LetMeCreate"
+    local FEEDS_REPO="https://github.com/CreatorDev/LetMeCreate"
 
     if [[ ! -e "$FEEDS_FILE" ]]; then
         echo "Could not find the feed tag file"
