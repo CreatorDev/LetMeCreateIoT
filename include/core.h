@@ -18,5 +18,6 @@
 #include "letmecreate/core/network.h"
 #include "letmecreate/core/power.h"
 #include "letmecreate/core/spi.h"
+#include "letmecreate/core/uart.h"
 
 #endif
