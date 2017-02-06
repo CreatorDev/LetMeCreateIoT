@@ -87,11 +87,8 @@ int i2c_write(uint16_t address, const uint8_t * bytes, uint32_t length)
         return -1;
     }
 
-    if(!length)
-    {
-        fprintf(stderr, "I2C: Length cannot be 0\n");
-        return -1;
-    }
+    if(length == 0)
+        return 0;
 
     if(i2c1_send_start())
     {
@@ -117,7 +114,7 @@ int i2c_write(uint16_t address, const uint8_t * bytes, uint32_t length)
         return -1;
     }
 
-    return 0;
+    return length;
 }
 
 int i2c_read(uint16_t address, uint8_t * bytes, uint32_t length)
@@ -128,11 +125,8 @@ int i2c_read(uint16_t address, uint8_t * bytes, uint32_t length)
         return -1;
     }
 
-    if(!length)
-    {
-        fprintf(stderr, "I2C: Length cannot be 0\n");
-        return -1;
-    }
+    if(length == 0)
+        return 0;
 
     if(i2c1_send_start())
     {
@@ -164,7 +158,7 @@ int i2c_read(uint16_t address, uint8_t * bytes, uint32_t length)
         return -1;
     }
 
-    return 0;
+    return length;
 }
 
 int i2c_write_byte(uint16_t slave_address, uint8_t data)
