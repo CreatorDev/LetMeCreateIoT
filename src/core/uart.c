@@ -141,7 +141,7 @@ int uart_send(const uint8_t *buffer, uint32_t count)
         }
     }
 
-    return 0;
+    return count;
 #endif
 }
 
@@ -171,7 +171,7 @@ int uart_receive(uint8_t *buffer, uint32_t count)
 
         buffer[i] = (uint8_t)data;
     }
-    return 0;
+    return count;
 #endif
 }
 
