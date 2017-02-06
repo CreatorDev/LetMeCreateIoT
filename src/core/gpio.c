@@ -35,9 +35,6 @@ static const uint8_t pin_lookup[MIKROBUS_COUNT][TYPE_COUNT] = {
  { MIKROBUS_1_AN, MIKROBUS_1_RST, MIKROBUS_1_PWM, MIKROBUS_1_INT, MIKROBUS_1_CS },
 };
 
-/** AN, RST, PWM, INT, CS */
-static uint8_t pin_direction[TYPE_COUNT] = { 0 };
-
 int gpio_init(uint8_t gpio_pin)
 {
     switch(gpio_pin)
@@ -102,27 +99,6 @@ int gpio_set_direction(uint8_t gpio_pin, uint8_t dir)
         return -1;
     }
 
-    switch(gpio_pin)
-    {
-        case GPIO_AN:
-        pin_direction[0] = dir;
-        break;
-        case GPIO_RST:
-        pin_direction[1] = dir;
-        break;
-        case GPIO_PWM:
-        pin_direction[2] = dir;
-        break;
-        case GPIO_INT:
-        pin_direction[3] = dir;
-        break;
-        case GPIO_CS:
-        pin_direction[4] = dir;
-        break;
-        default:
-        fprintf(stderr, "GPIO: Unknown pin\n");
-        return -1;
-    }
     return 0;
 }
 
@@ -137,19 +113,19 @@ int gpio_get_direction(uint8_t gpio_pin, uint8_t *dir)
     switch(gpio_pin)
     {
         case GPIO_AN:
-        *dir = pin_direction[0];
+        *dir = TRISG & (1 << 9) ? GPIO_INPUT : GPIO_OUTPUT;
         break;
         case GPIO_RST:
-        *dir = pin_direction[1];
+        *dir = TRISD & (1 << 6) ? GPIO_INPUT : GPIO_OUTPUT;
         break;
         case GPIO_PWM:
-        *dir = pin_direction[2];
+        *dir = TRISF & (1 << 3) ? GPIO_INPUT : GPIO_OUTPUT;
         break;
         case GPIO_INT:
-        *dir = pin_direction[3];
+        *dir = TRISD & 1 ? GPIO_INPUT : GPIO_OUTPUT;
         break;
         case GPIO_CS:
-        *dir = pin_direction[4];
+        *dir = TRISE & (1 << 5) ? GPIO_INPUT : GPIO_OUTPUT;
         break;
         default:
         fprintf(stderr, "GPIO: Unknown pin\n");
