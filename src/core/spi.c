@@ -66,11 +66,14 @@ static int spi_end_transfer()
 
 int spi_transfer(const uint8_t * tx_buffer, uint8_t * rx_buffer, uint32_t len)
 {
-    if((!tx_buffer && !rx_buffer) || len == 0)
+    if(!tx_buffer && !rx_buffer)
     {
         fprintf(stderr, "SPI: No data to transfer\n");
         return -1;
     }
+
+    if (len == 0)
+        return 0;
 
     spi_start_transfer();
     if(pic32_spi1_transfer(tx_buffer, rx_buffer, len))
