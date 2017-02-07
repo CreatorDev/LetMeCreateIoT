@@ -236,6 +236,9 @@ int uart_release(void)
     else
         UART_SET_INPUT(previous_uart_handler);
 
+    /* If used for debug, do not turn off module */
+    return 0;
+#endif
     /* Disable interrupts */
     IEC1CLR = _IEC1_U3EIE_MASK | _IEC2_U3TXIE_MASK | _IEC1_U3RXIE_MASK;
     IFS1CLR = _IFS1_U3EIF_MASK | _IFS2_U3TXIF_MASK | _IFS1_U3RXIF_MASK;
@@ -247,6 +250,4 @@ int uart_release(void)
     U3STA = 0;
 
     return 0;
-#endif
 }
-
