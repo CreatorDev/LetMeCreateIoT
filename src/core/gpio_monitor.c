@@ -27,6 +27,15 @@ enum callback_index
 
 static struct interrupt_callback callbacks[CALLBACK_COUNT];
 
+static void handle_interrupt(uint8_t callback_id, uint8_t value)
+{
+    struct interrupt_callback *call = &callbacks[callback_id];
+    uint8_t event_type = value ? GPIO_RAISING : GPIO_FALLING;
+
+    if(call->event_mask & event_type)
+        call->callback(event_type);
+}
+
 ISR(_CHANGE_NOTICE_VECTOR) {
     if(BUTTON1_CHECK_IRQ())
     {
@@ -37,62 +46,36 @@ ISR(_CHANGE_NOTICE_VECTOR) {
         button2_isr();
     }
 
-    int callback_id = -1;
-    int value = -1;
     if(IFS1bits.CNGIF & CNSTATGbits.CNSTATG9 && callbacks[AN_CALLBACK].callback)
     {
-        callback_id = AN_CALLBACK;
-        value = GPIO_VALUE(G, 9);
-        (void)PORTG;
+        handle_interrupt(AN_CALLBACK, GPIO_VALUE(G, 9));
         IFS1CLR = _IFS1_CNGIF_MASK;
         CNSTATGCLR = _CNSTATG_CNSTATG9_MASK;
     }
     if(IFS1bits.CNDIF & CNSTATDbits.CNSTATD0 && callbacks[INT_CALLBACK].callback)
     {
-        callback_id = INT_CALLBACK;
-        value = GPIO_VALUE(D, 0);
-        (void)PORTD;
+        handle_interrupt(INT_CALLBACK, GPIO_VALUE(D, 0));
         IFS1CLR = _IFS1_CNDIF_MASK;
         CNSTATDCLR = _CNSTATD_CNSTATD0_MASK;
     }
     if(IFS1bits.CNBIF & CNSTATBbits.CNSTATB8 && callbacks[PWM_CALLBACK].callback)
     {
-        callback_id = PWM_CALLBACK;
-        value = GPIO_VALUE(B, 8);
-        (void)PORTB;
+        handle_interrupt(PWM_CALLBACK, GPIO_VALUE(B, 8));
         IFS1CLR = _IFS1_CNBIF_MASK;
         CNSTATBCLR = _CNSTATB_CNSTATB8_MASK;
     }
     if(IFS1bits.CNEIF & CNSTATEbits.CNSTATE5 && callbacks[CS_CALLBACK].callback)
     {
-        callback_id = CS_CALLBACK;
-        value = GPIO_VALUE(E, 5);
-        (void)PORTE;
+        handle_interrupt(CS_CALLBACK, GPIO_VALUE(E, 5));
         IFS1CLR = _IFS1_CNEIF_MASK;
         CNSTATECLR = _CNSTATE_CNSTATE5_MASK;
     }
     if(IFS1bits.CNDIF & CNSTATDbits.CNSTATD6 && callbacks[RST_CALLBACK].callback)
     {
-        callback_id = RST_CALLBACK;
-        value = GPIO_VALUE(D, 6);
-        (void)PORTD;
+        handle_interrupt(RST_CALLBACK, GPIO_VALUE(D, 6));
         IFS1CLR = _IFS1_CNDIF_MASK;
         CNSTATDCLR = _CNSTATD_CNSTATD6_MASK;
     }
-
-    if(callback_id != -1 && value != -1)
-    {
-        struct interrupt_callback * call = &callbacks[callback_id];
-
-        int event_type;
-        if(value == 0)
-            event_type = GPIO_FALLING;
-        else
-            event_type = GPIO_RAISING;
-        if(call->event_mask & event_type)
-            call->callback(event_type);
-    }
-
 }
 
 int gpio_monitor_init(void)
@@ -224,5 +207,4 @@ int gpio_monitor_remove_callback(int callback_ID)
 
     return 0;
 }
-
 
