@@ -47,8 +47,7 @@ enum GPIO_DIR {
 /**
  * @brief Initialise a GPIO.
  *
- * Configures a pin as output. Does the same as gpio_set_direction, but is
- * needed for compatbility with CI40 LMC
+ * Configures a pin as input.
  *
  * @param[in] gpio_pin Index of the GPIO
  * @return 0 if successful, -1 otherwise
