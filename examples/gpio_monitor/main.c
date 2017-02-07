@@ -48,6 +48,13 @@ PROCESS_THREAD(main_process, ev, data)
     {
         PRINTF("=====Start=====\n");
 
+        /* GPIO's must be configured as input before attaching callbacks */
+        gpio_init(GPIO_AN);
+        gpio_init(GPIO_INT);
+        gpio_init(GPIO_PWM);
+        gpio_init(GPIO_RST);
+        gpio_init(GPIO_CS);
+
         gpio_monitor_init();
         gpio_monitor_add_callback(GPIO_AN, GPIO_RAISING, monitor_callback_an);
         gpio_monitor_add_callback(GPIO_INT, GPIO_RAISING, monitor_callback_int);

@@ -235,13 +235,6 @@ int gpio_monitor_add_callback(uint8_t gpio_pin, uint8_t event_mask, void(*callba
         return -1;
     }
 
-    if (gpio_init(gpio_pin) < 0
-    ||  gpio_set_direction(gpio_pin, GPIO_INPUT))
-    {
-        fprintf(stderr, "gpio_monitor: failed to init GPIO\n");
-        return -1;
-    }
-
     /* Find an empty slot in callbacks array */
     for (index = 0; index < CALLBACK_COUNT; ++index) {
         if (callbacks[index].callback == NULL)
