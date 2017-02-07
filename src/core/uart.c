@@ -244,7 +244,7 @@ int uart_release(void)
     IFS1CLR = _IFS1_U3EIF_MASK | _IFS2_U3TXIF_MASK | _IFS1_U3RXIF_MASK;
 
     /* Clear priority bits */
-    IPC9CLR = _IPC9_U1IP_MASK | _IPC9_U1IS_MASK;
+    IPC9CLR = _IPC9_U3IP_MASK | _IPC9_U3IS_MASK;
 
     U3MODE = 0;
     U3STA = 0;
