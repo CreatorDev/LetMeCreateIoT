@@ -125,6 +125,37 @@ int uart_get_baudrate(uint32_t *baudrate)
 #endif
 }
 
+int uart_get_real_baudrate(uint32_t *baudrate)
+{
+#ifndef __USE_UART_PORT3__
+    fprintf(stderr, "uart: __USE_UART_PORT3__ not defined\n");
+    return -1;
+#else
+    if(baudrate == NULL)
+    {
+        fprintf(stderr, "uart: Cannot set baudrate using null pointer.\n");
+        return -1;
+    }
+
+    /* From section 21. UART:
+     *
+     * If BRGH = 0:
+     *                    Fpb
+     * Baud rate = -----------------
+     *              16 * (U3BRG + 1)
+     *
+     * If BRGH = 1:
+     *                    Fpb
+     * Baud rate = -----------------
+     *              4 * (U3BRG + 1)
+     */
+    uint32_t x = (U3MODE & _U3MODE_BRGH_MASK) ? 4 : 16;
+    *baudrate = pic32_clock_get_peripheral_clock() / (x * (U3BRG + 1));
+
+    return 0;
+#endif
+}
+
 int uart_send(const uint8_t *buffer, uint32_t count)
 {
 #ifndef __USE_UART_PORT3__
