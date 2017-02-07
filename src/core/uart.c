@@ -227,7 +227,7 @@ void uart_set_timeout(uint32_t timeout)
 
 int uart_release(void)
 {
-#if defined(__USE_UART_PORT3__)
+#ifndef __USE_UART_PORT3__
     fprintf(stderr, "uart: __USE_UART_PORT3__ not defined\n");
     return -1;
 #elif defined(__USE_UART_PORT3_FOR_DEBUG__)
