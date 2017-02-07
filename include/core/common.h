@@ -11,12 +11,9 @@
 
 #include <stdint.h>
 
-#define MAX_STR_LENGTH          (255)
-
 /** Index of Mikrobus interfaces */
 enum MIKROBUS_INDEX {
     MIKROBUS_1,
-    MIKROBUS_2,
     MIKROBUS_COUNT
 };
 
