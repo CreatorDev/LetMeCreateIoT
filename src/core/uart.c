@@ -23,7 +23,6 @@
     #warning "__USE_UART_PORT3__ not defined, UART wrapper support for Mikrobus will not be enabled"
 #else
 
-static uint32_t current_baud_rate = DEFAULT_BAUDRATE;
 static uint32_t current_timeout = UART_TIMEOUT_NEVER;
 static uint8_t uart_buffer[UART_BUFFER_SIZE];
 static struct ringbuf uart_ring_buffer;
@@ -63,8 +62,6 @@ int uart_init(void)
         return -1;
     }
 
-    current_baud_rate = DEFAULT_BAUDRATE;
-
     ringbuf_init(&uart_ring_buffer, uart_buffer, UART_BUFFER_SIZE);
     previous_uart_handler = uart3_input_handler;
     uart3_set_input(uart_handler);
@@ -101,7 +98,6 @@ int uart_set_baudrate(uint32_t baudrate)
     return -1;
 #else
     U3BRG = pic32_clock_calculate_brg(4, baudrate);
-    current_baud_rate = baudrate;
 
     return 0;
 #endif
@@ -113,13 +109,16 @@ int uart_get_baudrate(uint32_t *baudrate)
     fprintf(stderr, "uart: __USE_UART_PORT3__ not defined\n");
     return -1;
 #else
+    uint32_t x = 4;
     if(baudrate == NULL)
     {
         fprintf(stderr, "uart: Cannot set baudrate using null pointer.\n");
         return -1;
     }
 
-    *baudrate = current_baud_rate;
+    if (U3MODE & _U3MODE_BRGH_MASK)
+        x = 16;
+    *baudrate = pic32_clock_get_peripheral_clock() / (x * (U3BRG + 1));
 
     return 0;
 #endif
