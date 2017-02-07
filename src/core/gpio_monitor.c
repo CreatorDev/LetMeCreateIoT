@@ -219,9 +219,19 @@ int gpio_monitor_add_callback(uint8_t gpio_pin, uint8_t event_mask, void(*callba
 {
     uint32_t index, type_pin;
 
+    if (event_mask == 0) {
+        fprintf(stderr, "gpio_monitor: event_mask is invalid (must not be zero).\n");
+        return -1;
+    }
+
     if (callback == NULL)
     {
         fprintf(stderr, "gpio_monitor: Callback cannot be null\n");
+        return -1;
+    }
+
+    if (convert_gpio_pin(gpio_pin) < 0) {
+        fprintf(stderr, "gpio_monitor: Invalid gpio pin.\n");
         return -1;
     }
 
