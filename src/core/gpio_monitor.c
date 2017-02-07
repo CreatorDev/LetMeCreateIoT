@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <contiki.h>
+#include <letmecreate/core/common.h>
 #include <letmecreate/core/gpio.h>
 
 #include "button-sensor.h"
@@ -288,3 +289,22 @@ int gpio_monitor_remove_callback(int callback_ID)
     return 0;
 }
 
+int gpio_monitor_release(void)
+{
+    uint32_t i;
+
+    IPC8CLR = (INTERRUPT_PRIORITY << _IPC8_CNIP_POSITION) | (INTERRUPT_SUBPRIORITY << _IPC8_CNIS_POSITION);
+
+    for (i = 0; i < CALLBACK_COUNT; ++i)
+        callbacks[i].callback = NULL;
+    for (i = 0; i < TYPE_COUNT; ++i) {
+        if (callback_count_per_pin[i] != 0) {
+            uint8_t gpio_pin = 0;
+            gpio_get_pin(MIKROBUS_1, i, &gpio_pin);
+            disable_interrupt(gpio_pin);
+        }
+        callback_count_per_pin[i] = 0;
+    }
+
+    return 0;
+}
