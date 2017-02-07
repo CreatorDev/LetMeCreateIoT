@@ -125,13 +125,44 @@ int uart_get_baudrate(uint32_t *baudrate)
 #endif
 }
 
+int uart_get_real_baudrate(uint32_t *baudrate)
+{
+#ifndef __USE_UART_PORT3__
+    fprintf(stderr, "uart: __USE_UART_PORT3__ not defined\n");
+    return -1;
+#else
+    if(baudrate == NULL)
+    {
+        fprintf(stderr, "uart: Cannot set baudrate using null pointer.\n");
+        return -1;
+    }
+
+    /* From section 21. UART:
+     *
+     * If BRGH = 0:
+     *                    Fpb
+     * Baud rate = -----------------
+     *              16 * (U3BRG + 1)
+     *
+     * If BRGH = 1:
+     *                    Fpb
+     * Baud rate = -----------------
+     *              4 * (U3BRG + 1)
+     */
+    uint32_t x = (U3MODE & _U3MODE_BRGH_MASK) ? 4 : 16;
+    *baudrate = pic32_clock_get_peripheral_clock() / (x * (U3BRG + 1));
+
+    return 0;
+#endif
+}
+
 int uart_send(const uint8_t *buffer, uint32_t count)
 {
 #ifndef __USE_UART_PORT3__
     fprintf(stderr, "uart: __USE_UART_PORT3__ not defined\n");
     return -1;
 #else
-    int i;
+    uint32_t i;
     for(i = 0; i < count; i++)
     {
         if(pic32_uart3_write(buffer[i]))
@@ -151,7 +182,7 @@ int uart_receive(uint8_t *buffer, uint32_t count)
     fprintf(stderr, "uart: __USE_UART_PORT3__ not defined\n");
     return -1;
 #else
-    int i = 0;
+    uint32_t i = 0;
     int data = -1;
     rtimer_clock_t start;
     start = RTIMER_NOW();
@@ -196,7 +227,7 @@ void uart_set_timeout(uint32_t timeout)
 
 int uart_release(void)
 {
-#if defined(__USE_UART_PORT3__)
+#ifndef __USE_UART_PORT3__
     fprintf(stderr, "uart: __USE_UART_PORT3__ not defined\n");
     return -1;
 #elif defined(__USE_UART_PORT3_FOR_DEBUG__)
@@ -205,17 +236,18 @@ int uart_release(void)
     else
         UART_SET_INPUT(previous_uart_handler);
 
+    /* If used for debug, do not turn off module */
+    return 0;
+#endif
     /* Disable interrupts */
     IEC1CLR = _IEC1_U3EIE_MASK | _IEC2_U3TXIE_MASK | _IEC1_U3RXIE_MASK;
     IFS1CLR = _IFS1_U3EIF_MASK | _IFS2_U3TXIF_MASK | _IFS1_U3RXIF_MASK;
 
     /* Clear priority bits */
-    IPC9CLR = _IPC9_U1IP_MASK | _IPC9_U1IS_MASK;
+    IPC9CLR = _IPC9_U3IP_MASK | _IPC9_U3IS_MASK;
 
     U3MODE = 0;
     U3STA = 0;
 
     return 0;
-#endif
 }
-

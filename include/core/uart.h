@@ -66,11 +66,26 @@ int uart_set_baudrate(uint32_t baudrate);
  * @brief Get the speed of the current UART device.
  *
  * The device must be initialised first.
+ * For compatibility reasons with LetMeCreate, this function returns the same
+ * baudrate than the one set using uart_set_baudrate, which might be an
+ * approximation of the actual baudrate.
  *
  * @param[out] baudrate Current baud rate of the UART device (must not be null)
  * @return 0 if successful, -1 otherwise
  */
 int uart_get_baudrate(uint32_t *baudrate);
+
+/**
+ * @brief Get the real speed of the current UART device.
+ *
+ * The device must be initialised first.
+ * This function differs from uart_get_baudrate since it computes the baudrate
+ * from UART3 registers. This gives the exact baudrate used by the UART device.
+ *
+ * @param[out] baudrate Actual baud rate of the UART device (must not be null)
+ * @return 0 if successful, -1 otherwise
+ */
+int uart_get_real_baudrate(uint32_t *baudrate);
 
 /**
  * @brief Send some data using current UART device.
