@@ -162,7 +162,7 @@ int uart_send(const uint8_t *buffer, uint32_t count)
     fprintf(stderr, "uart: __USE_UART_PORT3__ not defined\n");
     return -1;
 #else
-    int i;
+    uint32_t i;
     for(i = 0; i < count; i++)
     {
         if(pic32_uart3_write(buffer[i]))
@@ -182,7 +182,7 @@ int uart_receive(uint8_t *buffer, uint32_t count)
     fprintf(stderr, "uart: __USE_UART_PORT3__ not defined\n");
     return -1;
 #else
-    int i = 0;
+    uint32_t i = 0;
     int data = -1;
     rtimer_clock_t start;
     start = RTIMER_NOW();
