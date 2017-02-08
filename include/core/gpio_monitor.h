@@ -33,7 +33,7 @@ int gpio_monitor_init(void);
  * @brief Attach a callback to a GPIO. At the moment only one callback per pin is supported
  *
  * @param[in] gpio_pin GPIO to monitor (see #GPIO_PIN)
- * @param[in] event_mask Events which trigger callback (see #GPIO_EVENT), must not be zero
+ * @param[in] event_mask Events which trigger callback (see #GPIO_EVENT)
  * @param[in] callback Function to call (uint8_t argument is the event type)
  * @return ID of the callback (non-negative integer) if successful, -1 otherwise
  */
