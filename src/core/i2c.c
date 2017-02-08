@@ -18,7 +18,7 @@ static int i2c_send_address(uint16_t address, uint8_t read_byte)
     {
         uint8_t small_address = ((0xff & address) << 1) | read_byte;
 
-        if(i2c1_send_byte(small_address))
+        if(pic32_i2c1_send_byte(small_address))
             return -1;
 
         return 0;
@@ -27,7 +27,7 @@ static int i2c_send_address(uint16_t address, uint8_t read_byte)
     uint8_t upper_byte = (0xF0) | ((address & 0xff00) << 1) | read_byte;
     uint8_t lower_byte = address & 0x00ff;
 
-    if(i2c1_send_byte(upper_byte) || i2c1_send_byte(lower_byte))
+    if(pic32_i2c1_send_byte(upper_byte) || pic32_i2c1_send_byte(lower_byte))
         return -1;
 
     return 0;
@@ -35,19 +35,19 @@ static int i2c_send_address(uint16_t address, uint8_t read_byte)
 
 int i2c_init()
 {
-    if(i2c1_init())
+    if(pic32_i2c1_init())
     {
         fprintf(stderr, "I2C: Failed to initialise\n");
         return -1;
     }
 
-    if(i2c1_set_frequency(I2C_DEFAULT_FREQUENCY))
+    if(pic32_i2c1_set_frequency(I2C_DEFAULT_FREQUENCY))
     {
         fprintf(stderr, "I2C: Failed to set frequency\n");
         return -1;
     }
 
-    if(i2c1_master_enable())
+    if(pic32_i2c1_master_enable())
     {
         fprintf(stderr, "I2C: Failed to enable master\n");
         return -1;
@@ -59,7 +59,7 @@ int i2c_init()
 
 int i2c_release()
 {
-    if(i2c1_master_disable())
+    if(pic32_i2c1_master_disable())
     {
         fprintf(stderr, "I2C: Failed to disable master\n");
         return -1;
@@ -70,7 +70,7 @@ int i2c_release()
 
 int i2c_set_frequency(uint32_t frequency)
 {
-    if(i2c1_set_frequency(frequency))
+    if(pic32_i2c1_set_frequency(frequency))
     {
         fprintf(stderr, "I2C: Failed to set frequency\n");
         return -1;
@@ -90,7 +90,7 @@ int i2c_write(uint16_t address, const uint8_t * bytes, uint32_t length)
     if(length == 0)
         return 0;
 
-    if(i2c1_send_start())
+    if(pic32_i2c1_send_start())
     {
         fprintf(stderr, "I2C: Send start failed\n");
         return -1;
@@ -102,13 +102,13 @@ int i2c_write(uint16_t address, const uint8_t * bytes, uint32_t length)
         return -1;
     }
 
-    if(i2c1_send_bytes(bytes, length))
+    if(pic32_i2c1_send_bytes(bytes, length))
     {
         fprintf(stderr, "I2C: Send bytes failed\n");
         return -1;
     }
 
-    if(i2c1_send_stop())
+    if(pic32_i2c1_send_stop())
     {
         fprintf(stderr, "I2C: Send stop failed\n");
         return -1;
@@ -128,7 +128,7 @@ int i2c_read(uint16_t address, uint8_t * bytes, uint32_t length)
     if(length == 0)
         return 0;
 
-    if(i2c1_send_start())
+    if(pic32_i2c1_send_start())
     {
         fprintf(stderr, "I2C: Send start failed\n");
         return -1;
@@ -140,19 +140,19 @@ int i2c_read(uint16_t address, uint8_t * bytes, uint32_t length)
         return -1;
     }
 
-    if(i2c1_set_nack(1))
+    if(pic32_i2c1_set_nack(1))
     {
         fprintf(stderr, "I2C: Set nack failed\n");
         return -1;
     }
 
-    if(i2c1_receive_bytes(bytes, length))
+    if(pic32_i2c1_receive_bytes(bytes, length))
     {
         fprintf(stderr, "I2C: Receive bytes failed\n");
         return -1;
     }
 
-    if(i2c1_send_stop())
+    if(pic32_i2c1_send_stop())
     {
         fprintf(stderr, "I2C: Send stop failed\n");
         return -1;
