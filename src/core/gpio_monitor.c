@@ -140,24 +140,6 @@ static int disable_interrupt(uint8_t gpio_pin)
     return 0;
 }
 
-static int convert_gpio_pin(uint8_t gpio_pin)
-{
-    switch (gpio_pin) {
-    case GPIO_AN:
-        return TYPE_AN;
-    case GPIO_RST:
-        return TYPE_RST;
-    case GPIO_PWM:
-        return TYPE_PWM;
-    case GPIO_INT:
-        return TYPE_INT;
-    case GPIO_CS:
-        return TYPE_CS;
-    default:
-        return -1;
-    }
-}
-
 ISR(_CHANGE_NOTICE_VECTOR) {
     if(BUTTON1_CHECK_IRQ())
     {
@@ -217,7 +199,8 @@ int gpio_monitor_init(void)
 
 int gpio_monitor_add_callback(uint8_t gpio_pin, uint8_t event_mask, void(*callback)(uint8_t))
 {
-    uint32_t index, type_pin;
+    uint32_t index;
+    uint8_t type_pin;
 
     if ((event_mask & GPIO_EDGE) == 0) {
         fprintf(stderr, "gpio_monitor: event_mask is invalid.\n");
@@ -230,10 +213,8 @@ int gpio_monitor_add_callback(uint8_t gpio_pin, uint8_t event_mask, void(*callba
         return -1;
     }
 
-    if (convert_gpio_pin(gpio_pin) < 0) {
-        fprintf(stderr, "gpio_monitor: Invalid gpio pin.\n");
+    if (gpio_get_type(gpio_pin, &type_pin) < 0)
         return -1;
-    }
 
     /* Find an empty slot in callbacks array */
     for (index = 0; index < CALLBACK_COUNT; ++index) {
@@ -252,7 +233,6 @@ int gpio_monitor_add_callback(uint8_t gpio_pin, uint8_t event_mask, void(*callba
     callbacks[index].callback = callback;
 
     /* Update callback_count_per_pin and enable interrupt if needed */
-    type_pin = convert_gpio_pin(gpio_pin);
     ++callback_count_per_pin[type_pin];
     if (callback_count_per_pin[type_pin] == 1)
         enable_interrupt(gpio_pin);
@@ -262,7 +242,8 @@ int gpio_monitor_add_callback(uint8_t gpio_pin, uint8_t event_mask, void(*callba
 
 int gpio_monitor_remove_callback(int callback_ID)
 {
-    uint32_t index, ID, type_pin;
+    uint32_t index, ID;
+    uint8_t type_pin;
 
     if(callback_ID < 0)
     {
@@ -284,7 +265,7 @@ int gpio_monitor_remove_callback(int callback_ID)
     callbacks[index].callback = NULL;
 
     /* Update callback_count_per_pin and disable interrupt if needed */
-    type_pin = convert_gpio_pin(callbacks[index].gpio_pin);
+    gpio_get_type(callbacks[index].gpio_pin, &type_pin);
     --callback_count_per_pin[type_pin];
     if (callback_count_per_pin[type_pin] == 0)
         disable_interrupt(callbacks[index].gpio_pin);
