@@ -83,6 +83,39 @@ int gpio_get_pin(uint8_t mikrobus_index, uint8_t pin_type, uint8_t * pin)
     return 0;
 }
 
+int gpio_get_type(uint8_t gpio_pin, uint8_t *pin_type)
+{
+    if (pin_type == NULL)
+    {
+        fprintf(stderr, "gpio: Pin type cannot be null\n");
+        return -1;
+    }
+
+    switch(gpio_pin)
+    {
+    case GPIO_INT:
+        *pin_type = TYPE_INT;
+        break;
+    case GPIO_RST:
+        *pin_type = TYPE_RST;
+        break;
+    case GPIO_PWM:
+        *pin_type = TYPE_PWM;
+        break;
+    case GPIO_AN:
+        *pin_type = TYPE_AN;
+        break;
+    case GPIO_CS:
+        *pin_type = TYPE_CS;
+        break;
+    default:
+        fprintf(stderr, "GPIO: Unknown pin\n");
+        return -1;
+    }
+
+    return 0;
+}
+
 int gpio_set_direction(uint8_t gpio_pin, uint8_t dir)
 {
     if(dir == GPIO_OUTPUT)
