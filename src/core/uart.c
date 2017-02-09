@@ -232,9 +232,9 @@ int uart_release(void)
     return -1;
 #elif defined(__USE_UART_PORT3_FOR_DEBUG__)
     if(previous_uart_handler == uart_handler)
-        UART_SET_INPUT(NULL);
+        uart3_set_input(NULL);
     else
-        UART_SET_INPUT(previous_uart_handler);
+        uart3_set_input(previous_uart_handler);
 
     /* If used for debug, do not turn off module */
     return 0;
