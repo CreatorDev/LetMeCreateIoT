@@ -33,6 +33,9 @@
 /** Halts the process until the TCP connection has been made */
 #define PROCESS_WAIT_TCP_CONNECTED() PROCESS_WAIT_UDP_CONNECTED()
 
+/* Use for infinite lifetime of addresses */
+#define NETWORK_INFINITE_LIFETIME 0
+
 /**
  * @brief Adds a local IPv6 address
  *
@@ -47,7 +50,7 @@ int ipv6_add_address(const char * address, uip_ipaddr_t * addr, unsigned long li
  * @brief Adds an IPv6 default route
  *
  * @param[in] address String containing the address to be added.
- * @param[in] lifetime How long, in seconds, the default address should last. 0 for infinitely
+ * @param[in] lifetime How long, in seconds, the default address should last. #NETWORK_INFINITE_LIFETIME for infinite
  * @return 0 if successfully added, otherwise -1.
  */
 int ipv6_add_default_route(const char * address, unsigned long lifetime);
@@ -59,6 +62,23 @@ int ipv6_add_default_route(const char * address, unsigned long lifetime);
  * @return 0 if found and removed, otherwise -1.
  */
 int ipv6_remove_default_route(const char * address);
+
+/**
+ * @brief Adds a new IPv6 DNS
+ *
+ * @param[in] address String containing the address to be added.
+ * @param[in] lifetime How long, in seconds, the nameserver should last. #NETWORK_INFINITE_LIFETIME for infinite
+ * @return 0 if successfully added, otherwise -1.
+ */
+int ipv6_add_nameserver(const char * address, uint32_t lifetime);
+
+/**
+ * @brief Removes an IPv6 DNS
+ *
+ * @param[in] address String containing the address to be removed.
+ * @return 0 if successfully added, otherwise -1.
+ */
+int ipv6_remove_nameserver(const char * address);
 
 /**
  * @brief Creates a new UDP connection between two endpoints.
