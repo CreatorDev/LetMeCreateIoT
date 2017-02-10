@@ -19,7 +19,7 @@ for the Mikro-e PIC32MX clicker.
 |Debug over 6lowpan|Power saving control|
 |UART||
 
-All drivers are checked out from [LMC 1.3](https://github.com/CreatorDev/LetMeCreate/tree/v1.3.0) and Contiki-specific patches are applied on top of them. Any drivers which were not ported are crossed out in the table below.
+All drivers are checked out from [LetMeCreate 1.3.0](https://github.com/CreatorDev/LetMeCreate/tree/v1.3.0) and Contiki-specific patches are applied on top of them. Any drivers which were not ported are crossed out in the table below.
 
 |Drivers|||
 |:------------|:-------------------|:-------------------|
@@ -158,7 +158,7 @@ Additionally, all other examples can be used with network debug enabled by follo
 
 ### Compatibility with LMC
 
-The interfaces are made to be as compatible with [LMC](https://github.com/CreatorDev/LetMeCreate) 
+The interfaces are made to be as compatible with [LetMeCreate](https://github.com/CreatorDev/LetMeCreate) 
 as much as possible to ensure the code is portable. When adding support for a new Click use its LMC
 version, modify for use with LMCIoT and generate a patch, then place it in the
 feeds/patches/ directory.
