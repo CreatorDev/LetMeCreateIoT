@@ -1,8 +1,8 @@
 diff --git a/src/click/weather.c b/src/click/weather.c
-index f101c06..35494cb 100644
+index f101c06..d251cfa 100644
 --- a/src/click/weather.c
 +++ b/src/click/weather.c
-@@ -18,8 +18,9 @@
+@@ -18,11 +18,11 @@
   USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   ************************************************************************************************************************/
  
@@ -12,8 +12,11 @@ index f101c06..35494cb 100644
 +#include "sys/clock.h"
  #include <stdlib.h>
  #include <stdint.h>
- #include <unistd.h>
-@@ -32,7 +33,8 @@ static s8 weather_click_i2c_bus_read(u8 dev_addr, u8 reg_addr, u8 *reg_data, u8
+-#include <unistd.h>
+ #include <time.h>
+ 
+ static struct bme280_t bme280;
+@@ -32,7 +32,8 @@ static s8 weather_click_i2c_bus_read(u8 dev_addr, u8 reg_addr, u8 *reg_data, u8
  {
      int iError = BME280_INIT_VALUE;
  
@@ -23,7 +26,7 @@ index f101c06..35494cb 100644
          uint8_t tmp = reg_addr + t;
          i2c_write(dev_addr, &tmp, 1);
          iError = i2c_read(dev_addr, &tmp, 1) >= 0 ? 0 : -1;
-@@ -51,7 +53,8 @@ static s8 weather_click_i2c_bus_write(u8 dev_addr, u8 reg_addr, u8 *reg_data, u8
+@@ -51,7 +52,8 @@ static s8 weather_click_i2c_bus_write(u8 dev_addr, u8 reg_addr, u8 *reg_data, u8
      int iError = BME280_INIT_VALUE;
      uint8_t array[2];
  
@@ -33,7 +36,7 @@ index f101c06..35494cb 100644
          array[0] = reg_addr;
          array[1] = *(reg_data + t);
          iError = i2c_write(dev_addr, &array[0], 2) >= 0 ? 0 : -1;
-@@ -66,15 +69,10 @@ static s8 weather_click_i2c_bus_write(u8 dev_addr, u8 reg_addr, u8 *reg_data, u8
+@@ -66,15 +68,10 @@ static s8 weather_click_i2c_bus_write(u8 dev_addr, u8 reg_addr, u8 *reg_data, u8
  
  static void weather_click_delay_ms(u32 ms)
  {
