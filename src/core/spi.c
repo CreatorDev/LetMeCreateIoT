@@ -1,6 +1,3 @@
-#ifndef H_CORE_SPI
-#define H_CORE_SPI
-
 #include "spi.h"
 
 #include <stdio.h>
@@ -10,6 +7,7 @@
 #include <pic32_gpio.h>
 
 #include "letmecreate/core/gpio.h"
+#include "letmecreate/core/spi.h"
 
 #define DEFAULT_BAUD_RATE       (1000000)
 
@@ -92,5 +90,3 @@ int spi_release()
 
     return 0;
 }
-
-#endif
