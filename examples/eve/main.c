@@ -29,7 +29,8 @@ PROCESS_THREAD(main_process, ev, data)
         static struct etimer et;
         PRINTF("=====Start=====\n");
 
-        spi_init(0);
+        spi_init();
+        spi_set_mode(MIKROBUS_1, SPI_MODE_0);
 
         if (eve_click_enable(MIKROBUS_1) < 0)
             return -1;

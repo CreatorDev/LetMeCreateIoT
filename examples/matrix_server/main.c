@@ -5,6 +5,7 @@
 
 #include "dev/leds.h"
 
+#include "letmecreate/core/common.h"
 #include "letmecreate/core/spi.h"
 #include "letmecreate/core/network.h"
 #include "letmecreate/click/led_matrix.h"
@@ -44,8 +45,8 @@ PROCESS_THREAD(main_process, ev, data)
         // need to call their respective ports in udp_new & udp_bind
         udp_bind(conn, UIP_HTONS(SERVER_PORT));
 
-        spi_init(3);
-
+        spi_init();
+        spi_set_mode(MIKROBUS_1, SPI_MODE_3);
         led_matrix_click_enable();
         led_matrix_click_display_number(0);
 

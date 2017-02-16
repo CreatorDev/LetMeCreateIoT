@@ -7,6 +7,7 @@
 
 #include <string.h>
 
+#include "letmecreate/core/common.h"
 #include "letmecreate/core/spi.h"
 #include "letmecreate/click/accel.h"
 
@@ -23,7 +24,8 @@ PROCESS_THREAD(main_process, ev, data)
         int i;
         PRINTF("=====Start=====\n");
 
-        spi_init(3);
+        spi_init();
+        spi_set_mode(MIKROBUS_1, SPI_MODE_3);
         accel_click_enable();
 
         while(1)

@@ -4,6 +4,7 @@
 
 #include <sys/clock.h>
 
+#include "letmecreate/core/common.h"
 #include "letmecreate/core/spi.h"
 #include "letmecreate/click/led_matrix.h"
 
@@ -22,11 +23,23 @@ PROCESS_THREAD(main_process, ev, data)
 
         PRINTF("=====Start=====\n");
 
-        spi_init(3);
+        if(spi_init() < 0 ||
+            spi_set_mode(MIKROBUS_1, SPI_MODE_3) < 0)
+        {
+            PRINTF("SPI init failed\n");
+            return 1;
+        }
 
-        led_matrix_click_enable();
-        led_matrix_click_set_intensity(3);
+        PRINTF("SPI init passed\n");
 
+        if(led_matrix_click_enable() < 0 ||
+           led_matrix_click_set_intensity(3) < 0)
+        {
+            PRINTF("LED matrix init failed\n");
+            return 1;
+        }
+
+        PRINTF("Display numbers\n");
         for(i = 0; i <= 99; i++)
         {
             PRINTF("Displaying %i\n", i);
