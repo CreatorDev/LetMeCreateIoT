@@ -1,8 +1,8 @@
 diff --git a/platform/mikro-e/contiki-mikro-e-main.c b/platform/mikro-e/contiki-mikro-e-main.c
-index f1f2b06..0c42593 100755
+index fdddbff..808f8e4 100755
 --- a/platform/mikro-e/contiki-mikro-e-main.c
 +++ b/platform/mikro-e/contiki-mikro-e-main.c
-@@ -109,31 +109,6 @@ main(int argc, char **argv)
+@@ -106,31 +106,6 @@ main(int argc, char **argv)
    return 0;
  }
  /*---------------------------------------------------------------------------*/
@@ -31,6 +31,6 @@ index f1f2b06..0c42593 100755
 -
 -
 -/*---------------------------------------------------------------------------*/
- #ifdef __USE_CC2520__
   ISR(_EXTERNAL_1_VECTOR)
   {
+     ca8210_interrupt();
