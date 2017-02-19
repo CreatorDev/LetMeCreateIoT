@@ -16,7 +16,7 @@ for the Mikro-e PIC32MX clicker.
 |I²C|SPI|
 |GPIO|GPIO Monitor|
 |ADC|UDP/TCP & network helpers|
-|Debug over 6lowpan|Power saving control|
+|Debug over 6lowpan|LEDs|
 |UART||
 
 All drivers are checked out from [LetMeCreate 1.3.0](https://github.com/CreatorDev/LetMeCreate/tree/v1.3.0) and Contiki-specific patches are applied on top of them. Any drivers which were not ported are crossed out in the table below.
