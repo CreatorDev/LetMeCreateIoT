@@ -100,16 +100,18 @@ function download_feeds {
         return 1
     fi
 
-    cp "$BASE_DIR/feeds/patches/"*.patch "$FEEDS_DIR/"
-    for x in *.patch
-    do
-        echo "Applying patch $x"
-        git apply "$x"
-        if [[ $? -ne 0 ]]; then
-            echo "Patch failed to apply, aborting"
-            return 1
-        fi
-    done
+    cp "$BASE_DIR/feeds/patches/"*.patch "$FEEDS_DIR/" 2>/dev/null
+    if [[ $? -eq 0 ]]; then
+        for x in *.patch
+        do
+            echo "Applying patch $x"
+            git apply "$x"
+            if [[ $? -ne 0 ]]; then
+                echo "Patch failed to apply, aborting"
+                return 1
+            fi
+        done
+    fi
 
     # Clear headers and core files
     rm -rf "$FEEDS_DIR/include/letmecreate/core"
