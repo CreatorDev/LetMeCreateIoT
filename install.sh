@@ -86,6 +86,11 @@ function download_feeds {
 
     local TAG=$(cat "$FEEDS_FILE")
 
+    if [[ -d "$FEEDS_DIR" ]]; then
+        echo "feeds_tmp exists, removing"
+        rm -rf "$FEEDS_DIR"
+    fi
+
     git clone "$FEEDS_REPO" "$FEEDS_DIR"
     if [[ $? -ne 0 ]]; then
         echo "Failed to clone feeds repo"
