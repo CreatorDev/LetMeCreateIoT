@@ -9,11 +9,13 @@
 #ifndef H_CLICK
 #define H_CLICK
 
+#include <letmecreate/click/7seg.h>
 #include <letmecreate/click/accel.h>
 #include <letmecreate/click/adc.h>
 #include <letmecreate/click/air_quality.h>
 #include <letmecreate/click/alcohol.h>
 #include <letmecreate/click/alphanum.h>
+#include <letmecreate/click/bargraph.h>
 #include <letmecreate/click/co.h>
 #include <letmecreate/click/color.h>
 #include <letmecreate/click/color2.h>
