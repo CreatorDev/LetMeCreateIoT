@@ -16,7 +16,6 @@ PROCESS_THREAD(main_process, ev, data)
     INIT_NETWORK_DEBUG();
     {
         static uint16_t value;
-        static struct etimer et;
         PRINTF("=====Start=====\n");
 
         spi_init();
@@ -26,10 +25,9 @@ PROCESS_THREAD(main_process, ev, data)
 
         /* Gradually turn on each LED. */
         for (; value < 0x400; value <<= 1, value |= 1) {
+            PRINTF("Changing bars \n");
             bargraph_click_set_value(value);
-
-            etimer_set(&et, CLOCK_SECOND/5);
-            PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&et));
+            sleep_ms(200);
         }
 
         spi_release();
