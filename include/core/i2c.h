@@ -20,6 +20,23 @@
 int i2c_init(void);
 
 /**
+ * @brief Select the current bus.
+ *
+ * All following read/write will use the selected bus. If the index given is invalid, the current
+ * bus will not change.
+ *
+ * @param[in] mikrobus_index index of the bus to initialise (see #MIKROBUS_INDEX)
+ */
+void i2c_select_bus(uint8_t mikrobus_index);
+
+/**
+ * @brief Get the current mikrobus index.
+ *
+ * @return Current mikrobus index used by I2C (see #MIKROBUS_INDEX)
+ */
+uint8_t i2c_get_current_bus(void);
+
+/**
  * @brief Send some data to a slave.
  *
  * This sends some data to the slave. The buffer must be non-null and the current bus selected must
@@ -100,6 +117,19 @@ int i2c_read_register(uint16_t slave_address, uint8_t reg_address, uint8_t *data
  */
 int i2c_read_16b_register(uint16_t address, uint8_t reg_low_address, uint8_t reg_high_address, uint16_t *data);
 
+/**
+ * @brief Get timeout of currently selected I2C bus
+ *
+ * @return timeout #NO_TIMEOUT
+ */
+uint32_t i2c_get_timeout(void);
+
+/**
+ * @brief Kept for LMC compatibility, does not change the timeout
+ *
+ * @param[in] timeout #NO_TIMEOUT
+ */
+void i2c_set_timeout(uint32_t timeout);
 
 /**
  * @brief Deinitialize PIC32MX registers

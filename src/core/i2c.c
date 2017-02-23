@@ -5,6 +5,8 @@
 #include <pic32_i2c.h>
 #include <p32xxxx.h>
 
+#include "letmecreate/core/common.h"
+
 #define I2C_DEFAULT_FREQUENCY (100000)
 
 #define I2C_READ_MODE         (0x01)
@@ -55,6 +57,16 @@ int i2c_init()
 
 
     return 0;
+}
+
+void i2c_select_bus(uint8_t mikrobus_index)
+{
+
+}
+
+uint8_t i2c_get_current_bus(void)
+{
+    return MIKROBUS_1;
 }
 
 int i2c_release()
@@ -213,3 +225,12 @@ int i2c_read_16b_register(uint16_t address,
     return 0;
 }
 
+uint32_t i2c_get_timeout(void)
+{
+    return NO_TIMEOUT;
+}
+
+void i2c_set_timeout(uint32_t timeout)
+{
+
+}
