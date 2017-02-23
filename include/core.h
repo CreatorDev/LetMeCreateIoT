@@ -17,6 +17,7 @@
 #include "letmecreate/core/i2c.h"
 #include "letmecreate/core/led.h"
 #include "letmecreate/core/network.h"
+#include "letmecreate/core/pwm.h"
 #include "letmecreate/core/spi.h"
 #include "letmecreate/core/uart.h"
 
