@@ -19,20 +19,21 @@ for the Mikro-e PIC32MX clicker.
 |Debug over 6lowpan|LEDs|
 |UART|PWM|
 
-All drivers are checked out from [LetMeCreate 1.3.0](https://github.com/CreatorDev/LetMeCreate/tree/v1.3.0) and Contiki-specific patches are applied on top of them. Any drivers which were not ported are crossed out in the table below.
+All drivers are checked out from [LetMeCreate 1.5.1](https://github.com/CreatorDev/LetMeCreate/tree/v1.5.1) and Contiki-specific patches are applied on top of them..
 
 |Drivers|||
 |:------------|:-------------------|:-------------------|
-|~~7Seg~~|8x8R (Led Matrix)|Accel|
+|7Seg|8x8R (Led Matrix)|Accel|
 |ADC|Air quality|Alcohol|
-|Alphanum|~~Bargraph~~|CO|
+|Alphanum|Bargraph|CO|
 |Color|Color2|EVE|
 |Fan|GYRO|IR distance|
 |IR eclipse|Joystick|Light|
-|Motion|OLED|Opto|
-|Proximity|Relay|Relay2|
-|Relay4 (partial support)|RTC|Thermo3|
-|Weather||||
+|LIN Hall|Lora|Motion|
+|OLED|Opto|Proximity|
+|Relay (partial support)|Relay2|Relay4 (partial support)|
+|RTC|Thermo3|UNI Hall|
+|Weather|||
 
 ## Installation and updating
 
@@ -167,6 +168,3 @@ feeds/patches/ directory.
 
 - At the moment the new udp connection sends dummy data to force router solicitation as soon as 
 possible.
-- IDLE/SLEEP power control options might not work properly.
-- The CA8210 radio might still come online even when power_disable_peripherals is used. This will be
-fixed once proper power saving is added for the radio.
