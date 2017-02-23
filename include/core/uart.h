@@ -23,9 +23,6 @@ enum UART_BAUDRATE {
     UART_BD_115200  = 115200
 };
 
-/** Special timeout value to disable it. Make uart_read blocking */
-#define UART_TIMEOUT_NEVER      (0)
-
 /**
  * @brief Initialise all UART devices.
  *

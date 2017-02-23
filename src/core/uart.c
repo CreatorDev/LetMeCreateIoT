@@ -24,7 +24,7 @@
 #else
 
 static uint32_t current_baud_rate = DEFAULT_BAUDRATE;
-static uint32_t current_timeout = UART_TIMEOUT_NEVER;
+static uint32_t current_timeout = NO_TIMEOUT;
 static uint8_t uart_buffer[UART_BUFFER_SIZE];
 static struct ringbuf uart_ring_buffer;
 static int (*previous_uart_handler)(unsigned char);
@@ -190,7 +190,7 @@ int uart_receive(uint8_t *buffer, uint32_t count)
     {
         while((data = ringbuf_get(&uart_ring_buffer)) < 0)
         {
-            if(current_timeout == UART_TIMEOUT_NEVER)
+            if(current_timeout == NO_TIMEOUT)
                 continue;
 
             if(RTIMER_CLOCK_LT(start + current_timeout, RTIMER_NOW()))

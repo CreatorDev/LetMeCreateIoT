@@ -17,6 +17,10 @@ enum MIKROBUS_INDEX {
     MIKROBUS_COUNT
 };
 
+
+/* Disables timeouts */
+#define NO_TIMEOUT (0)
+
 /**
  * @brief Checks if mikrobus exists
  *
