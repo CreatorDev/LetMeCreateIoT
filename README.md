@@ -2,9 +2,9 @@
 # LetMeCreateIoT
 
 **Master**  
-[![Build Status](https://travis-ci.org/CreatorDev/LetMeCreateIoT.svg?branch=master)](https://travis-ci.org/mtusnio/LetMeCreateIoT)  
+[![Build Status](https://travis-ci.org/CreatorDev/LetMeCreateIoT.svg?branch=master)](https://travis-ci.org/CreatorDev/LetMeCreateIoT)  
 **Dev**  
-[![Build Status](https://travis-ci.org/CreatorDev/LetMeCreateIoT.svg?branch=dev)](https://travis-ci.org/mtusnio/LetMeCreateIoT)
+[![Build Status](https://travis-ci.org/CreatorDev/LetMeCreateIoT.svg?branch=dev)](https://travis-ci.org/CreatorDev/LetMeCreateIoT)
 
 ## Introduction
 
