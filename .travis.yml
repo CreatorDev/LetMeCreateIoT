@@ -7,15 +7,13 @@ env:
         - XC32_PATH="/opt/microchip/xc32/v1.42/bin"
         - XC32_DL="$HOME/xc32.run"
         - LMC_REPO="https://github.com/CreatorDev/LetMeCreate/"
-        - CONTIKI="$HOME/test contiki"
+        - CONTIKI="$HOME/contiki"
         - CONTIKI_BRANCH="3.0-mikro-e"
         - CONTIKI_REPO="https://github.com/CreatorDev/contiki.git"
-        - TRAVIS_SCRIPTS="$TRAVIS_BUILD_DIR/.travis"
     matrix:
         - METHOD="scripts"
         - METHOD="build" DIRECTORY="examples"
         - METHOD="build" DIRECTORY="tests"
-        - METHOD="update" DIRECTORY="examples"
 before_install:
     - if [[ "$METHOD" == "build" || "$METHOD" == "update" ]]; then
         sudo dpkg --add-architecture i386 && sudo apt-get update
@@ -28,23 +26,19 @@ before_install:
     - git clone --branch="$CONTIKI_BRANCH" "$CONTIKI_REPO" "$CONTIKI/"
     - cd "$CONTIKI" && git submodule init && git submodule update
 install:
-    - $TRAVIS_BUILD_DIR/install.sh -p "$CONTIKI"
+    - mv "$TRAVIS_BUILD_DIR" "$CONTIKI/apps/letmecreate"
+    - TRAVIS_BUILD_DIR="$CONTIKI/apps/letmecreate"
 script:
-        - if [[ "$METHOD" == "update" ]]; then
-              cd $TRAVIS_BUILD_DIR && ./install.sh &&
-              METHOD="build";
-          fi
         - if [[ "$METHOD" == "build" ]]; then
-              $TRAVIS_BUILD_DIR/.travis/build_apps.sh "$TRAVIS_BUILD_DIR/$DIRECTORY";
+              "$TRAVIS_BUILD_DIR/.travis/build_apps.sh" "$TRAVIS_BUILD_DIR/$DIRECTORY";
           fi
         - if [[ "$METHOD" == "scripts" ]]; then
-              $TRAVIS_BUILD_DIR/.travis/compile_python_scripts.sh &&
-              $TRAVIS_BUILD_DIR/.travis/check_clicks_header.sh &&
-              $TRAVIS_BUILD_DIR/.travis/check_core_header.sh &&
-              mkdir -p $TRAVIS_BUILD_DIR/lmc && 
-              cd $TRAVIS_BUILD_DIR/lmc &&
-              git clone $LMC_REPO . &&
-              git checkout $(cat $TRAVIS_BUILD_DIR/feeds/feed) &&
-              $TRAVIS_BUILD_DIR/feeds/scripts/clean_feeds.sh ./;
+              "$TRAVIS_BUILD_DIR/.travis/compile_python_scripts.sh" &&
+              "$TRAVIS_BUILD_DIR/.travis/check_clicks_header.sh" &&
+              "$TRAVIS_BUILD_DIR/.travis/check_core_header.sh" &&
+              mkdir -p "$TRAVIS_BUILD_DIR"/lmc &&
+              cd "$TRAVIS_BUILD_DIR/lmc" &&
+              git clone "$LMC_REPO" . &&
+              git checkout $(cat "$TRAVIS_BUILD_DIR/feeds/feed") &&
+              "$TRAVIS_BUILD_DIR/feeds/scripts/clean_feeds.sh" ./;
           fi
-        - $TRAVIS_BUILD_DIR/install.sh -u;
