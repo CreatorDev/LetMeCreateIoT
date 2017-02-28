@@ -7,6 +7,8 @@ CONTIKI_WITH_IPV6 = 1
 CONTIKI_WITH_RPL = 0
 USE_SERIAL_PADS = 1
 
+APPS += letmecreate
+
 CFLAGS += -DVERSION=$(VERSION)
 CFLAGS += -Wall -Wno-pointer-sign
 CFLAGS += -I $(CONTIKI)/platform/$(TARGET)

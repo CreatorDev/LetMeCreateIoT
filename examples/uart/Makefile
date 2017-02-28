@@ -7,6 +7,8 @@ USE_CA8210 = 1
 USE_SERIAL_PADS = 1
 VERSION? = $(shell git describe --abbrev=4 --dirty --always --tags)
 
+APPS += letmecreate
+
 CFLAGS += -DDEBUG_IP=fe80::219:f5ff:fe89:bfc
 CFLAGS += -DVERSION=$(VERSION)
 CFLAGS += -Wall -Wno-pointer-sign

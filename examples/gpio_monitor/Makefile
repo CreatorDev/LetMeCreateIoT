@@ -6,6 +6,8 @@ VERSION? = $(shell git describe --abbrev=4 --dirty --always --tags)
 CONTIKI_WITH_IPV6 = 1
 CONTIKI_WITH_RPL = 0
 
+APPS += letmecreate
+
 CFLAGS += -DVERSION=$(VERSION)
 CFLAGS += -Wall -Wno-pointer-sign
 CFLAGS += -I $(CONTIKI)/platform/$(TARGET)

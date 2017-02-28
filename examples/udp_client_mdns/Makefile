@@ -6,6 +6,8 @@ CONTIKI_WITH_RPL = 0
 USE_CA8210 = 1
 VERSION? = $(shell git describe --abbrev=4 --dirty --always --tags)
 
+APPS += letmecreate
+
 CFLAGS += -DRESOLV_CONF_SUPPORTS_MDNS=1
 CFLAGS += -DVERSION=$(VERSION)
 CFLAGS += -Wall -Wno-pointer-sign
