@@ -1,4 +1,4 @@
-CONTIKI=../../contiki/
+CONTIKI=../../../../
 
 TARGET = mikro-e
 USE_CA8210 = 1
