@@ -1,4 +1,4 @@
-#include "i2c.h"
+#include "letmecreate/core/i2c.h"
 
 #include <stdio.h>
 #include <contiki.h>
