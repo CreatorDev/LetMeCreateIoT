@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <contiki.h>
+#include <pic32_cn_irq.h>
 #include <letmecreate/core/common.h>
 #include <letmecreate/core/gpio.h>
 
@@ -45,6 +46,39 @@ static void handle_interrupt(uint8_t gpio_pin, uint8_t value)
 
         if(callbacks[i].event_mask & event_type)
             callbacks[i].callback(event_type);
+    }
+}
+
+static void gpio_monitor_callback(void) {
+    if(IFS1bits.CNGIF & CNSTATGbits.CNSTATG9)
+    {
+        handle_interrupt(GPIO_AN, GPIO_VALUE(G, 9));
+        IFS1CLR = _IFS1_CNGIF_MASK;
+        CNSTATGCLR = _CNSTATG_CNSTATG9_MASK;
+    }
+    if(IFS1bits.CNDIF & CNSTATDbits.CNSTATD0)
+    {
+        handle_interrupt(GPIO_INT, GPIO_VALUE(D, 0));
+        IFS1CLR = _IFS1_CNDIF_MASK;
+        CNSTATDCLR = _CNSTATD_CNSTATD0_MASK;
+    }
+    if(IFS1bits.CNBIF & CNSTATBbits.CNSTATB8)
+    {
+        handle_interrupt(GPIO_PWM, GPIO_VALUE(B, 8));
+        IFS1CLR = _IFS1_CNBIF_MASK;
+        CNSTATBCLR = _CNSTATB_CNSTATB8_MASK;
+    }
+    if(IFS1bits.CNEIF & CNSTATEbits.CNSTATE5)
+    {
+        handle_interrupt(GPIO_CS, GPIO_VALUE(E, 5));
+        IFS1CLR = _IFS1_CNEIF_MASK;
+        CNSTATECLR = _CNSTATE_CNSTATE5_MASK;
+    }
+    if(IFS1bits.CNDIF & CNSTATDbits.CNSTATD6)
+    {
+        handle_interrupt(GPIO_RST, GPIO_VALUE(D, 6));
+        IFS1CLR = _IFS1_CNDIF_MASK;
+        CNSTATDCLR = _CNSTATD_CNSTATD6_MASK;
     }
 }
 
@@ -140,51 +174,14 @@ static int disable_interrupt(uint8_t gpio_pin)
     return 0;
 }
 
-ISR(_CHANGE_NOTICE_VECTOR) {
-    if(BUTTON1_CHECK_IRQ())
-    {
-        button1_isr();
-    }
-    else if(BUTTON2_CHECK_IRQ())
-    {
-        button2_isr();
-    }
-
-    if(IFS1bits.CNGIF & CNSTATGbits.CNSTATG9)
-    {
-        handle_interrupt(GPIO_AN, GPIO_VALUE(G, 9));
-        IFS1CLR = _IFS1_CNGIF_MASK;
-        CNSTATGCLR = _CNSTATG_CNSTATG9_MASK;
-    }
-    if(IFS1bits.CNDIF & CNSTATDbits.CNSTATD0)
-    {
-        handle_interrupt(GPIO_INT, GPIO_VALUE(D, 0));
-        IFS1CLR = _IFS1_CNDIF_MASK;
-        CNSTATDCLR = _CNSTATD_CNSTATD0_MASK;
-    }
-    if(IFS1bits.CNBIF & CNSTATBbits.CNSTATB8)
-    {
-        handle_interrupt(GPIO_PWM, GPIO_VALUE(B, 8));
-        IFS1CLR = _IFS1_CNBIF_MASK;
-        CNSTATBCLR = _CNSTATB_CNSTATB8_MASK;
-    }
-    if(IFS1bits.CNEIF & CNSTATEbits.CNSTATE5)
-    {
-        handle_interrupt(GPIO_CS, GPIO_VALUE(E, 5));
-        IFS1CLR = _IFS1_CNEIF_MASK;
-        CNSTATECLR = _CNSTATE_CNSTATE5_MASK;
-    }
-    if(IFS1bits.CNDIF & CNSTATDbits.CNSTATD6)
-    {
-        handle_interrupt(GPIO_RST, GPIO_VALUE(D, 6));
-        IFS1CLR = _IFS1_CNDIF_MASK;
-        CNSTATDCLR = _CNSTATD_CNSTATD6_MASK;
-    }
-}
-
 int gpio_monitor_init(void)
 {
     uint32_t i;
+    if(pic32_cn_irq_add_callback(gpio_monitor_callback) < 0) {
+        fprintf(stderr, "gpio_monitor: Failed to add callback\n");
+        return -1;
+    }
+
     for (i = 0; i < CALLBACK_COUNT; ++i)
         callbacks[i].callback = NULL;
     for (i = 0; i < TYPE_COUNT; ++i)
@@ -290,5 +287,9 @@ int gpio_monitor_release(void)
         callback_count_per_pin[i] = 0;
     }
 
+    if(pic32_cn_irq_remove_callback(gpio_monitor_callback) < 0) {
+        fprintf(stderr, "gpio_monitor: Failed to remove callback\n");
+        return -1;
+    }
     return 0;
 }
