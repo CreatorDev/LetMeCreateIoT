@@ -1,4 +1,4 @@
-LMC_DIR := $(dir $(filter %/Makefile.letmecreate,$(MAKEFILE_LIST)))
+LMC_DIR := $(dir $(filter %/Makefile.letmecreate,$(lastword $(MAKEFILE_LIST))))
 
 define get_feeds
 output := $(shell $(LMC_DIR)/feeds/download_feeds.sh)
