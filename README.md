@@ -19,7 +19,8 @@ for the Mikro-e PIC32MX clicker.
 |Debug over 6lowpan|LEDs|
 |UART|PWM|
 
-All drivers are checked out from [LetMeCreate 1.5.1](https://github.com/CreatorDev/LetMeCreate/tree/v1.5.1) and Contiki-specific patches are applied on top of them..
+All drivers are checked out from [LetMeCreate 1.5.1](https://github.com/CreatorDev/LetMeCreate/tree/v1.5.1) and
+Contiki-specific patches are applied on top of them..
 
 |Drivers|||
 |:------------|:-------------------|:-------------------|
@@ -39,51 +40,21 @@ All drivers are checked out from [LetMeCreate 1.5.1](https://github.com/CreatorD
 
 ### Installation
 
-```sh
-$ ./install.sh -p path/to/contiki
-```
-
-To verify whether installation worked navigate to the examples directory, pick an example of your 
-choice and run
+By default the library should be already in the [Creator branch of CreatorDev Contiki](https://github.com/CreatorDev/contiki/tree/creator).
+If you want to use it with Contiki that does not have LMCIoT by default use following commands:
 
 ```sh
-make
+cd contiki/apps
+git clone https://github.com/CreatorDev/LetMeCreateIoT/ letmecreateiot
 ```
 
-### Uninstalling
+To use in your application add this to your application's Makefile:
 
-If the Contiki symlink is not removed the library can be uninstalled with a single command:
-
-```sh
-./install.sh -u
+```make
+APPS += letmecreateiot
 ```
 
-### Updating
-
-To update the library run:
-
-```sh
-git pull
-./install.sh
-```
-
-As long as a symbolic link to Contiki directory exists the installation script will update all files.
-
-### Feeds
-
-The library checks out the main LMC repo to acquire drivers and apply patches on top of them. If you
-prefer to exclude some drivers use the -e option during install with a regex matching the path or
-filename:
-
-```sh
-./install.sh -e ./click/*
-./install.sh -e *relay.*
-./install.sh -e *joystick.* -e *relay.*
-```
-
-The driver feed headers and source files are also copied to your local repo to let you generate 
-documentation with doxygen. Clean your repo when changing the clicks you include/exclude to prevent 
-issues with documentation for non-used clickers being generated.
+The library will automatically update all driver feeds when make is run.
 
 ## Development
 
