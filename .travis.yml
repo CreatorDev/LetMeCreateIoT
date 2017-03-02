@@ -7,6 +7,7 @@ env:
         - XC32_PATH="/opt/microchip/xc32/v1.42/bin"
         - XC32_DL="$HOME/xc32.run"
         - LMC_REPO="https://github.com/CreatorDev/LetMeCreate/"
+        - APP_NAME="letmecreateiot"
         - CONTIKI="$HOME/contiki"
         - CONTIKI_BRANCH="3.0-mikro-e"
         - CONTIKI_REPO="https://github.com/CreatorDev/contiki.git"
@@ -26,8 +27,8 @@ before_install:
     - git clone --branch="$CONTIKI_BRANCH" "$CONTIKI_REPO" "$CONTIKI/"
     - cd "$CONTIKI" && git submodule init && git submodule update
 install:
-    - mv "$TRAVIS_BUILD_DIR" "$CONTIKI/apps/letmecreate"
-    - TRAVIS_BUILD_DIR="$CONTIKI/apps/letmecreate"
+    - mv "$TRAVIS_BUILD_DIR" "$CONTIKI/apps/$APP_NAME"
+    - TRAVIS_BUILD_DIR="$CONTIKI/apps/$APP_NAME"
 script:
         - if [[ "$METHOD" == "build" ]]; then
               "$TRAVIS_BUILD_DIR/.travis/build_apps.sh" "$TRAVIS_BUILD_DIR/$DIRECTORY";

@@ -6,7 +6,7 @@ CONTIKI_WITH_RPL = 0
 USE_CA8210 = 1
 VERSION? = $(shell git describe --abbrev=4 --dirty --always --tags)
 
-APPS += letmecreate
+APPS += letmecreateiot
 
 CFLAGS += -DDEBUG_IP=fe80::219:f5ff:fe89:bfc
 CFLAGS += -DVERSION=$(VERSION)

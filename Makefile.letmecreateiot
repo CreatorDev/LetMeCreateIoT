@@ -1,0 +1,20 @@
+LMC_DIR := $(dir $(filter %/Makefile.letmecreateiot,$(lastword $(MAKEFILE_LIST))))
+
+define get_feeds
+output := $(shell $(LMC_DIR)/feeds/download_feeds.sh)
+endef
+
+define check_for_feed_updates
+$(shell cmp -s $(LMC_DIR)/feeds/cloned $(LMC_DIR)/feeds/feed; echo $$?)
+endef
+
+ifneq ($(call check_for_feed_updates),0)
+$(info LetMeCreateIoT: Feeds are missing for click drivers, downloading)
+$(call get_feeds)
+endif
+
+letmecreateiot_dirs := $(foreach directory,$(wildcard $(LMC_DIR)/src/*),\
+                    $(addprefix src/,$(lastword $(subst /, ,$(directory)))))
+
+$(foreach dir,$(letmecreateiot_dirs), $(shell mkdir -p obj_$(TARGET)/$(dir)))
+letmecreateiot_src := $(foreach dir,$(letmecreateiot_dirs),$(addprefix $(dir)/, $(notdir $(wildcard $(LMC_DIR)/$(dir)/*.c))))

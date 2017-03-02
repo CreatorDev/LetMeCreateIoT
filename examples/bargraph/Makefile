@@ -7,7 +7,7 @@ CONTIKI_WITH_IPV6 = 1
 CONTIKI_WITH_RPL = 0
 USE_SERIAL_PADS = 1
 
-APPS += letmecreate
+APPS += letmecreateiot
 
 CFLAGS += -DVERSION=$(VERSION)
 CFLAGS += -Wall -Wno-pointer-sign

@@ -7,7 +7,7 @@ CONTIKI_WITH_RPL = 0
 
 VERSION? = $(shell git describe --abbrev=4 --dirty --always --tags)
 
-APPS += letmecreate
+APPS += letmecreateiot
 
 CFLAGS += -DVERSION=$(VERSION)
 CFLAGS += -Wall -Wno-pointer-sign
