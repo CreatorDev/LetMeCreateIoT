@@ -27,8 +27,8 @@ before_install:
     - git clone --branch="$CONTIKI_BRANCH" "$CONTIKI_REPO" "$CONTIKI/"
     - cd "$CONTIKI" && git submodule init && git submodule update
 install:
-    - mv "$TRAVIS_BUILD_DIR" "$CONTIKI/apps/$APP_NAME"
-    - TRAVIS_BUILD_DIR="$CONTIKI/apps/$APP_NAME"
+    - mv "$TRAVIS_BUILD_DIR" "$CONTIKI/platform/mikro-e/apps/$APP_NAME"
+    - TRAVIS_BUILD_DIR="$CONTIKI/platform/mikro-e/apps/$APP_NAME"
 script:
         - if [[ "$METHOD" == "build" ]]; then
               "$TRAVIS_BUILD_DIR/.travis/build_apps.sh" "$TRAVIS_BUILD_DIR/$DIRECTORY";
