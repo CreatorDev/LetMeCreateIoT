@@ -44,7 +44,7 @@ By default the library should be already in the [Creator branch of CreatorDev Co
 If you want to use it with Contiki that does not have LMCIoT by default use following commands:
 
 ```sh
-cd contiki/apps
+cd contiki/platform/mikro-e/apps
 git clone https://github.com/CreatorDev/LetMeCreateIoT/ letmecreateiot
 ```
 
