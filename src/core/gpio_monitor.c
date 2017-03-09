@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <contiki.h>
 #include <pic32_cn_irq.h>
+#include <pic32_gpio.h>
+#include <p32xxxx.h>
 #include <letmecreate/core/common.h>
 #include <letmecreate/core/gpio.h>
 
