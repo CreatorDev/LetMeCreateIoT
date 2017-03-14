@@ -1,7 +1,7 @@
 LMC_DIR := $(dir $(filter %/Makefile.letmecreateiot,$(lastword $(MAKEFILE_LIST))))
 
 define get_feeds
-output := $(shell $(LMC_DIR)/feeds/download_feeds.sh)
+o := $(shell $(LMC_DIR)/feeds/download_feeds.sh)
 endef
 
 define check_for_feed_updates
@@ -10,7 +10,7 @@ endef
 
 ifneq ($(call check_for_feed_updates),0)
 $(info LetMeCreateIoT: Feeds are missing for click drivers, downloading)
-$(call get_feeds)
+o := $(call get_feeds)
 endif
 
 letmecreateiot_dirs := $(foreach directory,$(wildcard $(LMC_DIR)/src/*),\
