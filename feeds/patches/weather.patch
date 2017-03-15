@@ -1,0 +1,21 @@
+diff --git a/src/click/weather.c b/src/click/weather.c
+index 734b260..466b039 100644
+--- a/src/click/weather.c
++++ b/src/click/weather.c
+@@ -76,13 +76,13 @@ int weather_click_read_measurements(double* temperature, double* pressure, doubl
+     uint8_t operationResult = bme280_read_uncomp_pressure_temperature_humidity(&uncompPress, &uncompTemp, &uncompHumidity);
+ 
+     if (temperature != NULL)
+-        *temperature = bme280_compensate_temperature_double(uncompTemp);
++        *temperature = bme280_compensate_temperature_int32(uncompTemp) / 100.0;
+ 
+     if (pressure != NULL)
+-        *pressure = bme280_compensate_pressure_double(uncompPress);
++        *pressure = bme280_compensate_pressure_int64(uncompPress) / 256.0;
+ 
+     if (humidity != NULL)
+-        *humidity = bme280_compensate_humidity_double(uncompHumidity);
++        *humidity = bme280_compensate_humidity_int32(uncompHumidity) / 1024.0;
+ 
+     return operationResult != 0 ? -1 : readResult;
+ }
