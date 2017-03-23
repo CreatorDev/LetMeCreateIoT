@@ -11,7 +11,7 @@
 A collection of wrappers for the Contiki interfaces made to speed up the development of applications 
 for the Mikro-e PIC32MX clicker.
 
-|Wrappers||
+|Wrappers| |
 |:------------| :-------------------|
 |I²C|SPI|
 |GPIO|GPIO Monitor|
@@ -22,7 +22,7 @@ for the Mikro-e PIC32MX clicker.
 All drivers are checked out from [LetMeCreate 1.5.1](https://github.com/CreatorDev/LetMeCreate/tree/v1.5.1) and
 Contiki-specific patches are applied on top of them..
 
-|Drivers|||
+|Drivers| | |
 |:------------|:-------------------|:-------------------|
 |7Seg|8x8R (Led Matrix)|Accel|
 |ADC|Air quality|Alcohol|
@@ -34,7 +34,7 @@ Contiki-specific patches are applied on top of them..
 |OLED|Opto|Proximity|
 |Relay (partial support)|Relay2|Relay4 (partial support)|
 |RTC|Thermo3|UNI Hall|
-|Weather|||
+|Weather| | |
 
 ## Installation and updating
 
